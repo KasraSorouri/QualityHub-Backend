@@ -39,7 +39,7 @@ const parsePhone = (phone: unknown): string => {
 }
 
 const parseActive = (active: unknown): boolean => {
-  if (!active || !isBoolean(active)) {
+  if (!isBoolean(active)) {
     throw new Error('Incorrect or missing data!');
   }
   return active;
