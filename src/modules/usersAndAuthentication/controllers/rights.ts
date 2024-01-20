@@ -2,6 +2,8 @@ import rightServices from '../services/rights';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../types';
 
+
+// Get all rights
 const getAllRights = async (_req: Request, res: Response) => {
   try{
     const rights = await rightServices.getAllRights();
@@ -11,6 +13,7 @@ const getAllRights = async (_req: Request, res: Response) => {
   }
 };
 
+// get a right with ID
 const getRight = async (req: ExtendedRequest, res: Response)=> {
   const id = req.params.id;
   try {
@@ -21,7 +24,9 @@ const getRight = async (req: ExtendedRequest, res: Response)=> {
   }
 };
 
+// Create a new Right
 const addRight = async (req: ExtendedRequest, res: Response) => {
+  
   const rightData: unknown = req.body;
   try {
     const newRight = await rightServices.createRight(rightData);
@@ -30,37 +35,22 @@ const addRight = async (req: ExtendedRequest, res: Response) => {
     res.status(409).json({ error: `${err}` });
   }
 };
-/*
-const editRight = async (req: ExtendedRequest, res: Response) => {
-  const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
-    res.status(401).json({ error: 'Operation not allowed' });
-  }
-  const rightData = req.body;
-  try {
-    const newRight = await rightServices.updateRight({ id, rightData });
-    delete newRight.dataValues.password;
-    res.status(200).json(newRight.dataValues);
-  } catch (err) {
-    res.status(409).json({ error: `${err}` });
-  }
-};
 
-const assignRights = async (req: ExtendedRequest, res: Response) => {
+// Update a Right
+const editRight = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
-  const rights = req.body;
+  const rightData: unknown = req.body;
   try {
-    const resulat = await rightServices.updateRightRights(id,rights);
-    res.json(resulat);
+    const updatedRight = await rightServices.updateRight(Number(id), rightData);
+    res.json(updatedRight);
   } catch (err) {
-    res.status(409).json({ error: `${err}` });
+    res.status(404).json({ error: 'Right not found' });
   }
-};
-*/
+}
+
 export default {
   getAllRights,
   getRight,
   addRight,
-  //editRight,
-  //assignRights
+  editRight,
 };

@@ -16,6 +16,6 @@ router.get('/:id', rightControllers.getRight);
 router.post('/', tokenExtractor, roleAuthority(['ADMIN']), rightControllers.addRight);
 
 // Edit Right
-//router.put('/:id', tokenExtractor, rightAuthority(['ADMIN']), rightControllers.editRight);
+router.put('/:id', tokenExtractor, roleAuthority(['ADMIN']), rightControllers.editRight);
 
 export default router;

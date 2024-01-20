@@ -106,7 +106,7 @@ const userProcessor = async(userData: unknown): Promise<NewUser | UserData> => {
       phone: 'phone' in userData ? parsePhone(userData.phone) : '',
       active: 'active' in userData ? parseActive(userData.active) : false,
   };
-    if ('password' in userData) {
+    if ('password' in userData && userData.password) {
       newUser.password = await passwordHashMaker(parsePassword(userData.password));
     }
     if ('roles' in userData) {
@@ -133,19 +133,26 @@ const credentialsProcessor = (object: unknown): Credential => {
 };
 
 const roleProcessor = (roleData: unknown): NewRole => {
+ 
   if (!roleData || typeof roleData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
-  if ('roleName' in roleData) {
+  if ('roleName' in roleData && 'active' in roleData) {
+
     const newRole: NewRole = {
       roleName: parseRoleName(roleData.roleName),
-      active: 'active' in roleData ? parseActive(roleData.active) : false,
-  };
+      active: roleData.active ? parseActive(roleData.active) : false,
+      rights: 'rights' in roleData && roleData.rights && Array.isArray(roleData.rights) ? parseRoles(roleData.rights) : [] ,
+    };
+
     if ('rights' in roleData) {
       newRole.rights = parseRoles(roleData.rights);
+    } else {
+      newRole.rights = [];
     }
     return newRole;
   } else {
+
     throw new Error('Data is missing');
   }
 };

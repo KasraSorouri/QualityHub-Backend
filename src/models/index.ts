@@ -41,7 +41,7 @@ Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
 
 Right.belongsToMany(Role, { through: RoleRights, foreignKey: 'rightId' });
-Role.belongsToMany(Right, { through: RoleRights, foreignKey: 'roleId' }); 
+Role.belongsToMany(Right, { through: RoleRights, foreignKey: 'roleId' });
 
 export {
   User,

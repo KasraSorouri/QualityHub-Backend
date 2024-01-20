@@ -16,9 +16,6 @@ router.get('/:id', roleControllers.getRole);
 router.post('/', tokenExtractor, roleAuthority(['ADMIN']), roleControllers.addRole);
 
 // Edit Role
-//router.put('/:id', tokenExtractor, roleAuthority(['ADMIN']), roleControllers.editRole);
-
-// Assign Roles
-//router.post('/:id/roles', tokenExtractor, roleAuthority(['ADMIN']) , roleControllers.assignRoles);
+router.put('/:id', tokenExtractor, roleAuthority(['ADMIN']), roleControllers.editRole);
 
 export default router;

@@ -1,6 +1,6 @@
 import { User, Role, Right, UserQuery } from '../../../models';
-import { NewUser, UpdateUser, UserWithRights } from '../types';
-import { parseUserResponse, userProcessor } from '../utils/dataProcessor';
+import { NewUser, UpdateUser } from '../types';
+import { userProcessor } from '../utils/dataProcessor';
 
 // Define User query 
 const query : UserQuery = {
@@ -8,14 +8,14 @@ const query : UserQuery = {
   include: [{
     model: Role,
     as: 'roles',
-    attributes: ['roleName'],
+    attributes: ['id', 'roleName', 'active'],
     through: {
       attributes: []
     },
     include: [{
       model: Right,
       as: 'rights',
-      attributes: ['right'],
+      attributes: ['id', 'right'],
       through: {
         attributes: []
       },
@@ -24,30 +24,35 @@ const query : UserQuery = {
 };
 
 // Get all Users
-const getAllUsers = async(): Promise<UserWithRights[]> => {
-
+const getAllUsers = async(): Promise<User[]> => {
   const users = await User.findAll(query);
-  
+  /*
   const result: UserWithRights[] = [];
+  // Prepare User response
   users.map(user => {
     result.push(parseUserResponse(user));
   });
-  return result;
+  */
+  return users;
 };
 
 // Get a User based on ID
-const getUser = async(id: number): Promise<UserWithRights> => {
+const getUser = async(id: number): Promise<User> => {
   const user = await User.findByPk(id,query);
+ 
   if (!user) {
     throw new Error ('the user not found');
   }
-  
+  /*
+  // Prepare User response
   const result = parseUserResponse(user);
-  return result;
+  */
+  return user;
 };
 
 // Create a new User
 const createUser = async (userData: unknown): Promise<User> => {
+
   const newUserData = await userProcessor(userData);
 
   if ('password' in newUserData) {
@@ -74,7 +79,9 @@ const createUser = async (userData: unknown): Promise<User> => {
 
 // Update an User
 const updateUser = async (id: number, userData: unknown): Promise<User>=> {
+  
   const newUserData = await userProcessor(userData);
+
   try {
     const user = await User.findByPk(id);
     if(!user) {

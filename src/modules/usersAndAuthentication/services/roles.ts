@@ -1,29 +1,26 @@
 import { Role, Right, RoleQuery } from '../../../models';
-import { RoleWithRights } from '../types';
-import { parseRoleResponse, roleProcessor } from '../utils/dataProcessor';
+import { RoleWithRights, updateRole } from '../types';
+import { roleProcessor } from '../utils/dataProcessor';
 
 // Define role query 
 const query : RoleQuery = {
-  attributes : { exclude: ['password', 'userRoles'] },
   include: [{
     model: Right,
     as: 'rights',
-    attributes: ['right'],
+    attributes: ['id', 'right', 'relatedModule'],
     through: {
       attributes: []
     },
-  }]
+  }],
+  attributes: {
+    exclude: []
+  }
 };
 
 // Get All roles
-const getAllRoles = async(): Promise<RoleWithRights[]> => {
+const getAllRoles = async(): Promise<Role[]> => {  
   const roles = await Role.findAll(query);
-
-  const result: RoleWithRights[] = [];
-  roles.map(role => {
-    result.push(parseRoleResponse(role));
-  });
-  return result;
+  return roles;
 };
 
 // Get a role based on ID
@@ -37,20 +34,19 @@ const getRole = async(id: number): Promise<RoleWithRights> => {
     id: role.id,
     roleName: role.roleName,
     active: role.active,
-    rights: role.rights?.map(right => right.right),
+    rights: role.rights?.map((right) => right.right),
   };
   return result;
 };
 
 // Create a new role
 const createRole = async (roleData: unknown): Promise<Role> => {
-  const newRoleData = roleProcessor(roleData);
+
+  const newRoleData = await roleProcessor(roleData);
+  
   const { roleName, active } = newRoleData;
     try {
       const newRole = await Role.create({ roleName, active });
-      //if ('roles' in newRole) {
-      //  updateRoleRoles({ id : role.id, roles: roleData.roles })
-      //}
       return newRole;
     } catch(err : unknown) {
       let errorMessage = 'Something went wrong.';
@@ -60,62 +56,73 @@ const createRole = async (roleData: unknown): Promise<Role> => {
       throw new Error(errorMessage);
     } 
 };
-/*
-const updateRole = async ({ id, roleData }) => {
-  const newData = await roleProcessor(roleData)
 
+// Update a Role
+const updateRole = async (id : number, roleData: unknown) : Promise<Role> => {
+  const newRoleData = await roleProcessor(roleData)
+  
   try {
     const role = await Role.findByPk(id)
-    await role.update(newData)
-    if (roleData.roles.length > 0) {
-      updateRoleRoles({ id : role.id, roles: roleData.roles })
+
+    if(!role) {
+      throw new Error('Role not found!');
     }
-    return role
-  } catch(err) {
-    throw new Error(err.original.detail)
+    // update Role
+    await role.update(newRoleData);
+    // update rights
+
+    const updatedRole = await updateRoleRights(id, newRoleData.rights);
+    return updatedRole;
+ 
+  } catch(err : unknown) {
+    let errorMessage = '';
+    if (err instanceof Error) {
+      errorMessage += ' Error: ' + err.message;
+    }
+    throw new Error(errorMessage);
   }
 }
 
-const updateRoleRoles = async ({ id, roles }) => {
+const updateRoleRights = async (id: number, rights: number[]) : Promise<Role> => {
 
   const role = await Role.findByPk(id)
+
+  const okRights = await Right.findAll({ where: { id: [...rights] }})
+
   if (!role) {
     throw new Error('role not found')
   }
-  await role.setRoles([])
-  const okRoles = await Role.findAll({ where: { id: [...roles], active: true } })
-  if (okRoles.length === 0) {
-    throw new Error('no Active role found')
-  }
+  // remove old rights from role
+  await (role as any).setRights([])
+
   try {
-    await role.addRoles(okRoles)
-    const result = await Role.findByPk(id,{
-      attributes : { exclude: ['password', 'roleRoles'] },
-      include: {
-        model: Role,
-        attributes: ['roleName'],
-        through: {
-          attributes: []
-        },
-        include: {
+    await (role as any).setRights(okRights)
+    const updatedRole  = await Role.findByPk(id,{
+        include: [{
           model: Right,
-          attributes: ['right'],
+          attributes: ['id', 'right', 'relatedModule'],
           through: {
             attributes: []
           },
-        }
-      }
+        }]
     })
-    return result
-  } catch (err) {
-    throw new Error('Something wrong happend, Check role\'s roles again')
+    if (!updatedRole) {
+      throw new Error('role not found')
+    }
+    
+    return updatedRole
+  } catch(err : unknown) {
+    let errorMessage = '';
+    if (err instanceof Error) {
+      errorMessage += ' Error: ' + err.message;
+    }
+    throw new Error(errorMessage);
   }
 }
-*/
+
 export default {
   getAllRoles,
   getRole,
   createRole,
-  //updateRole,
-  //updateRoleRoles
+  updateRole,
 };

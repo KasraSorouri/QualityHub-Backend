@@ -1,19 +1,25 @@
-import { Model, DataTypes, InferAttributes, InferCreationAttributes, CreationOptional } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
+import {sequelize} from '../configs/db';
+import {Right} from '../modules/usersAndAuthentication/types';
 
-import { sequelize } from '../configs/db';
-import Right from './right';
+/*
+interface RoleAttributes {
+  id: number;
+  roleName: string;
+  active: boolean;
+  rights?: Right[];
+}
+*/
+//interface RoleCreationAttributes extends Optional<RoleAttributes, 'id'> {}
+//export interface RoleInstance extends Model<RoleAttributes, RoleCreationAttributes>, RoleAttributes {}
 
-class Role extends Model<InferAttributes<Role>, InferCreationAttributes<Role>> {
-  addRights(_rights: Right[]) {
-    throw new Error('Method not implemented.');
-  }
-  setRights(_arg0: never[]) {
-    throw new Error('Method not implemented.');
-  }
-  declare id: CreationOptional<number>;
-  declare roleName: string;
-  declare active: boolean;
-  declare rights?: CreationOptional<Right[]>;
+// define Role Model
+class Role extends Model {
+  [x: string]: any;
+  public id!: number;
+  public roleName!: string;
+  public active!: boolean;
+  public rights?: Right[];
 }
 
 Role.init({
@@ -30,11 +36,12 @@ Role.init({
   active: {
     type: DataTypes.BOOLEAN
   },
-}, {
-  sequelize,
+}, 
+{
   underscored: true,
   timestamps: false,
-  modelName: 'role'
+  modelName: 'role',
+  sequelize,
 });
 
 export default Role;

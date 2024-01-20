@@ -12,6 +12,7 @@ interface ExtendedRequest extends Request {
 
 const tokenExtractor = (req: ExtendedRequest, res: Response, next: NextFunction): void => {
   const authorization = req.get('Authorization');
+  
   if (authorization && authorization.toLowerCase().startsWith('bearer ')) {
     try {
       req.decodedToken = jwt.verify(authorization.substring(7), SECRET) as JwtPayload;

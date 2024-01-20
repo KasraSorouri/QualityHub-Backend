@@ -72,7 +72,10 @@ export type Token = {
 };
 
 export interface NewRole extends Omit<Role,'id' | 'rights'> {
-  rights?: number[];
+  rights: number[];
+}
+
+export interface updateRole extends Omit<Role,'id'> {
 }
 
 export type NewRight = Omit<Right,'id'>; 
