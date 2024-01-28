@@ -8,6 +8,10 @@ import roleRouter from './modules/usersAndAuthentication/routes/roles';
 import rightRouter from './modules/usersAndAuthentication/routes/rights';
 import loginRouter from './modules/usersAndAuthentication/routes/login';
 
+// import Quality hub Routes
+import productRouter from './modules/qualityHub/routes/product';
+import productGrpRouter from './modules/qualityHub/routes/productGrps';
+
 
 const app = express();
 app.use(express.json(), cors());
@@ -17,6 +21,10 @@ app.use('/api/auth/users', userRouter);
 app.use('/api/auth/roles', roleRouter);
 app.use('/api/auth/rights', rightRouter);
 app.use('/api/auth/login', loginRouter);
+
+// Quality hub Routes
+app.use('/api/quality/products', productRouter);
+app.use('/api/quality/product_grps', productGrpRouter);
 
 app.get('/api/ping',(_req,res) => {
   res.send('Pong!');

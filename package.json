@@ -8,6 +8,7 @@
     "dev": "ts-node-dev ./src/server.ts",
     "lint": "eslint --ext .ts .",
     "start": "node build/server.js",
+    "rollback": "ts-node ./src/utils/rollBackDatabase.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Kasra Sorouri",

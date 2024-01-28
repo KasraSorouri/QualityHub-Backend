@@ -67,14 +67,14 @@ const parseRoleName = (roleName: unknown): string => {
 
 const parseRightName = (right: unknown): string => {
   if (!isString(right)) {
-    throw new Error('Incorrect firstName!');
+    throw new Error('Incorrect Right name!');
   }
   return right;
 };
 
 const parseRelatedModule = (module: unknown): string => {
   if (!isString(module)) {
-    throw new Error('Incorrect firstName!');
+    throw new Error('Incorrect Related Module!');
   }
   return module;
 };
@@ -158,9 +158,12 @@ const roleProcessor = (roleData: unknown): NewRole => {
 };
 
 const rightProcessor = (rightData: unknown): NewRight => {
+
   if (!rightData || typeof rightData !== 'object') {
+    
     throw new Error('Incorrect or missing Data!');
   }
+
   if ('right' in rightData && 'relatedModule' in rightData) {
     const newRight: NewRight = {
       right: parseRightName(rightData.right),
