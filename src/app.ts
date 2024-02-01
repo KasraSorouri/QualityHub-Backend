@@ -11,7 +11,9 @@ import loginRouter from './modules/usersAndAuthentication/routes/login';
 // import Quality hub Routes
 import productRouter from './modules/qualityHub/routes/product';
 import productGrpRouter from './modules/qualityHub/routes/productGrps';
-
+import workShiftRouter from './modules/qualityHub/routes/workShifts';
+import stationRouter from './modules/qualityHub/routes/stations';
+import materialRouter from './modules/qualityHub/routes/materials';
 
 const app = express();
 app.use(express.json(), cors());
@@ -24,8 +26,11 @@ app.use('/api/auth/login', loginRouter);
 
 // Quality hub Routes
 app.use('/api/quality/products', productRouter);
-app.use('/api/quality/product_grps', productGrpRouter);
-
+app.use('/api/quality/proproductsduct_grps', productGrpRouter);
+app.use('/api/quality/shifts', workShiftRouter);
+app.use('/api/quality/stations', stationRouter);
+app.use('/api/quality/materials', materialRouter);
+ 
 app.get('/api/ping',(_req,res) => {
   res.send('Pong!');
 });

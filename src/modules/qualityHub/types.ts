@@ -19,3 +19,29 @@ export interface ProductData extends Omit<Product,'id' | 'group'> {
 
 export interface ProductGrpData extends Omit<ProductGroup,'id'> {};
 
+export interface WorkShift {
+  id: number;
+  shiftName: string;
+  shiftCode: string;
+  active: boolean;
+}
+
+export interface WorkShiftData extends Omit<WorkShift,'id'> {};
+
+export interface Station {
+  id: number;
+  stationName: string;
+  stationCode: string;
+  active: boolean;
+}
+
+export interface StationData extends Omit<Station,'id'> {};
+
+export interface Material {
+  id: number;
+  itemShortName: string;
+  itemLongName: string;
+  itemCode: string;
+  active: boolean;
+}
+export interface MaterialData extends Omit<Material,'id'> {};

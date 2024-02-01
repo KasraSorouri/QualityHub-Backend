@@ -18,26 +18,17 @@ const query: ProductQuery = {
 // Get all Products
 const getAllProducts = async(): Promise<Product[]> => {
 
-  const products = await Product.findAll();
-  console.log('**** products ->',products);
   try {
     const products = await Product.findAll(query);
-    
-    //const products = await Product.findAll();
-    console.log('**** products  ** query->', products);
-
     return products;
-
   } catch (err : unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
     console.log('**** error :', errorMessage);
-    
     throw new Error(errorMessage);
   }
-
 };
 
 // Get a Product based on ID
@@ -71,15 +62,7 @@ const createProduct = async (productData: unknown): Promise<Product> => {
 const updateProduct = async (id: number, productData: unknown): Promise<Product>=> {  
   
   const newProductData = await productProcessor(productData);
-  /*
-  const productGrp = await ProductGrp.findByPk(newProductData.groupId);
 
-  if (!productGrp) {
-    throw new Error('Product group not found!');
-  }
-
-  //const rectifiedProductData = { ...newProductData, group: productGrp };
-*/
   try {
     const product = await Product.findByPk(id);
     if(!product) {

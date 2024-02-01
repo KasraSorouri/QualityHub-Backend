@@ -52,10 +52,12 @@ const roleAuthority  = (permitedRoles: string[]) => {
 
     if (!hasRole) {
       res.status(401).json({ error: 'Operation not allowed for This user' });
+      //throw new Error('Operation not allowed for This user');
+      //return; // Stop execution of the middleware function here. Don't call next()! 
+    } else {
+      req.permited = true;
+      return next();
     }
-    req.permited = true;
-
-    return next();
   };
 };
 
