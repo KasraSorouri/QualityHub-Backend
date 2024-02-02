@@ -24,6 +24,12 @@ module.exports = {
         allowNull: false,
         unique: true
       },
+      price: {
+        type: DataTypes.DECIMAL
+      },
+      unit: {
+        type: DataTypes.STRING
+      },
       active: {
         type: DataTypes.BOOLEAN
       },
@@ -61,6 +67,9 @@ module.exports = {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: 'stations', key: 'id' }
+      },
+      timeDuration: {
+        type: DataTypes.INTEGER
       }
     })
     await queryInterface.createTable('recipe_boms', {

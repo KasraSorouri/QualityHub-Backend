@@ -7,6 +7,8 @@ class Material extends Model<InferAttributes<Material>, InferCreationAttributes<
   itemShortName!: string;
   itemLongName?: string;
   itemCode!: string;
+  price?: number;
+  unit?: string;
   active!: boolean;
 
   static associate(models: any) {
@@ -19,7 +21,7 @@ class Material extends Model<InferAttributes<Material>, InferCreationAttributes<
 }
 
 // define Product Model
-Material.init({
+Material.init({ 
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -39,6 +41,12 @@ Material.init({
     type: DataTypes.STRING,
     allowNull: false,
     unique: true
+  },
+  price: {
+    type: DataTypes.DECIMAL
+  },
+  unit: {
+    type: DataTypes.STRING
   },
   active: {
     type: DataTypes.BOOLEAN

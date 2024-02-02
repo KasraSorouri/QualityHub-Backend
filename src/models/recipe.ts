@@ -14,6 +14,7 @@ interface RecipeAttributes {
   active: boolean;
   productId: number;
   stationId: number;
+  timeDuration?: number;
 }
 
 interface RecipeCreationAttributes extends Omit<RecipeAttributes, 'id'> {}
@@ -26,6 +27,7 @@ class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> implement
   active!: boolean;
   productId!: number;
   stationId!: number;
+  timeDuration?: number;
   station?: Station;
   product?: Product;
   recipeBoms?: RecipeBoms[];
@@ -78,6 +80,9 @@ Recipe.init({
   stationId: {
     type: DataTypes.INTEGER,
     allowNull: false,
+  },
+  timeDuration: {
+    type: DataTypes.INTEGER
   }
 },
 

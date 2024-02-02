@@ -42,6 +42,8 @@ export interface Material {
   itemShortName: string;
   itemLongName: string;
   itemCode: string;
+  price?: number;
+  unit?: string;
   active: boolean;
 }
 export interface MaterialData extends Omit<Material,'id'> {};
@@ -53,6 +55,7 @@ export interface Recipe {
   order: number;
   product: Product;
   station: Station;
+  timeDuration?: number;
   active: boolean;
   materials?: Material[];
 }
