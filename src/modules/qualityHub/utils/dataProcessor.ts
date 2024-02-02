@@ -1,5 +1,5 @@
-import { MaterialData, Product, ProductData, ProductGrpData, StationData, WorkShiftData } from '../types';
-import { isString, isBoolean, stringLengthCheck } from '../../../utils/dataValidator';
+import { MaterialData, Product, ProductData, ProductGrpData, RecipeData, StationData, WorkShiftData } from '../types';
+import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
   if (!isString(productName) || !stringLengthCheck(productName,3, 'productName')) {
@@ -56,6 +56,41 @@ const parseMaterialCode = (materialCode: unknown): string => {
   }
   return materialCode;
 }
+
+const parseRecipeCode = (recipeCode: unknown): string => {
+  if (!isString(recipeCode)) {
+    throw new Error('Incorrect material code!');
+  }
+  return recipeCode;
+}
+
+const parseDescriptiobn = (description: unknown): string => {
+  if (!isString(description)) {
+    throw new Error('Incorrect material name!');
+  }
+  return description;
+}
+
+const parseRecipeOrder = (order: unknown): number => {
+  if (!isNumber(order)) {
+    throw new Error('Incorrect material name!');
+  }
+  return order;
+}
+
+const parseRecipeProduct = (productId: unknown): number => {
+  if (!isNumber(productId)) {
+    throw new Error('Incorrect material name!');
+  }
+  return productId;
+}
+const parseRecipeStation = (stationId: unknown): number => {
+  if (!isNumber(stationId)) {
+    throw new Error('Incorrect material name!');
+  }
+  return stationId;
+}
+
 
 const parseActive = (active: unknown): boolean => {
   if (!isBoolean(active)) {
@@ -163,11 +198,35 @@ const materialProcessor = async(materialData: unknown): Promise<MaterialData> =>
   }
 }
 
+const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
+  if (!recipeData || typeof recipeData !== 'object') {
+    throw new Error('Incorrect or missing Data!');
+  }
+  if ('recipeCode' in recipeData &&
+    'description' in recipeData &&
+    'order' in recipeData &&
+    'productId' in recipeData &&
+    'stationId' in recipeData) {
+    const newRecipe: RecipeData = {
+      recipeCode: parseRecipeCode(recipeData.recipeCode),
+      description: parseDescriptiobn(recipeData.description),
+      order: parseRecipeOrder(recipeData.order),
+      productId: parseRecipeProduct(recipeData.productId),
+      stationId: parseRecipeStation(recipeData.stationId),
+      active: 'active' in recipeData ? parseActive(recipeData.active) : true,
+  };
+    return newRecipe;
+  } else {
+    throw new Error('Data is missing');
+  }
+}
+
 export {
   productProcessor,
   parseProductResponse,
   productGrpProcessor,
   workShiftProcessor,
   stationProcessor,
-  materialProcessor
+  materialProcessor,
+  recipeProcessor,
 };

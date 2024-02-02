@@ -2,35 +2,25 @@ import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
 
-class ProductStationsBoms extends Model {
+class RecipeBoms extends Model {
   public id!: number;
-  public productId!: number;
-  public StationId!: number;
-  public bomId?: number;
-  public qty?: number;
+  public recipeId!: number;
+  public materialId!: number;
+  public qty!: number;
 }
 
-ProductStationsBoms.init({
+RecipeBoms.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
     autoIncrement: true
   },
-  productId: {
+  recipeId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: { model: 'products', key: 'id' }
   },
-  StationId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'stations', key: 'id' }
-  },
-  stationOrder : {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  bomId: {
+  materialId: {
     type: DataTypes.INTEGER,   allowNull: true,
     references: { model: 'boms', key: 'id' }
   },
@@ -42,7 +32,7 @@ ProductStationsBoms.init({
   sequelize,
   underscored: true,
   timestamps: false,
-  modelName: 'productStationsBoms'
+  modelName: 'recipeBoms'
 });
 
-export default ProductStationsBoms;
+export default RecipeBoms;

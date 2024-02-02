@@ -10,7 +10,9 @@ import Station from './station';
 import Material from './material';
 import Customer from './customer';
 import WorkShift from './workShif';
-import ProductStationsBoms from './productStationsBoms';
+import Recipe from './recipe';
+import recipeBoms from './recipeBoms';
+import RecipeBoms from './recipeBoms';
 
 export interface UserQuery {
   attributes: {
@@ -64,6 +66,7 @@ export interface ProductGrpInclude {
   as: string,
   attributes: string[];
 }
+
 export  interface StationQuery {
   attributes: {
     exclude: string[];
@@ -87,6 +90,24 @@ export interface MaterialQuery {
     exclude: string[];
   };
 }
+export interface RecipeQuery {
+  attributes: {
+    exclude: string[];
+  };
+  include: [RecipeProduct, RecipeStation];
+}
+
+export interface RecipeProduct {
+  model: typeof Product;
+  as: string;
+  attributes: string[];
+}
+
+export interface RecipeStation {
+    model: typeof Station;
+    as: string;
+    attributes: string[];
+}
 
 
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
@@ -99,12 +120,14 @@ Role.belongsToMany(Right, { through: RoleRights, foreignKey: 'roleId' });
 Product.belongsTo(ProductGrp, { foreignKey: 'productGrpId'});
 ProductGrp.hasMany(Product, { foreignKey: 'productGrpId'});
 
-Product.belongsToMany(Station, { through: ProductStationsBoms, foreignKey: 'productId'});
-Station.belongsToMany(Product, { through: ProductStationsBoms, foreignKey: 'stationId'});
+Recipe.belongsTo(Product, { foreignKey: 'productId'});
+Product.hasMany(Recipe, { foreignKey: 'productId'});
 
-Product.belongsToMany(Material, { through: ProductStationsBoms, foreignKey: 'productId'});
-Material.belongsToMany(Product, { through: ProductStationsBoms, foreignKey: 'bomId'});
+Recipe.belongsTo(Station, { foreignKey: 'stationId'});
+Station.hasMany(Recipe, { foreignKey: 'stationId'});
 
+Recipe.belongsToMany(Material, { through: RecipeBoms  ,foreignKey: 'recipeId'});
+Material.belongsToMany(Recipe, { through: RecipeBoms, foreignKey: 'materialId'});
 
 export {
   User,
@@ -118,5 +141,6 @@ export {
   Station,
   Customer,
   Material,
-  ProductStationsBoms
+  Recipe,
+  recipeBoms,
 };

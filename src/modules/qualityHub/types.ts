@@ -45,3 +45,18 @@ export interface Material {
   active: boolean;
 }
 export interface MaterialData extends Omit<Material,'id'> {};
+
+export interface Recipe {
+  id: number;
+  recipeCode: string;
+  description: string;
+  order: number;
+  product: Product;
+  station: Station;
+  active: boolean;
+}
+
+export interface RecipeData extends Omit<Recipe,'id' | 'product' | 'station'> {
+  productId: number;
+  stationId: number;
+};
