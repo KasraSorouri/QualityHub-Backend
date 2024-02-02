@@ -14,16 +14,7 @@ class ProductGrp extends Model<InferAttributes<ProductGrp>, InferCreationAttribu
     });
   }
 }
-// define Product Group Model
-/*
-class ProductGrp extends Model {
-  [x: string]: any;
-  public id!: number;
-  public groupName!: string;
-  public groupCode!: string;
-  public active!: boolean;
-}
-*/
+
 ProductGrp.init({
   id: {
     type: DataTypes.INTEGER,

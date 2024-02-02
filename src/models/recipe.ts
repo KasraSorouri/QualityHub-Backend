@@ -1,11 +1,25 @@
-import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequelize';
+import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
 import Station from './station';
 import Product from './product';
+import RecipeBoms from './recipeBoms';
+import Material from './material';
 
-class Recipe  extends Model<InferAttributes<Recipe>, InferCreationAttributes<Recipe>> {
-  id?: number;
+interface RecipeAttributes {
+  id: number;
+  recipeCode: string;
+  description: string;
+  order: number;
+  active: boolean;
+  productId: number;
+  stationId: number;
+}
+
+interface RecipeCreationAttributes extends Omit<RecipeAttributes, 'id'> {}
+
+class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> implements RecipeAttributes {
+  id!: number;
   recipeCode!: string;
   description!: string;
   order!: number;
@@ -14,18 +28,25 @@ class Recipe  extends Model<InferAttributes<Recipe>, InferCreationAttributes<Rec
   stationId!: number;
   station?: Station;
   product?: Product;
+  recipeBoms?: RecipeBoms[];
 
-  static associate(models: any) {
-    Recipe.belongsTo(models.Product, {
+  static associate() {
+    Recipe.belongsTo(Product, {
       foreignKey: 'productId',
       as: 'product'
-    }),
+    });
   
-    Recipe.belongsTo(models.Station, {
+    Recipe.belongsTo(Station, {
       foreignKey: 'stationId',
       as: 'station'
-    })
-  }
+    });
+
+    Recipe.belongsToMany(Material, {
+      through: RecipeBoms,
+      foreignKey: 'recipeId',
+      as: 'materials'
+    });
+  }  
 }
 
 // define Product Model

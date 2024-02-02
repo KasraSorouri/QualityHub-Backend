@@ -8,6 +8,14 @@ class Material extends Model<InferAttributes<Material>, InferCreationAttributes<
   itemLongName?: string;
   itemCode!: string;
   active!: boolean;
+
+  static associate(models: any) {
+    Material.belongsToMany(models.Recipe, {
+      through: models.RecipeBoms,
+      foreignKey: 'materialId',
+      as: 'recipes'
+    })
+  } 
 }
 
 // define Product Model

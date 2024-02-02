@@ -1,4 +1,4 @@
-import { MaterialData, Product, ProductData, ProductGrpData, RecipeData, StationData, WorkShiftData } from '../types';
+import { ConsumingMaterial, MaterialData, Product, ProductData, ProductGrpData, RecipeData, StationData, WorkShiftData } from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
@@ -91,6 +91,19 @@ const parseRecipeStation = (stationId: unknown): number => {
   return stationId;
 }
 
+const parseId = (id: unknown): number => {
+  if (!isNumber(id)) {
+    throw new Error('Incorrect or missing data!');
+  }
+  return id;
+}
+
+const parseQty = (qty: unknown): number => {
+  if (!isNumber(qty)) {
+    throw new Error('Incorrect or missing data!');
+  }
+  return qty;
+}
 
 const parseActive = (active: unknown): boolean => {
   if (!isBoolean(active)) {
@@ -214,11 +227,34 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
       productId: parseRecipeProduct(recipeData.productId),
       stationId: parseRecipeStation(recipeData.stationId),
       active: 'active' in recipeData ? parseActive(recipeData.active) : true,
-  };
+      materialsData: 'materialsData' in recipeData ? await parseMaterialsData(recipeData.materialsData) : [],
+    };
+
     return newRecipe;
   } else {
     throw new Error('Data is missing');
   }
+}
+
+
+const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]> => {
+  if (!bomData || !Array.isArray(bomData)) {
+    throw new Error('Incorrect or missing Data!');
+  }
+
+  const newBoms: ConsumingMaterial[] = [];
+  for (const bom of bomData) {
+    if ('materialId' in bom && 'qty' in bom) {
+      const newConsumingMaterial: ConsumingMaterial = {
+        materialId: parseId(bom.materialId),
+        qty: parseQty(bom.qty),
+        reusable: 'reUsable' in bom ? parseActive(bom.reusable) : false,
+      };
+      newBoms.push(newConsumingMaterial);
+    }
+  }
+
+  return newBoms;
 }
 
 export {

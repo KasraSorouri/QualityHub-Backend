@@ -73,16 +73,19 @@ module.exports = {
       qty: {
         type: DataTypes.INTEGER,
       },
-      recipeId: {
+      recipe_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: 'recipes', key: 'id' }
       },
-      materialId: {
+      material_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
         references: { model: 'materials', key: 'id' }
       },
+      reusable: {
+        type: DataTypes.BOOLEAN
+      }
     })
   },
   down: async ({ context: queryInterface } : any) => {

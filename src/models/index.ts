@@ -11,7 +11,6 @@ import Material from './material';
 import Customer from './customer';
 import WorkShift from './workShif';
 import Recipe from './recipe';
-import recipeBoms from './recipeBoms';
 import RecipeBoms from './recipeBoms';
 
 export interface UserQuery {
@@ -90,11 +89,12 @@ export interface MaterialQuery {
     exclude: string[];
   };
 }
+
 export interface RecipeQuery {
   attributes: {
     exclude: string[];
   };
-  include: [RecipeProduct, RecipeStation];
+  include: [RecipeProduct, RecipeStation, RecipeBomsInclude];
 }
 
 export interface RecipeProduct {
@@ -109,6 +109,16 @@ export interface RecipeStation {
     attributes: string[];
 }
 
+interface RecipeBomsInclude {
+  model: typeof RecipeBoms;
+  as: string;
+  attributes: string[];
+  include: {
+    model: typeof Material;
+    as: string;
+    attributes: string[];
+  }[];
+} 
 
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
@@ -126,6 +136,11 @@ Product.hasMany(Recipe, { foreignKey: 'productId'});
 Recipe.belongsTo(Station, { foreignKey: 'stationId'});
 Station.hasMany(Recipe, { foreignKey: 'stationId'});
 
+Recipe.hasMany(RecipeBoms, { as:'recipeMaterials', foreignKey: 'recipeId'});
+
+Material.hasMany(RecipeBoms, { as: 'materials', foreignKey: 'materialId'});
+RecipeBoms.belongsTo(Material, { as: 'materials', foreignKey: 'materialId'});
+
 Recipe.belongsToMany(Material, { through: RecipeBoms  ,foreignKey: 'recipeId'});
 Material.belongsToMany(Recipe, { through: RecipeBoms, foreignKey: 'materialId'});
 
@@ -142,5 +157,5 @@ export {
   Customer,
   Material,
   Recipe,
-  recipeBoms,
+  RecipeBoms,
 };

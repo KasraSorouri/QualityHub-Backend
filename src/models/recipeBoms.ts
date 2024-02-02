@@ -1,12 +1,20 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
+import Recipe from './recipe';
+import Material from './material';
 
 class RecipeBoms extends Model {
   public id!: number;
   public recipeId!: number;
   public materialId!: number;
   public qty!: number;
+  public reusable!: boolean;
+
+  static associate() {
+    RecipeBoms.belongsTo(Recipe, { foreignKey: 'recipeId' });
+    RecipeBoms.belongsTo(Material, { foreignKey: 'materialId' });
+  }
 }
 
 RecipeBoms.init({
@@ -27,6 +35,9 @@ RecipeBoms.init({
   qty: {
     type: DataTypes.INTEGER,
     allowNull:true
+  },
+  reusable: {
+    type: DataTypes.BOOLEAN
   }
 }, {
   sequelize,

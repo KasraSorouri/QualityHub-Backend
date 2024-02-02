@@ -54,9 +54,27 @@ export interface Recipe {
   product: Product;
   station: Station;
   active: boolean;
+  materials?: Material[];
 }
 
-export interface RecipeData extends Omit<Recipe,'id' | 'product' | 'station'> {
+export interface ConsumingMaterial {
+  materialId: number;
+  qty: number;
+  reusable?: boolean;
+}
+
+export interface RecipeData extends Omit<Recipe,'id' | 'product' | 'station' | 'material'> {
   productId: number;
   stationId: number;
+  materialsData: ConsumingMaterial[];
 };
+
+export interface RecipeBom {
+  id: number;
+  recipeId: number;
+  materialId: number;
+  qty: number;
+  reusable: boolean;
+}
+
+export interface RecipeBomData extends Omit<RecipeBom,'id'> {};
