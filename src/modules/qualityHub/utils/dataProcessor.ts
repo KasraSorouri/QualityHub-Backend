@@ -204,7 +204,10 @@ const materialProcessor = async(materialData: unknown): Promise<MaterialData> =>
       itemLongName: parseMaterialName(materialData.itemLongName),
       itemCode: parseMaterialCode(materialData.itemCode),
       active: 'active' in materialData ? parseActive(materialData.active) : true,
+      price: 'price' in materialData ? parseQty(materialData.price) : 0,
+      unit: 'unit' in materialData ? parseMaterialName(materialData.unit) : '',
   };
+  
     return newMaterial;
   } else {
     throw new Error('Data is missing');
@@ -226,6 +229,7 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
       order: parseRecipeOrder(recipeData.order),
       productId: parseRecipeProduct(recipeData.productId),
       stationId: parseRecipeStation(recipeData.stationId),
+      timeDuration: 'timeDuration' in recipeData ? parseQty(recipeData.timeDuration) : 0,
       active: 'active' in recipeData ? parseActive(recipeData.active) : true,
       materialsData: 'materialsData' in recipeData ? await parseMaterialsData(recipeData.materialsData) : [],
     };
