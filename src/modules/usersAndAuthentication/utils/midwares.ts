@@ -44,7 +44,9 @@ const roleAuthority  = (permitedRoles: string[]) => {
     const userRoles = decodedToken.roles?.map(role => role.toUpperCase());
 
     if (!userRoles || userRoles.length < 1) {
-      throw new Error('Invalid roles in token!');
+      res.status(401).json({ error: 'Invalid roles in token!' });
+      return; // Stop execution of the middleware function here. Don't call next()!
+      //throw new Error('Invalid roles in token!');
     }
 
     // Check if any role matches the accepted roles
@@ -79,9 +81,9 @@ const rightAuthority  = (permitedRights: string[]) => {
     const userRights = decodedToken.rights?.map(right => right.toUpperCase());
 
     if (!userRights || userRights.length < 1) {
-      throw new Error('Invalid roles in token!');
+      res.status(401).json({ error: 'Invalid Rights in token!' });
+      return; // Stop execution of the middleware function here. Don't call next()!
     }
-
     // Check if any role matches the accepted roles
     const hasRight = permitedRights.some(right => userRights.includes(right));
 

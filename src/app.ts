@@ -27,7 +27,7 @@ app.use('/api/auth/login', loginRouter);
 
 // Quality hub Routes
 app.use('/api/quality/products', productRouter);
-app.use('/api/quality/proproductsduct_grps', productGrpRouter);
+app.use('/api/quality/product_grps', productGrpRouter);
 app.use('/api/quality/shifts', workShiftRouter);
 app.use('/api/quality/stations', stationRouter);
 app.use('/api/quality/materials', materialRouter);

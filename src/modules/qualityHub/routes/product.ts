@@ -18,7 +18,7 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), productControl
 
 // Edit Product
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT_EDIT']), productControllers.editProduct);
+router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), productControllers.editProduct);
 
 
 export default router;

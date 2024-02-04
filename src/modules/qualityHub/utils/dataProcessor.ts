@@ -116,14 +116,13 @@ const productProcessor = async(productData: unknown): Promise<ProductData> => {
   if (!productData || typeof productData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
-  console.log('*** product data processor * productData ->', productData);
   
   if ('productName' in productData && 'productCode' in productData && 'productGrpId' in productData) {
     const newProduct: ProductData = {
       productName: parseProductName(productData.productName),
       productCode: parseProductCode(productData.productCode),
       active: 'active' in productData ? parseActive(productData.active) : true,
-      productGrpId: 1,
+      productGrpId: parseId(productData.productGrpId),
   };
     return newProduct;
   } else {
