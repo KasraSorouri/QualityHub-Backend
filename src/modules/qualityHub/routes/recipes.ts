@@ -18,7 +18,7 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), recipeControll
 
 // Edit Recipe
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT_EDIT']), recipeControllers.editRecipe);
+router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), recipeControllers.editRecipe);
 
 
 export default router;
