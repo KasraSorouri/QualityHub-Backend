@@ -59,7 +59,7 @@ const parseMaterialCode = (materialCode: unknown): string => {
 
 const parseRecipeCode = (recipeCode: unknown): string => {
   if (!isString(recipeCode)) {
-    throw new Error('Incorrect material code!');
+    throw new Error('Incorrect Recipe code!');
   }
   return recipeCode;
 }
@@ -193,17 +193,22 @@ const stationProcessor = async(stationData: unknown): Promise<StationData> => {
 
 // Station Processor
 const materialProcessor = async(materialData: unknown): Promise<MaterialData> => {
+
+  console.log(' +++ data processor * material process * material data -> ', materialData);
+  
   
   if (!materialData || typeof materialData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
   if ('itemShortName' in materialData && 'itemLongName' in materialData && 'itemCode' in materialData) {
+    console.log('here');
+
     const newMaterial: MaterialData = {
       itemShortName: parseMaterialName(materialData.itemShortName),
       itemLongName: parseMaterialName(materialData.itemLongName),
       itemCode: parseMaterialCode(materialData.itemCode),
       active: 'active' in materialData ? parseActive(materialData.active) : true,
-      price: 'price' in materialData ? parseQty(materialData.price) : 0,
+      price: 'price' in materialData ? parseQty(Number(materialData.price)) : 0,
       unit: 'unit' in materialData ? parseMaterialName(materialData.unit) : '',
   };
   

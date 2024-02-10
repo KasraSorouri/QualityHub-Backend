@@ -38,7 +38,13 @@ const getMaterial = async(id: number): Promise<Material> => {
 // Create a new Material
 const createMaterial = async (materialData: unknown): Promise<Material> => {
 
+  console.log(' ** materilas service * create ** material data ->', materialData);
+  
+
   const newMaterialData : MaterialData = await materialProcessor(materialData);
+
+  console.log(' ** materilas service * create ** process data ->', newMaterialData);
+
 
   try {
     const material = await Material.create(newMaterialData);
