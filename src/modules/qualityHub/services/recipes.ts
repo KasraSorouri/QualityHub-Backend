@@ -1,5 +1,5 @@
 import { Recipe, Product, RecipeQuery, Station, RecipeBoms, Material } from '../../../models';
-import { ConsumingMaterial, RecipeBomData, RecipeData } from '../types';
+import { ConsumingMaterial, RecipeBomData, RecipeData, Reusable } from '../types';
 import { recipeProcessor } from '../utils/dataProcessor';
 
 // Define Recipe query 
@@ -23,8 +23,8 @@ const query: RecipeQuery = {
       include: [
         {
           model: Material,
-          as: 'materials',
-          attributes: ['id', 'itemShortName', 'itemCode'],
+          as: 'material',
+          attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'active'],
         },
       ],
     }
@@ -83,12 +83,13 @@ const createRecipe = async (recipeData: unknown): Promise<Recipe> => {
 const updateRecipe = async (id: number, recipeData: unknown): Promise<Recipe>=> {  
   
   const newRecipeData = await recipeProcessor(recipeData);
-
-  try {
+  
+ try {
     const recipe = await Recipe.findByPk(id);
     if(!recipe) {
       throw new Error('Recipe not found!');
     }
+    await updateBoms(recipe.id, newRecipeData.materialsData);
     const updatedRecipe = await recipe.update(newRecipeData);
     return updatedRecipe;
   } catch(err : unknown) {
@@ -101,11 +102,12 @@ const updateRecipe = async (id: number, recipeData: unknown): Promise<Recipe>=> 
 };
 
 const updateBoms = async (id: number, bomData: ConsumingMaterial[]): Promise<Recipe> => {
+ 
   const recipe = await Recipe.findByPk(id);
+
   if(recipe) {
   
-  console.log(' **** Recipe * service ** upbade Bom * recipe id: ', recipe.id,  '*** bom data -> ',bomData);
-  
+
   // delete previous recipe Boms 
   await RecipeBoms.destroy({ where: { 'recipeId' : recipe.id}})
 
@@ -114,7 +116,7 @@ const updateBoms = async (id: number, bomData: ConsumingMaterial[]): Promise<Rec
 
   for (const item of bomData) {
     
-    bom.push({recipeId: recipe.id, materialId: item.materialId, qty: item.qty, reusable: item.reusable ? item.reusable : false }) 
+    bom.push({recipeId: recipe.id, materialId: item.materialId, qty: item.qty, reusable: item.reusable ? item.reusable : Reusable.No }) 
   }
   try {
     const updatedRecipe = await RecipeBoms.bulkCreate(bom);

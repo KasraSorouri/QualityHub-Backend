@@ -138,8 +138,8 @@ Station.hasMany(Recipe, { foreignKey: 'stationId'});
 
 Recipe.hasMany(RecipeBoms, { as:'recipeMaterials', foreignKey: 'recipeId'});
 
-Material.hasMany(RecipeBoms, { as: 'materials', foreignKey: 'materialId'});
-RecipeBoms.belongsTo(Material, { as: 'materials', foreignKey: 'materialId'});
+Material.hasMany(RecipeBoms, { as: 'material', foreignKey: 'materialId'});
+RecipeBoms.belongsTo(Material, { as: 'material', foreignKey: 'materialId'});
 
 Recipe.belongsToMany(Material, { through: RecipeBoms  ,foreignKey: 'recipeId'});
 Material.belongsToMany(Recipe, { through: RecipeBoms, foreignKey: 'materialId'});

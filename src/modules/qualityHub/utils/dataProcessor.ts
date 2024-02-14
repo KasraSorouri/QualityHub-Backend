@@ -1,4 +1,4 @@
-import { ConsumingMaterial, MaterialData, Product, ProductData, ProductGrpData, RecipeData, StationData, WorkShiftData } from '../types';
+import { ConsumingMaterial, MaterialData, Product, ProductData, ProductGrpData, RecipeData, Reusable, StationData, WorkShiftData } from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
@@ -112,6 +112,17 @@ const parseActive = (active: unknown): boolean => {
   return active;
 };
 
+const parseReusable = (reusable: unknown): Reusable  => {
+  if (!isString(reusable)) {
+    throw new Error('Incorrect or missing data!');
+  }
+  if (reusable !== 'Yes' && reusable !== 'No' && reusable !== 'IQC') {
+    throw new Error('Incorrect or missing data!');
+  } else {
+  return reusable as unknown as Reusable;
+  }
+}
+
 const productProcessor = async(productData: unknown): Promise<ProductData> => {
   if (!productData || typeof productData !== 'object') {
     throw new Error('Incorrect or missing Data!');
@@ -194,9 +205,6 @@ const stationProcessor = async(stationData: unknown): Promise<StationData> => {
 // Station Processor
 const materialProcessor = async(materialData: unknown): Promise<MaterialData> => {
 
-  console.log(' +++ data processor * material process * material data -> ', materialData);
-  
-  
   if (!materialData || typeof materialData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -222,6 +230,9 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
   if (!recipeData || typeof recipeData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
+
+  console.log('** data processor * recipe data ->', recipeData);
+  
   if ('recipeCode' in recipeData &&
     'description' in recipeData &&
     'order' in recipeData &&
@@ -230,7 +241,7 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
     const newRecipe: RecipeData = {
       recipeCode: parseRecipeCode(recipeData.recipeCode),
       description: parseDescriptiobn(recipeData.description),
-      order: parseRecipeOrder(recipeData.order),
+      order: parseRecipeOrder(Number(recipeData.order)),
       productId: parseRecipeProduct(recipeData.productId),
       stationId: parseRecipeStation(recipeData.stationId),
       timeDuration: 'timeDuration' in recipeData ? parseQty(recipeData.timeDuration) : 0,
@@ -247,6 +258,8 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
 
 const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]> => {
   if (!bomData || !Array.isArray(bomData)) {
+    console.log('we are here');
+    
     throw new Error('Incorrect or missing Data!');
   }
 
@@ -256,7 +269,7 @@ const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]>
       const newConsumingMaterial: ConsumingMaterial = {
         materialId: parseId(bom.materialId),
         qty: parseQty(bom.qty),
-        reusable: 'reUsable' in bom ? parseActive(bom.reusable) : false,
+        reusable: 'reUsable' in bom ? parseReusable(bom.reusable) : Reusable.No,
       };
       newBoms.push(newConsumingMaterial);
     }

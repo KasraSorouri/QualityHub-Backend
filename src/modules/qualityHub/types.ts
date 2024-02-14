@@ -63,7 +63,7 @@ export interface Recipe {
 export interface ConsumingMaterial {
   materialId: number;
   qty: number;
-  reusable?: boolean;
+  reusable?: Reusable;
 }
 
 export interface RecipeData extends Omit<Recipe,'id' | 'product' | 'station' | 'material'> {
@@ -77,7 +77,13 @@ export interface RecipeBom {
   recipeId: number;
   materialId: number;
   qty: number;
-  reusable: boolean;
+  reusable: Reusable;
 }
 
 export interface RecipeBomData extends Omit<RecipeBom,'id'> {};
+
+export enum Reusable  {
+  YES = 'YES',
+  No =  'NO', 
+  IQC = 'IQC'
+}

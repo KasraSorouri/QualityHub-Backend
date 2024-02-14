@@ -68,7 +68,7 @@ module.exports = {
         allowNull: false,
         references: { model: 'stations', key: 'id' }
       },
-      timeDuration: {
+      time_duration: {
         type: DataTypes.INTEGER
       }
     })
@@ -93,7 +93,7 @@ module.exports = {
         references: { model: 'materials', key: 'id' }
       },
       reusable: {
-        type: DataTypes.BOOLEAN
+        type: DataTypes.ENUM('YES', 'NO', 'IQC')
       }
     })
   },

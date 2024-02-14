@@ -46,7 +46,7 @@ class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> implement
     Recipe.belongsToMany(Material, {
       through: RecipeBoms,
       foreignKey: 'recipeId',
-      as: 'materials'
+      as: 'material'
     });
   }  
 }

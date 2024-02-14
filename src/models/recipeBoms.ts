@@ -3,13 +3,14 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../configs/db';
 import Recipe from './recipe';
 import Material from './material';
+import { Reusable } from '../modules/qualityHub/types';
 
 class RecipeBoms extends Model {
   public id!: number;
   public recipeId!: number;
   public materialId!: number;
   public qty!: number;
-  public reusable!: boolean;
+  public reusable!: Reusable;
 
   static associate() {
     RecipeBoms.belongsTo(Recipe, { foreignKey: 'recipeId' });
@@ -37,7 +38,8 @@ RecipeBoms.init({
     allowNull:true
   },
   reusable: {
-    type: DataTypes.BOOLEAN
+    type: DataTypes.ENUM,
+    values: Object.values(Reusable)
   }
 }, {
   sequelize,
