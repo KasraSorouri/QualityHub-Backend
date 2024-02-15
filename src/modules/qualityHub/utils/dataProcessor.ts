@@ -116,10 +116,15 @@ const parseReusable = (reusable: unknown): Reusable  => {
   if (!isString(reusable)) {
     throw new Error('Incorrect or missing data!');
   }
-  if (reusable !== 'Yes' && reusable !== 'No' && reusable !== 'IQC') {
-    throw new Error('Incorrect or missing data!');
-  } else {
-  return reusable as unknown as Reusable;
+  switch (reusable) {
+    case 'YES':
+      return Reusable.YES;
+    case 'NO':
+      return Reusable.No;
+    case 'IQC':
+      return Reusable.IQC;
+    default:
+      throw new Error('Incorrect or missing data!');
   }
 }
 
@@ -269,7 +274,7 @@ const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]>
       const newConsumingMaterial: ConsumingMaterial = {
         materialId: parseId(bom.materialId),
         qty: parseQty(bom.qty),
-        reusable: 'reUsable' in bom ? parseReusable(bom.reusable) : Reusable.No,
+        reusable: 'reusable' in bom ? parseReusable(bom.reusable) : Reusable.No,
       };
       newBoms.push(newConsumingMaterial);
     }

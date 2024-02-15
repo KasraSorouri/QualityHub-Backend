@@ -57,6 +57,27 @@ const getRecipe = async(id: number): Promise<Recipe> => {
   return recipe;
 };
 
+// Get Recipes by product
+const getRecipesByProduct = async (productId: number): Promise<Recipe[]> => {
+  try {
+    const recipes = await Recipe.findAll({
+      where: { productId },
+      ...query,
+    });
+    console.log(' recipe services * get by product * -> product id: ', productId, 'recipes-> ', recipes);
+
+    return recipes;
+  } catch (err : unknown) {
+    let errorMessage = '';
+    if (err instanceof Error) {
+      errorMessage += ' Error: ' + err.message;
+    }
+    console.log('**** error :', errorMessage);
+    throw new Error(errorMessage);
+  }
+}
+
+
 // Create a new Recipe
 const createRecipe = async (recipeData: unknown): Promise<Recipe> => {
 
@@ -83,6 +104,8 @@ const createRecipe = async (recipeData: unknown): Promise<Recipe> => {
 const updateRecipe = async (id: number, recipeData: unknown): Promise<Recipe>=> {  
   
   const newRecipeData = await recipeProcessor(recipeData);
+  console.log('processed Recipe ->',newRecipeData);
+  
   
  try {
     const recipe = await Recipe.findByPk(id);
@@ -145,6 +168,7 @@ const updateBoms = async (id: number, bomData: ConsumingMaterial[]): Promise<Rec
 export default {
   getAllRecipes,
   getRecipe,
+  getRecipesByProduct,
   createRecipe,
   updateRecipe,
 }

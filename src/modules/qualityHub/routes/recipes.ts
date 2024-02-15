@@ -11,6 +11,7 @@ const router = express.Router();
 router.get('/', recipeControllers.getAllRecipes);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/:id', recipeControllers.getRecipe);
+router.get('/product/:id', recipeControllers.getRecipesByProduct)
 
 // Create Recipe
 // eslint-disable-next-line @typescript-eslint/no-misused-promises

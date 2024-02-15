@@ -25,6 +25,20 @@ const getRecipe = async (req: ExtendedRequest, res: Response)=> {
   }
 };
 
+// Get Recipes by Product Id
+const getRecipesByProduct = async (req: ExtendedRequest, res: Response) => {
+  const productId = Number(req.params.id);
+  if (!productId) {
+    res.status(400).json({ error: 'Invalid product id' });
+  }
+  try {
+    const recipes = await recipeServices.getRecipesByProduct(productId);
+    res.json(recipes);
+  } catch (err) {
+    res.status(404).json({ error: 'No recipe found' });
+  }
+};
+
 // Create a New Recipe
 const addRecipe = async (req: ExtendedRequest, res: Response) => {
   const recipeData: unknown = req.body;
@@ -62,6 +76,7 @@ const editRecipe = async (req: ExtendedRequest, res: Response) => {
 export default {
   getAllRecipes,
   getRecipe,
+  getRecipesByProduct,
   addRecipe,
   editRecipe,
 };
