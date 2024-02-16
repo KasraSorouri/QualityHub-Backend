@@ -87,3 +87,28 @@ export enum Reusable  {
   No =  'NO', 
   IQC = 'IQC'
 }
+
+export enum NokStatus {
+  PENDING = 'PENDING',
+  ANALYSED = 'ANALYSED',
+  NEED_INVESTIGATION = 'NEED INVESTIGATION',
+  NOT_FOUND = 'NOT FOUND'
+}
+
+export enum ProductStatus {
+  NOK = 'NOK',
+  REWORKED = 'REWORKED',
+  SCRAPPED = 'SCRAPPED',
+}
+
+export enum MaterialStatus {
+  OK = 'OK',
+  SCRAPPED = 'SCRAPPED',
+  CLAIMABLE = 'CLAIMABLE',
+}
+
+export enum ClaimStatus {
+  PENDING = 'PENDING',
+  ACCEPTED = 'ACCEPTED',
+  DENIED = 'DENIED',
+}

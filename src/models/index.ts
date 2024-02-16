@@ -12,6 +12,16 @@ import Customer from './customer';
 import WorkShift from './workShif';
 import Recipe from './recipe';
 import RecipeBoms from './recipeBoms';
+import NokCode from './nokCode';
+import NokGrp from './nokGrp';
+import NokDetect from './nokDetect';
+import NokAnalyse from './nokAnalyse';
+import Rework from './rework';
+import NokReworks from './nokReworks';
+import DismantleMaterials from './nokDismantleMaterials';
+import Rca from './rca';
+import RcaCode from './rcaCode';
+import Machine from './machine';
 
 export interface UserQuery {
   attributes: {
@@ -144,6 +154,30 @@ RecipeBoms.belongsTo(Material, { as: 'material', foreignKey: 'materialId'});
 Recipe.belongsToMany(Material, { through: RecipeBoms  ,foreignKey: 'recipeId'});
 Material.belongsToMany(Recipe, { through: RecipeBoms, foreignKey: 'materialId'});
 
+// NOK Management
+NokCode.belongsTo(NokGrp, { foreignKey: 'nokGrpId'});
+NokGrp.hasMany(NokCode, { foreignKey: 'nokGrpId'});
+
+NokDetect.hasOne(NokAnalyse,{ foreignKey:'nokId'});
+NokAnalyse.belongsTo(NokDetect, { foreignKey: 'nokId'});
+
+NokDetect.hasMany(NokReworks,{ foreignKey:'nokId'})
+NokReworks.belongsTo(NokDetect, { foreignKey: 'nokId'});
+
+NokDetect.hasMany(DismantleMaterials, { foreignKey: 'nokId'});
+DismantleMaterials.belongsTo(NokDetect, { foreignKey: 'nokId'});
+DismantleMaterials.belongsTo(Material, { foreignKey: 'materialId'});
+
+NokAnalyse.belongsTo(Station, { foreignKey: 'stationId'});
+NokAnalyse.belongsTo(Material, { foreignKey: 'materialId'});
+NokAnalyse.belongsTo(WorkShift, { foreignKey: 'causeShiftId'});
+
+Rca.belongsTo(NokAnalyse, { foreignKey: 'nokId'});
+NokAnalyse.hasMany(Rca, { foreignKey: 'nokId'});
+
+Rca.belongsTo(RcaCode, { foreignKey: 'rcaCodeId'});
+RcaCode.hasMany(Rca, { foreignKey: 'rcaCodeId'});
+
 export {
   User,
   Role,
@@ -158,4 +192,14 @@ export {
   Material,
   Recipe,
   RecipeBoms,
+  Machine,
+  Rework,
+  NokGrp,
+  NokCode,
+  NokDetect,
+  NokAnalyse,
+  NokReworks,
+  DismantleMaterials,
+  RcaCode,
+  Rca,
 };
