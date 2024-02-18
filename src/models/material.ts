@@ -9,6 +9,7 @@ class Material extends Model<InferAttributes<Material>, InferCreationAttributes<
   itemCode!: string;
   price?: number;
   unit?: string;
+  traceable?: boolean;
   active!: boolean;
 
   static associate(models: any) {
@@ -47,6 +48,9 @@ Material.init({
   },
   unit: {
     type: DataTypes.STRING
+  },
+  traceable: {
+    type: DataTypes.BOOLEAN
   },
   active: {
     type: DataTypes.BOOLEAN

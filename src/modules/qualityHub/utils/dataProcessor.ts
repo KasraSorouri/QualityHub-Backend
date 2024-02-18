@@ -1,4 +1,4 @@
-import { ConsumingMaterial, MaterialData, Product, ProductData, ProductGrpData, RecipeData, Reusable, StationData, WorkShiftData } from '../types';
+import { ConsumingMaterial, MaterialData, Product, ProductData, ProductGrpData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
@@ -128,6 +128,20 @@ const parseReusable = (reusable: unknown): Reusable  => {
   }
 }
 
+const parseRecipeType = (recipeType: unknown): RecipeType => {
+  if (!isString(recipeType)) {
+    throw new Error('Incorrect or missing data!');
+  }
+  switch (recipeType) {
+    case 'PRODUCTION':
+      return RecipeType.PRODUCTION;
+    case 'REWORK':
+      return RecipeType.REWORK;
+    default:
+      throw new Error('Incorrect or missing data!');
+  }
+}
+
 const productProcessor = async(productData: unknown): Promise<ProductData> => {
   if (!productData || typeof productData !== 'object') {
     throw new Error('Incorrect or missing Data!');
@@ -213,7 +227,7 @@ const materialProcessor = async(materialData: unknown): Promise<MaterialData> =>
   if (!materialData || typeof materialData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
-  if ('itemShortName' in materialData && 'itemLongName' in materialData && 'itemCode' in materialData) {
+  if ('itemShortName' in materialData && 'itemLongName' in materialData && 'itemCode' in materialData && 'traceable' in materialData) {
     console.log('here');
 
     const newMaterial: MaterialData = {
@@ -223,6 +237,7 @@ const materialProcessor = async(materialData: unknown): Promise<MaterialData> =>
       active: 'active' in materialData ? parseActive(materialData.active) : true,
       price: 'price' in materialData ? parseQty(Number(materialData.price)) : 0,
       unit: 'unit' in materialData ? parseMaterialName(materialData.unit) : '',
+      traceable: 'traceable' in materialData ? parseActive(materialData.traceable) : false,
   };
   
     return newMaterial;
@@ -242,16 +257,19 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
     'description' in recipeData &&
     'order' in recipeData &&
     'productId' in recipeData &&
-    'stationId' in recipeData) {
+    'stationId' in recipeData &&
+    'recipeType' in recipeData) {
     const newRecipe: RecipeData = {
       recipeCode: parseRecipeCode(recipeData.recipeCode),
       description: parseDescriptiobn(recipeData.description),
       order: parseRecipeOrder(Number(recipeData.order)),
       productId: parseRecipeProduct(recipeData.productId),
       stationId: parseRecipeStation(recipeData.stationId),
+      recipeType: parseRecipeType(recipeData.recipeType),
       timeDuration: 'timeDuration' in recipeData ? parseQty(recipeData.timeDuration) : 0,
       active: 'active' in recipeData ? parseActive(recipeData.active) : true,
       materialsData: 'materialsData' in recipeData ? await parseMaterialsData(recipeData.materialsData) : [],
+      manpower: 'manpower' in recipeData ? parseQty(recipeData.manpower) : 0,
     };
 
     return newRecipe;

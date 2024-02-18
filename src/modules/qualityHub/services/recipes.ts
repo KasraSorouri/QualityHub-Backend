@@ -64,7 +64,6 @@ const getRecipesByProduct = async (productId: number): Promise<Recipe[]> => {
       where: { productId },
       ...query,
     });
-    console.log(' recipe services * get by product * -> product id: ', productId, 'recipes-> ', recipes);
 
     return recipes;
   } catch (err : unknown) {
@@ -83,8 +82,6 @@ const createRecipe = async (recipeData: unknown): Promise<Recipe> => {
 
   const newRecipeData : RecipeData = await recipeProcessor(recipeData);
 
-  console.log('** recipe ** service * create * new Recipe data ->', newRecipeData);
-  
   try {
     const recipe = await Recipe.create(newRecipeData);
     if (recipe.id && 'materialsData' in newRecipeData) {
@@ -104,8 +101,6 @@ const createRecipe = async (recipeData: unknown): Promise<Recipe> => {
 const updateRecipe = async (id: number, recipeData: unknown): Promise<Recipe>=> {  
   
   const newRecipeData = await recipeProcessor(recipeData);
-  console.log('processed Recipe ->',newRecipeData);
-  
   
  try {
     const recipe = await Recipe.findByPk(id);
@@ -142,10 +137,8 @@ const updateBoms = async (id: number, bomData: ConsumingMaterial[]): Promise<Rec
     bom.push({recipeId: recipe.id, materialId: item.materialId, qty: item.qty, reusable: item.reusable ? item.reusable : Reusable.No }) 
   }
   try {
-    const updatedRecipe = await RecipeBoms.bulkCreate(bom);
+    await RecipeBoms.bulkCreate(bom);
     
-    console.log('**** updatedRecipe ****', updatedRecipe);
-
     const result = await Recipe.findByPk(id, query);
 
     if (!result) {

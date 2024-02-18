@@ -45,6 +45,7 @@ export interface Material {
   price?: number;
   unit?: string;
   active: boolean;
+  traceable: boolean;
 }
 export interface MaterialData extends Omit<Material,'id'> {};
 
@@ -56,8 +57,10 @@ export interface Recipe {
   product: Product;
   station: Station;
   timeDuration?: number;
+  manpower?: number;
   active: boolean;
   materials?: Material[];
+  recipeType: RecipeType;
 }
 
 export interface ConsumingMaterial {
@@ -111,4 +114,9 @@ export enum ClaimStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
   DENIED = 'DENIED',
+}
+
+export enum RecipeType {
+  PRODUCTION = 'PRODUCTION',
+  REWORK = 'REWORK',
 }

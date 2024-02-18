@@ -5,6 +5,7 @@ import Station from './station';
 import Product from './product';
 import RecipeBoms from './recipeBoms';
 import Material from './material';
+import { RecipeType } from '../modules/qualityHub/types';
 
 interface RecipeAttributes {
   id: number;
@@ -15,6 +16,8 @@ interface RecipeAttributes {
   productId: number;
   stationId: number;
   timeDuration?: number;
+  manpower?: number;
+  recipeType: RecipeType;
 }
 
 interface RecipeCreationAttributes extends Omit<RecipeAttributes, 'id'> {}
@@ -28,6 +31,8 @@ class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> implement
   productId!: number;
   stationId!: number;
   timeDuration?: number;
+  manpower?: number;
+  recipeType!: RecipeType;
   station?: Station;
   product?: Product;
   recipeBoms?: RecipeBoms[];
@@ -83,6 +88,13 @@ Recipe.init({
   },
   timeDuration: {
     type: DataTypes.INTEGER
+  },
+  manpower: {
+    type: DataTypes.INTEGER,
+  },
+  recipeType: {
+    type: DataTypes.STRING,
+    defaultValue: 'PRODUCTION'
   }
 },
 

@@ -14,6 +14,8 @@ interface NokAnalyseAttributes {
   causeStationId: number;
   causeShiftId: number;
   description: string;
+  timeWaste?: number;
+  materialWaste?: number;
   closeDate: Date;
 }
 
@@ -26,6 +28,8 @@ class NokAnalyse extends Model<NokAnalyseAttributes, NokAnalyseCreationAttribute
   causeStationId!: number;
   causeShiftId!: number;
   description!: string;
+  timeWaste?: number;
+  materialWaste?: number;
   closeDate!: Date;
 
   static associate() {
@@ -83,6 +87,12 @@ NokAnalyse.init({
   },
   description: {
     type: DataTypes.STRING,
+  },
+  timeWaste: {
+    type: DataTypes.INTEGER,
+  },
+  materialWaste: {
+    type: DataTypes.INTEGER,
   },
   closeDate: {
     type: DataTypes.DATE,
