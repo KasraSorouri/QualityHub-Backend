@@ -16,6 +16,10 @@ import stationRouter from './modules/qualityHub/routes/stations';
 import materialRouter from './modules/qualityHub/routes/materials';
 import recipeRouter from './modules/qualityHub/routes/recipes';
 
+import nokGrpRouter from './modules/qualityHub/routes/nokGrps';
+
+
+
 const app = express();
 app.use(express.json(), cors());
 
@@ -32,6 +36,9 @@ app.use('/api/quality/shifts', workShiftRouter);
 app.use('/api/quality/stations', stationRouter);
 app.use('/api/quality/materials', materialRouter);
 app.use('/api/quality/recipes', recipeRouter);
+
+app.use('/api/quality/nok_grps', nokGrpRouter);
+
  
 app.get('/api/ping',(_req,res) => {
   res.send('Pong!');

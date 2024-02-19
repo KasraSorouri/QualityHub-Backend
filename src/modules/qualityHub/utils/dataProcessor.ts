@@ -1,4 +1,4 @@
-import { ConsumingMaterial, MaterialData, Product, ProductData, ProductGrpData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
+import { ConsumingMaterial, MaterialData, NokGrpData, Product, ProductData, ProductGrpData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
@@ -14,6 +14,20 @@ const parseProductCode = (productCode: unknown): string => {
   }
   return productCode;
 };
+
+const parseName = (name: unknown): string => {
+  if (!isString(name)) {
+    throw new Error('Incorrect shift name!');
+  }
+  return name;
+}
+
+const parseCode = (code: unknown): string => {
+  if (!isString(code)) {
+    throw new Error('Incorrect shift code!');
+  }
+  return code;
+}
 
 const parseShiftName = (shiftName: unknown): string => {
   if (!isString(shiftName)) {
@@ -301,6 +315,23 @@ const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]>
   return newBoms;
 }
 
+const nokGrpProcessor = async(nokGrpData: unknown): Promise<NokGrpData> => {
+  if (!nokGrpData || typeof nokGrpData !== 'object') {
+    throw new Error('Incorrect or missing Data!');
+  }
+  if ('nokGrpName' in nokGrpData && 'nokGrpCode' in nokGrpData) {
+    const newProductGrp: NokGrpData = {
+      nokGrpName: parseName(nokGrpData.nokGrpName),
+      nokGrpCode: parseCode(nokGrpData.nokGrpCode),
+      nokGrpDesc: 'nokGrpDesc' in nokGrpData ? parseDescriptiobn(nokGrpData.nokGrpDesc) : '',
+      active: 'active' in nokGrpData ? parseActive(nokGrpData.active) : true,
+  };
+    return newProductGrp;
+  } else {
+    throw new Error('Data is missing');
+  }
+};
+
 export {
   productProcessor,
   parseProductResponse,
@@ -309,4 +340,5 @@ export {
   stationProcessor,
   materialProcessor,
   recipeProcessor,
+  nokGrpProcessor
 };
