@@ -54,7 +54,6 @@ const updateRight = async (id: number, rightData: unknown): Promise<Right> => {
   }
 }
 
-
 export default {
   getAllRights,
   getRight,

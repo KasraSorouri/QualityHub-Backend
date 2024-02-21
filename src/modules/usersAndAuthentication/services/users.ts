@@ -26,13 +26,6 @@ const query : UserQuery = {
 // Get all Users
 const getAllUsers = async(): Promise<User[]> => {
   const users = await User.findAll(query);
-  /*
-  const result: UserWithRights[] = [];
-  // Prepare User response
-  users.map(user => {
-    result.push(parseUserResponse(user));
-  });
-  */
   return users;
 };
 
@@ -43,10 +36,6 @@ const getUser = async(id: number): Promise<User> => {
   if (!user) {
     throw new Error ('the user not found');
   }
-  /*
-  // Prepare User response
-  const result = parseUserResponse(user);
-  */
   return user;
 };
 
@@ -78,7 +67,7 @@ const createUser = async (userData: unknown): Promise<User> => {
 };
 
 // Update an User
-const updateUser = async (id: number, userData: unknown): Promise<User>=> {
+const updateUser = async (id: number, userData: unknown): Promise<User>=> {  
   
   const newUserData = await userProcessor(userData);
 

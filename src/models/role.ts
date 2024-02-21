@@ -2,17 +2,6 @@ import { Model, DataTypes } from 'sequelize';
 import {sequelize} from '../configs/db';
 import {Right} from '../modules/usersAndAuthentication/types';
 
-/*
-interface RoleAttributes {
-  id: number;
-  roleName: string;
-  active: boolean;
-  rights?: Right[];
-}
-*/
-//interface RoleCreationAttributes extends Optional<RoleAttributes, 'id'> {}
-//export interface RoleInstance extends Model<RoleAttributes, RoleCreationAttributes>, RoleAttributes {}
-
 // define Role Model
 class Role extends Model {
   [x: string]: any;
