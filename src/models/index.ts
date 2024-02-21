@@ -130,6 +130,19 @@ interface RecipeBomsInclude {
   }[];
 } 
 
+export interface NokCodeQuery {
+  attributes: {
+    exclude: string[];
+  };
+  include: NokGrpInclude[];
+}
+
+export interface NokGrpInclude {
+  model: typeof NokGrp;
+  as: string,
+  attributes: string[];
+}
+
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
 

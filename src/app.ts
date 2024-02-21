@@ -17,7 +17,7 @@ import materialRouter from './modules/qualityHub/routes/materials';
 import recipeRouter from './modules/qualityHub/routes/recipes';
 
 import nokGrpRouter from './modules/qualityHub/routes/nokGrps';
-
+import nokCodeRouter from './modules/qualityHub/routes/nokCodes';
 
 
 const app = express();
@@ -38,6 +38,7 @@ app.use('/api/quality/materials', materialRouter);
 app.use('/api/quality/recipes', recipeRouter);
 
 app.use('/api/quality/nok_grps', nokGrpRouter);
+app.use('/api/quality/nok_codes', nokCodeRouter);
 
  
 app.get('/api/ping',(_req,res) => {

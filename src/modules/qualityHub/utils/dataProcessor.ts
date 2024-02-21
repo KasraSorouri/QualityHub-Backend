@@ -1,4 +1,4 @@
-import { ConsumingMaterial, MaterialData, NokGrpData, Product, ProductData, ProductGrpData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
+import { ConsumingMaterial, MaterialData, NokCodeData, NokGrpData, Product, ProductData, ProductGrpData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
@@ -332,6 +332,23 @@ const nokGrpProcessor = async(nokGrpData: unknown): Promise<NokGrpData> => {
   }
 };
 
+const nokCodeProcessor = async(nokCodeData: unknown): Promise<NokCodeData> => {
+  if (!nokCodeData || typeof nokCodeData !== 'object') {
+    throw new Error('Incorrect or missing Data!');
+  }
+  if ('nokCode' in nokCodeData && 'nokDesc' in nokCodeData && 'nokGrpId' in nokCodeData) {
+    const newNokCode: NokCodeData = {
+      nokCode: parseCode(nokCodeData.nokCode),
+      nokDesc: parseDescriptiobn(nokCodeData.nokDesc),
+      nokGrpId: parseId(nokCodeData.nokGrpId),
+      active: 'active' in nokCodeData ? parseActive(nokCodeData.active) : true,
+  };
+    return newNokCode;
+  } else {
+    throw new Error('Data is missing');
+  }
+}
+
 export {
   productProcessor,
   parseProductResponse,
@@ -340,5 +357,6 @@ export {
   stationProcessor,
   materialProcessor,
   recipeProcessor,
-  nokGrpProcessor
+  nokGrpProcessor,
+  nokCodeProcessor,
 };

@@ -132,3 +132,16 @@ export interface NokGroup {
 export interface NokGrpData extends Omit<NokGroup, 'id'> {
   id? : number;
 }
+
+export interface NokCode {
+  id: number;
+  nokCode: string;
+  nokDesc: string;
+  nokGrp: NokGroup;
+  active: boolean;
+}
+
+export interface NokCodeData extends Omit<NokCode, 'id' | 'nokGrp'> {
+  id?: number;
+  nokGrpId: number;
+}
