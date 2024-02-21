@@ -18,6 +18,7 @@ import recipeRouter from './modules/qualityHub/routes/recipes';
 
 import nokGrpRouter from './modules/qualityHub/routes/nokGrps';
 import nokCodeRouter from './modules/qualityHub/routes/nokCodes';
+import rcaCodeRouter from './modules/qualityHub/routes/rcaCodes';
 
 
 const app = express();
@@ -39,6 +40,8 @@ app.use('/api/quality/recipes', recipeRouter);
 
 app.use('/api/quality/nok_grps', nokGrpRouter);
 app.use('/api/quality/nok_codes', nokCodeRouter);
+app.use('/api/quality/rca_codes', rcaCodeRouter);
+
 
  
 app.get('/api/ping',(_req,res) => {

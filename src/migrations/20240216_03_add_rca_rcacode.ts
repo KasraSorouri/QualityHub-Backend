@@ -13,7 +13,7 @@ module.exports = {
         allowNull: false,
         unique: true
       },
-      rca_cesc: {
+      rca_desc: {
         type: DataTypes.STRING
       },
       active: {

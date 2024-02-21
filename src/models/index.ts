@@ -143,6 +143,12 @@ export interface NokGrpInclude {
   attributes: string[];
 }
 
+export interface RcaCodeQuery {
+  attributes: {
+    exclude: string[];
+  };
+}
+
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
 

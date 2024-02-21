@@ -145,3 +145,12 @@ export interface NokCodeData extends Omit<NokCode, 'id' | 'nokGrp'> {
   id?: number;
   nokGrpId: number;
 }
+
+export interface RcaCode {
+  id: number;
+  rcaCode: string;
+  rcaDesc: string;
+  active: boolean;
+}
+
+export interface RcaCodeData extends Omit<RcaCode, 'id'> {}

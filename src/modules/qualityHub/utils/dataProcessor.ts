@@ -1,4 +1,4 @@
-import { ConsumingMaterial, MaterialData, NokCodeData, NokGrpData, Product, ProductData, ProductGrpData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
+import { ConsumingMaterial, MaterialData, NokCodeData, NokGrpData, Product, ProductData, ProductGrpData, RcaCodeData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
@@ -349,6 +349,22 @@ const nokCodeProcessor = async(nokCodeData: unknown): Promise<NokCodeData> => {
   }
 }
 
+const rcaCodeProcessor = (rcaCodeData: unknown): RcaCodeData => {
+  if (!rcaCodeData || typeof rcaCodeData !== 'object') {
+    throw new Error('Incorrect or missing Data!');
+  }
+  if ('rcaCode' in rcaCodeData && 'rcaDesc' in rcaCodeData) {
+    const newRcaCode: RcaCodeData = {
+      rcaCode: parseCode(rcaCodeData.rcaCode),
+      rcaDesc: parseDescriptiobn(rcaCodeData.rcaDesc),
+      active: 'active' in rcaCodeData ? parseActive(rcaCodeData.active) : true,
+  };
+    return newRcaCode;
+  } else {
+    throw new Error('Data is missing');
+  }
+}
+
 export {
   productProcessor,
   parseProductResponse,
@@ -359,4 +375,5 @@ export {
   recipeProcessor,
   nokGrpProcessor,
   nokCodeProcessor,
+  rcaCodeProcessor
 };
