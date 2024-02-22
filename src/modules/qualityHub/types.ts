@@ -153,4 +153,20 @@ export interface RcaCode {
   active: boolean;
 }
 
-export interface RcaCodeData extends Omit<RcaCode, 'id'> {}
+export interface RcaCodeData extends Omit<RcaCode, 'id'> {
+  id?: number;
+}
+
+export interface Machine {
+  id: number;
+  machineName: string;
+  machineCode: string;
+  description?: string;
+  station?: Station;
+  active: boolean;
+}
+
+export interface MachineData extends Omit<Machine, 'id' | 'station'> {
+  id?: number;
+  stationId?: number;
+}

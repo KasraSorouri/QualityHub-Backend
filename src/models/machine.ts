@@ -7,6 +7,7 @@ class Machine extends Model<InferAttributes<Machine>, InferCreationAttributes<Ma
   machineCode!: string;
   description?: string;
   active!: boolean;
+  stationId?: number;
 }
 
 Machine.init({
@@ -31,6 +32,9 @@ Machine.init({
   active: {
     type: DataTypes.BOOLEAN
   },
+  stationId: {
+    type: DataTypes.INTEGER
+  }
 }, 
 {
   underscored: true,

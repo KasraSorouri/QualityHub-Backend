@@ -149,6 +149,19 @@ export interface RcaCodeQuery {
   };
 }
 
+export interface MachineQuery {
+  attributes: {
+    exclude: string[];
+  };
+  include: StationInclude[];
+}
+
+export interface StationInclude {
+  model: typeof Station;
+  as: string,
+  attributes: string[];
+}
+
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
 
@@ -172,6 +185,9 @@ RecipeBoms.belongsTo(Material, { as: 'material', foreignKey: 'materialId'});
 
 Recipe.belongsToMany(Material, { through: RecipeBoms  ,foreignKey: 'recipeId'});
 Material.belongsToMany(Recipe, { through: RecipeBoms, foreignKey: 'materialId'});
+
+Machine.belongsTo(Station, { foreignKey: 'stationId'});
+Station.hasMany(Machine, { foreignKey: 'stationId'});
 
 // NOK Management
 NokCode.belongsTo(NokGrp, { foreignKey: 'nokGrpId'});
