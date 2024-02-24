@@ -60,12 +60,8 @@ const createMaterial = async (materialData: unknown): Promise<Material> => {
 
 // Update an Material
 const updateMaterial = async (id: number, materialData: unknown): Promise<Material>=> {  
-  console.log(' ** materilas service * create ** material data ->', materialData);
-
   
   const newMaterialData = await materialProcessor(materialData);
-  console.log(' ** materilas service * create ** process data ->', newMaterialData);
-
 
   try {
     const material = await Material.findByPk(id);

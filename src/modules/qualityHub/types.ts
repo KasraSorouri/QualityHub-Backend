@@ -170,3 +170,15 @@ export interface MachineData extends Omit<Machine, 'id' | 'station'> {
   id?: number;
   stationId?: number;
 }
+
+export interface ClassCode {
+  id: number;
+  className: string;
+  classCode: string;
+  classDesc: string;
+  active: boolean;
+}
+
+export interface ClassCodeData extends Omit<ClassCode, 'id'> {
+  id?: number;
+}

@@ -22,6 +22,7 @@ import DismantleMaterials from './nokDismantleMaterials';
 import Rca from './rca';
 import RcaCode from './rcaCode';
 import Machine from './machine';
+import ClassCode from './defectClass';
 
 export interface UserQuery {
   attributes: {
@@ -162,6 +163,12 @@ export interface StationInclude {
   attributes: string[];
 }
 
+export interface ClassCodeQuery {
+  attributes: {
+    exclude: string[];
+  };
+}
+
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
 
@@ -237,4 +244,5 @@ export {
   DismantleMaterials,
   RcaCode,
   Rca,
+  ClassCode,
 };

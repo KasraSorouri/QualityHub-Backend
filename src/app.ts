@@ -20,6 +20,7 @@ import machineRouter from './modules/qualityHub/routes/machines';
 import nokGrpRouter from './modules/qualityHub/routes/nokGrps';
 import nokCodeRouter from './modules/qualityHub/routes/nokCodes';
 import rcaCodeRouter from './modules/qualityHub/routes/rcaCodes';
+import classCodeRouter from './modules/qualityHub/routes/classCodes';
 
 
 const app = express();
@@ -43,7 +44,7 @@ app.use('/api/quality/machines', machineRouter);
 app.use('/api/quality/nok_grps', nokGrpRouter);
 app.use('/api/quality/nok_codes', nokCodeRouter);
 app.use('/api/quality/rca_codes', rcaCodeRouter);
-
+app.use('/api/quality/class_codes', classCodeRouter);
 
  
 app.get('/api/ping',(_req,res) => {
