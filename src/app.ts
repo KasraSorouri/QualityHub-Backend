@@ -22,6 +22,8 @@ import nokCodeRouter from './modules/qualityHub/routes/nokCodes';
 import rcaCodeRouter from './modules/qualityHub/routes/rcaCodes';
 import classCodeRouter from './modules/qualityHub/routes/classCodes';
 
+import nokDetectRouter from './modules/qualityHub/routes/nokDetect';
+
 
 const app = express();
 app.use(express.json(), cors());
@@ -46,7 +48,8 @@ app.use('/api/quality/nok_codes', nokCodeRouter);
 app.use('/api/quality/rca_codes', rcaCodeRouter);
 app.use('/api/quality/class_codes', classCodeRouter);
 
- 
+app.use('/api/quality/nok_detect', nokDetectRouter);
+
 app.get('/api/ping',(_req,res) => {
   res.send('Pong!');
 });

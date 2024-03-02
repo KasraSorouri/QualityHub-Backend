@@ -169,6 +169,14 @@ export interface ClassCodeQuery {
   };
 }
 
+export interface NokDetectQuery {
+  attributes: {
+    exclude: string[];
+  };
+  include: Object[];
+}
+
+
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
 

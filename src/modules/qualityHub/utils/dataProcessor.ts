@@ -401,6 +401,7 @@ const classCodeProcessor = (classCodeData: unknown): ClassCodeData => {
 }
 
 export {
+  parseDescriptiobn,
   productProcessor,
   parseProductResponse,
   productGrpProcessor,

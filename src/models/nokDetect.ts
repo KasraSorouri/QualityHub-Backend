@@ -17,7 +17,7 @@ interface NokDetectAttributes {
   initNokCodeId: number;
   detectStationId: number;
   detectShiftId: number;
-  description: string;
+  description?: string;
   detectTime: Date;
   nokStatus: NokStatus;
   productStatus: ProductStatus;
