@@ -39,8 +39,6 @@ const createNokCode = async (nokCodeData: unknown): Promise<NokCode> => {
   
   try {
     const nokCode = await NokCode.create(newNokCodeData);
-    console.log('nok * service * createNok ->', nokCode);
-
     return nokCode;
   } catch(err : unknown) {
       let errorMessage = '';

@@ -208,6 +208,18 @@ Station.hasMany(Machine, { foreignKey: 'stationId'});
 NokCode.belongsTo(NokGrp, { foreignKey: 'nokGrpId'});
 NokGrp.hasMany(NokCode, { foreignKey: 'nokGrpId'});
 
+NokDetect.belongsTo(NokCode, { foreignKey: 'initNokCodeId', as:'initNokCode'});
+NokCode.hasMany(NokDetect, { foreignKey: 'initNokCodeId'});
+
+NokDetect.belongsTo(Product, { foreignKey: 'productId'});
+Product.hasMany(NokDetect, { foreignKey: 'productId'});
+
+NokDetect.belongsTo(Station, { foreignKey: 'detectStationId', as:'detectedStation'});
+Station.hasMany(NokDetect, { foreignKey: 'detectStationId'});
+
+NokDetect.belongsTo(WorkShift, { foreignKey: 'detectShiftId', as: 'detectedShift'});
+WorkShift.hasMany(NokDetect, { foreignKey: 'detectShiftId'});
+
 NokDetect.hasOne(NokAnalyse,{ foreignKey:'nokId'});
 NokAnalyse.belongsTo(NokDetect, { foreignKey: 'nokId'});
 

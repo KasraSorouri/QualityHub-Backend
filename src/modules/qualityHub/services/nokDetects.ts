@@ -1,4 +1,4 @@
-import { NokDetect, Product, NokDetectQuery, Station, NokCode } from '../../../models';
+import { NokDetect, Product, NokDetectQuery, Station, NokCode, WorkShift } from '../../../models';
 import { NewNokData } from '../types';
 import { nokDataProcessor } from '../utils/nokDataProcessor';
 
@@ -13,13 +13,18 @@ const query: NokDetectQuery = {
     },
     {
       model: Station,
-      as: 'station',
+      as: 'detectedStation',
       attributes: ['id', 'stationName', 'stationCode'],
     },
     {
       model: NokCode,
-      as: 'nokCode',
-      attributes: ['id', 'nokCode', 'nokCodeDesc'],
+      as: 'initNokCode',
+      attributes: ['id', 'nokCode', 'nokDesc'],
+    },
+    {
+      model: WorkShift,
+      as: 'detectedShift',
+      attributes: ['id', 'shiftName', 'shiftCode'],
     }
   ]
 };
