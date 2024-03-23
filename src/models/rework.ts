@@ -7,32 +7,34 @@ import NokReworks from './nokReworks';
 
 interface ReworkAttributes {
   id: number;
-  reworkShortDesc: string;
-  description: string;
-  order: number;
+  productId: number;
   nokCodeId: number;
   stationId: number;
-  useRecipes: number[];
-  affectedRecipes: number[];
+  reworkShortDesc: string;
+  description?: string;
+  order: number;
   timeDuration?: number;
   active: boolean;
   deprecated: boolean;
+  useRecipes: number[];
+  affectedRecipes: number[];
 }
 
 interface ReworkCreationAttributes extends Omit<ReworkAttributes, 'id'> {}
 
 class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implements ReworkAttributes {
   id!: number;
+  productId!: number;
+  nokCodeId!: number;
+  stationId!: number;
   reworkShortDesc!: string;
   description!: string;
   order!: number;
-  nokCodeId!: number;
-  stationId!: number;
-  useRecipes!: number[];
-  affectedRecipes!: number[];
   timeDuration?: number;
   active!: boolean;
   deprecated!: boolean;
+  useRecipes!: number[];
+  affectedRecipes!: number[];
 
   static associate() {
     Rework.belongsTo(NokDetect, {
@@ -60,6 +62,18 @@ Rework.init({
     primaryKey: true,
     autoIncrement: true
   },
+  productId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  nokCodeId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  stationId: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
   reworkShortDesc: {
     type: DataTypes.STRING,
     allowNull: false
@@ -70,13 +84,15 @@ Rework.init({
   order: {
     type: DataTypes.INTEGER
   },
-  nokCodeId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
+  timeDuration: {
+    type: DataTypes.INTEGER
   },
-  stationId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
+  active: {
+    type: DataTypes.BOOLEAN,
+  },
+  deprecated: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   useRecipes: {
     type: DataTypes.ARRAY(DataTypes.INTEGER),
@@ -86,16 +102,6 @@ Rework.init({
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false
   },
-  active: {
-    type: DataTypes.BOOLEAN,
-  },
-  deprecated: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-  timeDuration: {
-    type: DataTypes.INTEGER
-  }
 },
 
 {

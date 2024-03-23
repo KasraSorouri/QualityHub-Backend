@@ -240,6 +240,9 @@ NokAnalyse.hasMany(Rca, { foreignKey: 'nokId'});
 Rca.belongsTo(RcaCode, { foreignKey: 'rcaCodeId'});
 RcaCode.hasMany(Rca, { foreignKey: 'rcaCodeId'});
 
+Rework.belongsTo(Product, { foreignKey: 'productId'});
+Product.hasMany(Rework, { foreignKey: 'productId'});
+
 export {
   User,
   Role,
