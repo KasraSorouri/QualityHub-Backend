@@ -24,7 +24,7 @@ const query: RecipeQuery = {
         {
           model: Material,
           as: 'material',
-          attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'active'],
+          attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
         },
       ],
     }
