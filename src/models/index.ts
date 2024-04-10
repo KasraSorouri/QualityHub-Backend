@@ -23,6 +23,7 @@ import Rca from './rca';
 import RcaCode from './rcaCode';
 import Machine from './machine';
 import ClassCode from './defectClass';
+import RwDismantledMaterials from './reworkDismantledMaterials';
 
 export interface UserQuery {
   attributes: {
@@ -176,6 +177,24 @@ export interface NokDetectQuery {
   include: Object[];
 }
 
+export interface ReworkQuery {
+  attributes: {
+    exclude: string[];
+  };
+  include: [RecipeProduct, RecipeStation]
+}
+/*
+interface RwDismantledMaterialsInclude {
+  model: typeof RwDismantledMaterials;
+  as: string;
+  attributes: string[];
+  include: {
+    model: typeof Material;
+    as: string;
+    attributes: string[];
+  }[];
+}
+*/
 
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
@@ -198,11 +217,11 @@ Recipe.hasMany(RecipeBoms, { as:'recipeMaterials', foreignKey: 'recipeId'});
 Material.hasMany(RecipeBoms, { as: 'material', foreignKey: 'materialId'});
 RecipeBoms.belongsTo(Material, { as: 'material', foreignKey: 'materialId'});
 
-Recipe.belongsToMany(Material, { through: RecipeBoms  ,foreignKey: 'recipeId'});
-Material.belongsToMany(Recipe, { through: RecipeBoms, foreignKey: 'materialId'});
-
 Machine.belongsTo(Station, { foreignKey: 'stationId'});
 Station.hasMany(Machine, { foreignKey: 'stationId'});
+
+Recipe.belongsToMany(Material, { through: RecipeBoms  ,foreignKey: 'recipeId'});
+Material.belongsToMany(Recipe, { through: RecipeBoms, foreignKey: 'materialId'});
 
 // NOK Management
 NokCode.belongsTo(NokGrp, { foreignKey: 'nokGrpId'});
@@ -243,6 +262,12 @@ RcaCode.hasMany(Rca, { foreignKey: 'rcaCodeId'});
 Rework.belongsTo(Product, { foreignKey: 'productId'});
 Product.hasMany(Rework, { foreignKey: 'productId'});
 
+Rework.belongsTo(Station, { foreignKey: 'stationId'});
+Station.hasMany(Rework, { foreignKey: 'stationId'});
+
+Rework.belongsToMany(Material, { through: RwDismantledMaterials, foreignKey: 'reworkId'});
+Material.belongsToMany(Rework, { through: RwDismantledMaterials, foreignKey: 'materialId'});
+
 export {
   User,
   Role,
@@ -265,6 +290,7 @@ export {
   NokAnalyse,
   NokReworks,
   DismantleMaterials,
+  RwDismantledMaterials,
   RcaCode,
   Rca,
   ClassCode,

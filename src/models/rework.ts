@@ -2,8 +2,10 @@ import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
 import Station from './station';
-import NokDetect from './nokDetect';
-import NokReworks from './nokReworks';
+import Product from './product';
+import NokCode from './nokCode';
+import Material from './material';
+import RwDismantledMaterials from './reworkDismantledMaterials';
 
 interface ReworkAttributes {
   id: number;
@@ -16,8 +18,10 @@ interface ReworkAttributes {
   timeDuration?: number;
   active: boolean;
   deprecated: boolean;
-  useRecipes: number[];
-  affectedRecipes: number[];
+  useRecipes?: number[];
+  affectedRecipes?: number[];
+  creationDate: Date;
+  deprecatedDate?: Date;
 }
 
 interface ReworkCreationAttributes extends Omit<ReworkAttributes, 'id'> {}
@@ -35,11 +39,13 @@ class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implement
   deprecated!: boolean;
   useRecipes!: number[];
   affectedRecipes!: number[];
+  creationDate!: Date;
+  deprecatedDate!: Date;
 
   static associate() {
-    Rework.belongsTo(NokDetect, {
-      foreignKey: 'nokCodeId',
-      as: 'nok'
+    Rework.belongsTo(Product, {
+      foreignKey: 'productId',
+      as: 'product'
     });
   
     Rework.belongsTo(Station, {
@@ -47,10 +53,14 @@ class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implement
       as: 'station'
     });
 
-    Rework.belongsToMany(NokDetect, {
-      through: NokReworks,
-      foreignKey: 'reworkId',
+    Rework.belongsTo(NokCode, {
+      foreignKey: 'nokCodeId',
       as: 'nok'
+    });
+    Rework.belongsToMany(Material, {
+      through: RwDismantledMaterials,
+      foreignKey: 'reworkId',
+      as: 'dismantledMaterial'
     });
   }  
 }
@@ -102,6 +112,15 @@ Rework.init({
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false
   },
+  creationDate: {
+    type: DataTypes.DATE,
+    allowNull: false,
+    defaultValue: DataTypes.NOW
+  },
+  deprecatedDate: {
+    type: DataTypes.DATE,
+    allowNull: true
+  }
 },
 
 {

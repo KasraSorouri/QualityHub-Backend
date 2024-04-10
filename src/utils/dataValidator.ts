@@ -35,5 +35,7 @@ export const parseId = (id: unknown): number => {
   if (!isNumber(id)) {
     throw new Error('Incorrect or missing data!');
   }
+  console.log('parse Id :', id);
+  
   return id;
 }

@@ -204,3 +204,50 @@ export interface NewNokData extends Omit<NOK, 'id' | 'product' | 'initNokCode' |
   detectStationId: number;
   detectShiftId: number;
 }
+
+export interface RwDismantledMaterial {
+  id: number;
+  reworkId: number;
+  material: Material;
+  qty?: number;
+  dismantledQty: number;
+  mandatoryRemove: boolean;
+  note?: string;
+  recipe?: Recipe;
+}
+
+export interface RwDismantledMaterialData extends Omit<RwDismantledMaterial, 'id' | 'material' | 'recipe'> {
+  id?: number;
+  recipeId?: number;
+  materialId: number;
+}
+
+export interface NewRwDismantledMaterialData extends Omit<RwDismantledMaterialData, 'reworkId'> {}
+
+export interface Rework {
+  id: number;
+  product: Product;
+  nokCode: NokCode;
+  station: Station;
+  reworkShortDesc: string;
+  description: string;
+  order: number;
+  timeDuration?: number;
+  active: boolean;
+  deprecated: boolean;
+  useRecipes?: Recipe[];
+  affectedRecipes?: Recipe[];
+  creationDate: Date;
+  deprecatedDate?: Date;
+  dismantledMaterials?: RwDismantledMaterial[];
+}
+
+export interface NewReworkData extends Omit<Rework, 'id' | 'product' | 'nokCode' | 'station' | 'useRecipes' | 'affectedRecipes' | 'dismantledMaterials'> {
+  id?: number;
+  productId: number;
+  nokCodeId: number;
+  stationId: number;
+  useRecipes?: number[];
+  affectedRecipes?: number[];
+  dismantledMaterials?: NewRwDismantledMaterialData[];
+}

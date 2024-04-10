@@ -78,17 +78,20 @@ const parseRecipeCode = (recipeCode: unknown): string => {
   return recipeCode;
 }
 
-const parseDescriptiobn = (description: unknown): string => {
+const parseDescription = (description: unknown): string => {
   if (!isString(description)) {
     throw new Error('Incorrect material name!');
   }
+  console.log('parse description :', description);
+  
   return description;
 }
 
-const parseRecipeOrder = (order: unknown): number => {
+const parseOrder = (order: unknown): number => {
   if (!isNumber(order)) {
     throw new Error('Incorrect material name!');
   }
+  console.log('parse order :', order);
   return order;
 }
 
@@ -116,6 +119,7 @@ const parseQty = (qty: unknown): number => {
   if (!isNumber(qty)) {
     throw new Error('Incorrect or missing data!');
   }
+  console.log('parse qty :', qty);
   return qty;
 }
 
@@ -123,6 +127,7 @@ const parseActive = (active: unknown): boolean => {
   if (!isBoolean(active)) {
     throw new Error('Incorrect or missing data!');
   }
+  console.log('parse active :', active);
   return active;
 };
 
@@ -275,8 +280,8 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
     'recipeType' in recipeData) {
     const newRecipe: RecipeData = {
       recipeCode: parseRecipeCode(recipeData.recipeCode),
-      description: parseDescriptiobn(recipeData.description),
-      order: parseRecipeOrder(Number(recipeData.order)),
+      description: parseDescription(recipeData.description),
+      order: parseOrder(Number(recipeData.order)),
       productId: parseRecipeProduct(recipeData.productId),
       stationId: parseRecipeStation(recipeData.stationId),
       recipeType: parseRecipeType(recipeData.recipeType),
@@ -323,7 +328,7 @@ const nokGrpProcessor = async(nokGrpData: unknown): Promise<NokGrpData> => {
     const newProductGrp: NokGrpData = {
       nokGrpName: parseName(nokGrpData.nokGrpName),
       nokGrpCode: parseCode(nokGrpData.nokGrpCode),
-      nokGrpDesc: 'nokGrpDesc' in nokGrpData ? parseDescriptiobn(nokGrpData.nokGrpDesc) : '',
+      nokGrpDesc: 'nokGrpDesc' in nokGrpData ? parseDescription(nokGrpData.nokGrpDesc) : '',
       active: 'active' in nokGrpData ? parseActive(nokGrpData.active) : true,
   };
     return newProductGrp;
@@ -339,7 +344,7 @@ const nokCodeProcessor = async(nokCodeData: unknown): Promise<NokCodeData> => {
   if ('nokCode' in nokCodeData && 'nokDesc' in nokCodeData && 'nokGrpId' in nokCodeData) {
     const newNokCode: NokCodeData = {
       nokCode: parseCode(nokCodeData.nokCode),
-      nokDesc: parseDescriptiobn(nokCodeData.nokDesc),
+      nokDesc: parseDescription(nokCodeData.nokDesc),
       nokGrpId: parseId(nokCodeData.nokGrpId),
       active: 'active' in nokCodeData ? parseActive(nokCodeData.active) : true,
   };
@@ -356,7 +361,7 @@ const rcaCodeProcessor = (rcaCodeData: unknown): RcaCodeData => {
   if ('rcaCode' in rcaCodeData && 'rcaDesc' in rcaCodeData) {
     const newRcaCode: RcaCodeData = {
       rcaCode: parseCode(rcaCodeData.rcaCode),
-      rcaDesc: parseDescriptiobn(rcaCodeData.rcaDesc),
+      rcaDesc: parseDescription(rcaCodeData.rcaDesc),
       active: 'active' in rcaCodeData ? parseActive(rcaCodeData.active) : true,
   };
     return newRcaCode;
@@ -373,7 +378,7 @@ const machineProcessor = async(machineData: unknown): Promise<MachineData> => {
     const newMachine: MachineData = {
       machineName: parseName(machineData.machineName),
       machineCode: parseCode(machineData.machineCode),
-      description: 'description' in machineData ? parseDescriptiobn(machineData.description) : '',
+      description: 'description' in machineData ? parseDescription(machineData.description) : '',
       stationId: 'stationId' in machineData ? parseId(machineData.stationId) : 0,
       active: 'active' in machineData ? parseActive(machineData.active) : true,
   };
@@ -391,7 +396,7 @@ const classCodeProcessor = (classCodeData: unknown): ClassCodeData => {
     const newClassCode: ClassCodeData = {
       className: parseName(classCodeData.className),
       classCode: parseCode(classCodeData.classCode),
-      classDesc: parseDescriptiobn(classCodeData.classDesc),
+      classDesc: parseDescription(classCodeData.classDesc),
       active: 'active' in classCodeData ? parseActive(classCodeData.active) : true,
   };
     return newClassCode;
@@ -401,7 +406,10 @@ const classCodeProcessor = (classCodeData: unknown): ClassCodeData => {
 }
 
 export {
-  parseDescriptiobn,
+  parseDescription,
+  parseOrder,
+  parseQty,
+  parseActive,
   productProcessor,
   parseProductResponse,
   productGrpProcessor,

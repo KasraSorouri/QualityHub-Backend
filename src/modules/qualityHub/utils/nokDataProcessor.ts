@@ -1,6 +1,6 @@
 import { isString, parseId, parseDate, parseBoolean } from '../../../utils/dataValidator';
 import { NewNokData, NokStatus, ProductStatus } from '../types';
-import { parseDescriptiobn } from './dataProcessor';
+import { parseDescription } from './dataProcessor';
 
 
 const parseProductSN = (productSN: unknown) : string => {
@@ -69,7 +69,7 @@ const nokDataProcessor = (nokData: unknown) : NewNokData => {
         nokStatus: parseNokStatus(nokData.nokStatus),
         productStatus: parseProductStatus(nokData.productStatus),
         removeReport: parseBoolean(nokData.removeReport),
-        description: 'description' in nokData ? parseDescriptiobn(nokData.description) : ''
+        description: 'description' in nokData ? parseDescription(nokData.description) : ''
       }
       return nokDataToReturn
     } else {

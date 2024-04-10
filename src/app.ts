@@ -14,8 +14,9 @@ import productGrpRouter from './modules/qualityHub/routes/productGrps';
 import workShiftRouter from './modules/qualityHub/routes/workShifts';
 import stationRouter from './modules/qualityHub/routes/stations';
 import materialRouter from './modules/qualityHub/routes/materials';
-import recipeRouter from './modules/qualityHub/routes/recipes';
 import machineRouter from './modules/qualityHub/routes/machines';
+import recipeRouter from './modules/qualityHub/routes/recipes';
+import rework from './modules/qualityHub/routes/reworks';
 
 import nokGrpRouter from './modules/qualityHub/routes/nokGrps';
 import nokCodeRouter from './modules/qualityHub/routes/nokCodes';
@@ -42,6 +43,7 @@ app.use('/api/quality/stations', stationRouter);
 app.use('/api/quality/materials', materialRouter);
 app.use('/api/quality/recipes', recipeRouter);
 app.use('/api/quality/machines', machineRouter);
+app.use('/api/quality/reworks', rework);
 
 app.use('/api/quality/nok_grps', nokGrpRouter);
 app.use('/api/quality/nok_codes', nokCodeRouter);

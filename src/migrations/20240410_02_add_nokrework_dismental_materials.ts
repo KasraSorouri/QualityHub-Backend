@@ -3,49 +3,6 @@ import { ClaimStatus, MaterialStatus, Reusable } from '../modules/qualityHub/typ
 
 module.exports = {
   up: async ({ context: queryInterface } : any) => {
-    await queryInterface.createTable('reworks', {
-      id: {
-        type: DataTypes.INTEGER,
-        primaryKey: true,
-        autoIncrement: true
-      },
-      rework_short_desc: {
-        type: DataTypes.STRING,
-        allowNull: false
-      },
-      description: {
-        type: DataTypes.STRING
-      },
-      order: {
-        type: DataTypes.INTEGER
-      },
-      nok_code_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-      station_id: {
-        type: DataTypes.INTEGER,
-        allowNull: false
-      },
-      use_recipes: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        allowNull: false,
-      },
-      affected_recipes: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
-        allowNull: false
-      },
-      active: {
-        type: DataTypes.BOOLEAN,
-      },
-      deprecated: {
-        type: DataTypes.BOOLEAN,
-        defaultValue: false,
-      },
-      timeDuration: {
-        type: DataTypes.INTEGER
-      }
-    }),
     await queryInterface.createTable('nok_reworks', {
       id: {
         type: DataTypes.INTEGER,
@@ -100,6 +57,5 @@ module.exports = {
   down: async ({ context: queryInterface } : any) => {
     await queryInterface.dropTable('desmantle_materials')
     await queryInterface.dropTable('nok_reworks')
-    await queryInterface.dropTable('reworks')
   }
 }
