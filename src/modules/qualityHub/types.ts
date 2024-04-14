@@ -235,19 +235,19 @@ export interface Rework {
   timeDuration?: number;
   active: boolean;
   deprecated: boolean;
-  useRecipes?: Recipe[];
+  reworkRecipes?: Recipe[];
   affectedRecipes?: Recipe[];
   creationDate: Date;
   deprecatedDate?: Date;
   dismantledMaterials?: RwDismantledMaterial[];
 }
 
-export interface NewReworkData extends Omit<Rework, 'id' | 'product' | 'nokCode' | 'station' | 'useRecipes' | 'affectedRecipes' | 'dismantledMaterials'> {
+export interface NewReworkData extends Omit<Rework, 'id' | 'product' | 'nokCode' | 'station' | 'reworkRecipes' | 'affectedRecipes' | 'dismantledMaterials'> {
   id?: number;
   productId: number;
   nokCodeId: number;
   stationId: number;
-  useRecipes?: number[];
+  reworkRecipes?: number[];
   affectedRecipes?: number[];
   dismantledMaterials?: NewRwDismantledMaterialData[];
 }

@@ -38,7 +38,7 @@ module.exports = {
       order: {
         type: DataTypes.INTEGER
       },
-      use_recipes: {
+      rework_recipes: {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
         References: { model: 'recipes', key: 'id' },
       },

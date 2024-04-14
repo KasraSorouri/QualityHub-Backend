@@ -1,8 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
-import Material from './material';
-import Rework from './rework';
+//import Material from './material';
+//import Rework from './rework';
 
 class RwDismantledMaterials extends Model {
   public id!: number;
@@ -13,10 +13,12 @@ class RwDismantledMaterials extends Model {
   public note?: string;
   public mandatoryRemove!: boolean;
 
+  /*
   static associate() {
     RwDismantledMaterials.belongsTo(Rework, { foreignKey: 'reworkId' });
     RwDismantledMaterials.belongsTo(Material, { foreignKey: 'materialId' });
   }
+  */
 }
 
   RwDismantledMaterials.init({

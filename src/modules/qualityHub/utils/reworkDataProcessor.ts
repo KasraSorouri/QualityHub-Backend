@@ -11,6 +11,8 @@ const parseRecipeData = async (recipeData: unknown) : Promise<number[]> => {
   for (const recipe of recipeData) {
     recipeIds.push(parseId(recipe));
   }
+  console.log(' Parse Recipes : ', recipeIds);
+  
   return recipeIds;
 }
 
@@ -64,7 +66,9 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
     'reworkShortDesc' in reworkData &&
     'order' in reworkData
   ) {
-      console.log('Correct Data');
+      console.log('Rework Data:', reworkData );
+
+      console.log('Correct Data' );
       const reworkDataToReturn : NewReworkData = {
         productId: parseId(reworkData.productId),
         stationId: parseId(reworkData.stationId),
@@ -75,7 +79,7 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
         timeDuration: 'timeDuration' in reworkData ? parseQty(reworkData.timeDuration) : 0,
         active: 'active' in reworkData ? parseActive(reworkData.active) : true,
         deprecated: 'deprecated' in reworkData ? parseActive(reworkData.deprecated) : false,
-        useRecipes: 'reworkRecipes' in reworkData ? await parseRecipeData(reworkData.reworkRecipes) : [],
+        reworkRecipes: 'reworkRecipes' in reworkData ? await parseRecipeData(reworkData.reworkRecipes) : [],
         affectedRecipes: 'affectedRecipes' in reworkData ? await parseRecipeData(reworkData.affectedRecipes) : [],
         creationDate: new Date(),
         deprecatedDate: 'deprecatedDate' in reworkData ? parseDate(reworkData.deprecatedDate): undefined,

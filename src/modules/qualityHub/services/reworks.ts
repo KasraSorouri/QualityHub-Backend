@@ -1,4 +1,4 @@
-import { Rework, Product, Station, ReworkQuery, RwDismantledMaterials } from '../../../models';
+import { Rework, Product, Station, ReworkQuery, RwDismantledMaterials, NokCode, Material } from '../../../models';
 import { NewRwDismantledMaterialData, RwDismantledMaterialData } from '../types';
 import { reworkDataProcessor } from '../utils/reworkDataProcessor';
 
@@ -20,20 +20,23 @@ const query: ReworkQuery = {
       as: 'station',
       attributes: ['id', 'stationName', 'stationCode'],
     },
-/*    {
+    {
+      model: NokCode,
+      as: 'nokCode',
+      attributes: ['id', 'nokCode'],
+    },
+    {
       model: RwDismantledMaterials,
       as: 'RwDismantledMaterials',
-      attributes: ['qty'],
+      attributes: [ 'dismantledQty', 'note', 'mandatoryRemove'],
       include: [
         {
           model: Material,
           as: 'material',
           attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
-        },
-        
+        }
       ]
     }
-    */
   ]
 };
 

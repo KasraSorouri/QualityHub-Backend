@@ -181,9 +181,15 @@ export interface ReworkQuery {
   attributes: {
     exclude: string[];
   };
-  include: [RecipeProduct, RecipeStation]
+  include: [RecipeProduct, RecipeStation, ReworkNokCode, RwDismantledMaterialsInclude]
 }
-/*
+
+export interface ReworkNokCode {
+  model: typeof NokCode;
+  as: string;
+  attributes: string[];
+}
+
 interface RwDismantledMaterialsInclude {
   model: typeof RwDismantledMaterials;
   as: string;
@@ -194,7 +200,7 @@ interface RwDismantledMaterialsInclude {
     attributes: string[];
   }[];
 }
-*/
+
 
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
@@ -220,7 +226,7 @@ RecipeBoms.belongsTo(Material, { as: 'material', foreignKey: 'materialId'});
 Machine.belongsTo(Station, { foreignKey: 'stationId'});
 Station.hasMany(Machine, { foreignKey: 'stationId'});
 
-Recipe.belongsToMany(Material, { through: RecipeBoms  ,foreignKey: 'recipeId'});
+Recipe.belongsToMany(Material, { through: RecipeBoms ,foreignKey: 'recipeId'});
 Material.belongsToMany(Recipe, { through: RecipeBoms, foreignKey: 'materialId'});
 
 // NOK Management
@@ -265,8 +271,14 @@ Product.hasMany(Rework, { foreignKey: 'productId'});
 Rework.belongsTo(Station, { foreignKey: 'stationId'});
 Station.hasMany(Rework, { foreignKey: 'stationId'});
 
-Rework.belongsToMany(Material, { through: RwDismantledMaterials, foreignKey: 'reworkId'});
-Material.belongsToMany(Rework, { through: RwDismantledMaterials, foreignKey: 'materialId'});
+Rework.belongsTo(NokCode, { foreignKey: 'nokCodeId'});
+NokCode.hasMany(Rework, { foreignKey: 'nokCodeId'});
+
+Material.hasMany(RwDismantledMaterials, { foreignKey: 'materialId'});
+RwDismantledMaterials.belongsTo(Material, { foreignKey: 'materialId'});
+
+Rework.hasMany(RwDismantledMaterials, { foreignKey: 'reworkId'});
+RwDismantledMaterials.belongsTo(Rework, { foreignKey: 'reworkId'});
 
 export {
   User,

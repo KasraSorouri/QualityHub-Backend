@@ -1,12 +1,13 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
+/*
 import Station from './station';
 import Product from './product';
 import NokCode from './nokCode';
 import Material from './material';
 import RwDismantledMaterials from './reworkDismantledMaterials';
-
+*/
 interface ReworkAttributes {
   id: number;
   productId: number;
@@ -18,7 +19,7 @@ interface ReworkAttributes {
   timeDuration?: number;
   active: boolean;
   deprecated: boolean;
-  useRecipes?: number[];
+  reworkRecipes?: number[];
   affectedRecipes?: number[];
   creationDate: Date;
   deprecatedDate?: Date;
@@ -37,11 +38,12 @@ class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implement
   timeDuration?: number;
   active!: boolean;
   deprecated!: boolean;
-  useRecipes!: number[];
+  reworkRecipes!: number[];
   affectedRecipes!: number[];
   creationDate!: Date;
   deprecatedDate!: Date;
 
+  /*
   static associate() {
     Rework.belongsTo(Product, {
       foreignKey: 'productId',
@@ -55,7 +57,7 @@ class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implement
 
     Rework.belongsTo(NokCode, {
       foreignKey: 'nokCodeId',
-      as: 'nok'
+      as: 'nokCode'
     });
     Rework.belongsToMany(Material, {
       through: RwDismantledMaterials,
@@ -63,6 +65,7 @@ class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implement
       as: 'dismantledMaterial'
     });
   }  
+  */
 }
 
 // define Product Model
@@ -104,7 +107,7 @@ Rework.init({
     type: DataTypes.BOOLEAN,
     defaultValue: false,
   },
-  useRecipes: {
+  reworkRecipes: {
     type: DataTypes.ARRAY(DataTypes.INTEGER),
     allowNull: false
   },
