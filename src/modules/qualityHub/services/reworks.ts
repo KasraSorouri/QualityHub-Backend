@@ -152,7 +152,7 @@ const updateRework = async (id: number, reworkData: unknown) => {
     // check that the rework is deprecated before
     const isDeprecated = rework.deprecatedDate;
     
-    if (!isDeprecated) {
+    if (!isDeprecated && newReworkData.deprecated) {
       newReworkData.deprecatedDate = new Date();
     };
       
