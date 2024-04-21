@@ -16,6 +16,7 @@ interface NokAnalyseAttributes {
   description: string;
   timeWaste?: number;
   materialWaste?: number;
+  closed: boolean;
   closeDate: Date;
 }
 
@@ -30,6 +31,7 @@ class NokAnalyse extends Model<NokAnalyseAttributes, NokAnalyseCreationAttribute
   description!: string;
   timeWaste?: number;
   materialWaste?: number;
+  closed: boolean = false;
   closeDate!: Date;
 
   static associate() {
@@ -93,6 +95,10 @@ NokAnalyse.init({
   },
   materialWaste: {
     type: DataTypes.INTEGER,
+  },
+  closed: {
+    type: DataTypes.BOOLEAN,
+    defaultValue: false,
   },
   closeDate: {
     type: DataTypes.DATE,

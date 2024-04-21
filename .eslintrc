@@ -11,8 +11,12 @@
     "node": true
   },
   "rules": {
+    "@typescript-eslint/indent":"error",
+    "semi": ["error", "always"],
+    "no-console": "off",
+    "quotes": ["error", "single"],
     "@typescript-eslint/semi": ["error"],
-    "@typescript-eslint/explicit-function-return-type": "off",
+    "@typescript-eslint/explicit-function-return-type": 1,
     "@typescript-eslint/explicit-module-boundary-types": "off",
     "@typescript-eslint/restrict-template-expressions": "off",
     "@typescript-eslint/restrict-plus-operands": "off",

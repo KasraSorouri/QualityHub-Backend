@@ -1,11 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
-import Station from './station';
 import Product from './product';
-import WorkShift from './workShif';
 import { NokStatus, ProductStatus } from '../modules/qualityHub/types';
-import NokCode from './nokCode';
 import NokAnalyse from './nokAnalyse';
 import Rework from './rework';
 import NokReworks from './nokReworks';
@@ -17,7 +14,7 @@ interface NokDetectAttributes {
   initNokCodeId: number;
   detectStationId: number;
   detectShiftId: number;
-  description: string;
+  description?: string;
   detectTime: Date;
   nokStatus: NokStatus;
   productStatus: ProductStatus;
@@ -45,21 +42,6 @@ class NokDetect extends Model<NokDetectAttributes, NokDetectCreationAttributes> 
       as: 'product'
     });
   
-    NokDetect.belongsTo(Station, {
-      foreignKey: 'detectStationId',
-      as: 'station'
-    });
-
-    NokDetect.belongsTo(WorkShift, {
-      foreignKey: 'detectShiftId',
-      as: 'workShift'
-    });
-
-    NokDetect.belongsTo(NokCode, {
-      foreignKey: 'initNokCodeId',
-      as: 'nokCode'
-    });
-
     NokDetect.hasOne(NokAnalyse, {
       foreignKey: 'nokId',
     })

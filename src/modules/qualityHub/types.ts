@@ -153,4 +153,102 @@ export interface RcaCode {
   active: boolean;
 }
 
-export interface RcaCodeData extends Omit<RcaCode, 'id'> {}
+export interface RcaCodeData extends Omit<RcaCode, 'id'> {
+  id?: number;
+}
+
+export interface Machine {
+  id: number;
+  machineName: string;
+  machineCode: string;
+  description?: string;
+  station?: Station;
+  active: boolean;
+}
+
+export interface MachineData extends Omit<Machine, 'id' | 'station'> {
+  id?: number;
+  stationId?: number;
+}
+
+export interface ClassCode {
+  id: number;
+  className: string;
+  classCode: string;
+  classDesc: string;
+  active: boolean;
+}
+
+export interface ClassCodeData extends Omit<ClassCode, 'id'> {
+  id?: number;
+}
+
+export interface NOK {
+  id: number;
+  product: Product;
+  productSN: string;
+  initNokCode: NokCode;
+  description?: string;
+  detectedStation: Station;
+  detectedShift: WorkShift;
+  detectTime: Date;
+  nokStatus: NokStatus;
+  productStatus: ProductStatus;
+  removeReport: boolean;
+}
+
+export interface NewNokData extends Omit<NOK, 'id' | 'product' | 'initNokCode' | 'detectedStation' | 'detectedShift'> {
+  id?: number;
+  productId: number;
+  initNokCodeId: number;
+  detectStationId: number;
+  detectShiftId: number;
+}
+
+export interface RwDismantledMaterial {
+  id: number;
+  reworkId: number;
+  recipeBomId: number;
+  dismantledQty: number;
+  note?: string;
+  mandatoryRemove: boolean;
+  //material: Material;
+  //qty?: number;
+  //recipe?: Recipe;
+}
+
+export interface RwDismantledMaterialData extends Omit<RwDismantledMaterial, 'id' | 'material' | 'recipe'> {
+  id?: number;
+  //recipeId?: number;
+  //materialId: number;
+}
+
+export interface NewRwDismantledMaterialData extends Omit<RwDismantledMaterialData, 'reworkId'> {}
+
+export interface Rework {
+  id: number;
+  product: Product;
+  nokCode: NokCode;
+  station: Station;
+  reworkShortDesc: string;
+  description: string;
+  order: number;
+  timeDuration?: number;
+  active: boolean;
+  deprecated: boolean;
+  reworkRecipes?: Recipe[];
+  affectedRecipes?: Recipe[];
+  creationDate: Date;
+  deprecatedDate?: Date;
+  dismantledMaterials?: RwDismantledMaterial[];
+}
+
+export interface NewReworkData extends Omit<Rework, 'id' | 'product' | 'nokCode' | 'station' | 'reworkRecipes' | 'affectedRecipes' | 'dismantledMaterials'> {
+  id?: number;
+  productId: number;
+  nokCodeId: number;
+  stationId: number;
+  reworkRecipes?: number[];
+  affectedRecipes?: number[];
+  dismantledMaterials?: NewRwDismantledMaterialData[];
+}

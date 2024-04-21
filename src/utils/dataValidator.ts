@@ -16,3 +16,26 @@ export const stringLengthCheck = (text: string, length: number, subject: string)
   }
   return true;
 };
+
+export const parseDate = (date: unknown): Date => {
+  if (!isString(date) || !date) {
+    throw new Error('Incorrect or missing date 5!');
+  }
+  return new Date(date);
+}
+
+export const parseBoolean = (value: unknown): boolean => {
+  if (!isBoolean(value)) {
+    throw new Error('Incorrect or missing data!');
+  }
+  return value;
+};
+
+export const parseId = (id: unknown): number => {
+  if (!isNumber(id)) {
+    throw new Error('Incorrect or missing data!');
+  }
+  console.log('parse Id :', id);
+  
+  return id;
+}

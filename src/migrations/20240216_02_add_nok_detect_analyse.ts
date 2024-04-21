@@ -81,6 +81,10 @@ module.exports = {
       description: {
         type: DataTypes.STRING,
       },
+      closed: {
+        type: DataTypes.BOOLEAN,
+        defaultValue: false,
+      },
       close_date: {
         type: DataTypes.DATE,
       }

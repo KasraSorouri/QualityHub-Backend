@@ -14,11 +14,16 @@ import productGrpRouter from './modules/qualityHub/routes/productGrps';
 import workShiftRouter from './modules/qualityHub/routes/workShifts';
 import stationRouter from './modules/qualityHub/routes/stations';
 import materialRouter from './modules/qualityHub/routes/materials';
+import machineRouter from './modules/qualityHub/routes/machines';
 import recipeRouter from './modules/qualityHub/routes/recipes';
+import rework from './modules/qualityHub/routes/reworks';
 
 import nokGrpRouter from './modules/qualityHub/routes/nokGrps';
 import nokCodeRouter from './modules/qualityHub/routes/nokCodes';
 import rcaCodeRouter from './modules/qualityHub/routes/rcaCodes';
+import classCodeRouter from './modules/qualityHub/routes/classCodes';
+
+import nokDetectRouter from './modules/qualityHub/routes/nokDetect';
 
 
 const app = express();
@@ -37,13 +42,16 @@ app.use('/api/quality/shifts', workShiftRouter);
 app.use('/api/quality/stations', stationRouter);
 app.use('/api/quality/materials', materialRouter);
 app.use('/api/quality/recipes', recipeRouter);
+app.use('/api/quality/machines', machineRouter);
+app.use('/api/quality/reworks', rework);
 
 app.use('/api/quality/nok_grps', nokGrpRouter);
 app.use('/api/quality/nok_codes', nokCodeRouter);
 app.use('/api/quality/rca_codes', rcaCodeRouter);
+app.use('/api/quality/class_codes', classCodeRouter);
 
+app.use('/api/quality/nok_detect', nokDetectRouter);
 
- 
 app.get('/api/ping',(_req,res) => {
   res.send('Pong!');
 });

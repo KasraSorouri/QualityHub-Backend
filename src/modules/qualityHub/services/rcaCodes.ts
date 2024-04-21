@@ -37,13 +37,7 @@ const getRcaCode = async(id: number): Promise<RcaCode> => {
 // Create a new RcaCode
 const createRcaCode = async (rcaCodeData: unknown): Promise<RcaCode> => {
 
-  console.log(' ** materilas service * create ** rcaCode data ->', rcaCodeData);
-  
-
   const newRcaCodeData : RcaCodeData = await rcaCodeProcessor(rcaCodeData);
-
-  console.log(' ** materilas service * create ** process data ->', newRcaCodeData);
-
 
   try {
     const rcaCode = await RcaCode.create(newRcaCodeData);
