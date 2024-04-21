@@ -2,6 +2,16 @@ import { parseDate, parseId } from "../../../utils/dataValidator";
 import { NewReworkData, NewRwDismantledMaterialData } from "../types";
 import { parseActive, parseDescription, parseOrder, parseQty } from "./dataProcessor";
 
+/*
+const parseRecipeBom = async (recipeBomId: unknown) : Promise<number> => {
+  if (!recipeBomId || typeof recipeBomId !== 'number') {
+    console.log('++ Data processing Error 1');
+    throw new Error('Incorrect or missing Data **!');
+  }
+  return parseId(recipeBomId);
+}
+*/
+
 const parseRecipeData = async (recipeData: unknown) : Promise<number[]> => {
   if (!recipeData ||  !Array.isArray(recipeData) ) {
     console.log('++ Data processing Error 1');
@@ -29,20 +39,17 @@ const parseDismantlesMaterial = async (dismantlesMaterialData: unknown) : Promis
 
       throw new Error('Incorrect or missing Data **!');
     }
-    if ('material' in dismantledItem &&
-      'qty' in dismantledItem &&
-      'dismantledQty' in dismantledItem &&
-      'recipeCode' in dismantledItem
-        ) {
+    if ('id' in dismantledItem && 'dismantledQty' in dismantledItem ){
           console.log('+++ corect Dismantled Material Data');
           
-
-      const dismantledmaterial = {
-        materialId: parseId(dismantledItem.material.id),
-        qty: parseQty(dismantledItem.qty),
+      const dismantledmaterial = { 
+        recipeBomId: parseId(dismantledItem.id), 
+        //recipeId: parseId(dismantledItem.recipeId),
+        //materialId: parseId(dismantledItem.material.id),
+        //qty: parseQty(dismantledItem.qty),
         dismantledQty: parseQty(dismantledItem.dismantledQty),
-        mandatoryRemove: 'mandatoryRemove' in dismantledItem ? parseActive(dismantledItem.mandatoryRemove) : false,
         note: 'note' in dismantledItem ? parseDescription(dismantledItem.note) : '',
+        mandatoryRemove: 'mandatoryRemove' in dismantledItem ? parseActive(dismantledItem.mandatoryRemove) : false,
       }
       dismantledMaterials.push(dismantledmaterial)
     } else {
@@ -68,7 +75,7 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
   ) {
       console.log('Rework Data:', reworkData );
 
-      console.log('Correct Data' );
+      console.log('Correct Data');
       const reworkDataToReturn : NewReworkData = {
         productId: parseId(reworkData.productId),
         stationId: parseId(reworkData.stationId),

@@ -208,18 +208,19 @@ export interface NewNokData extends Omit<NOK, 'id' | 'product' | 'initNokCode' |
 export interface RwDismantledMaterial {
   id: number;
   reworkId: number;
-  material: Material;
-  qty?: number;
+  recipeBomId: number;
   dismantledQty: number;
-  mandatoryRemove: boolean;
   note?: string;
-  recipe?: Recipe;
+  mandatoryRemove: boolean;
+  //material: Material;
+  //qty?: number;
+  //recipe?: Recipe;
 }
 
 export interface RwDismantledMaterialData extends Omit<RwDismantledMaterial, 'id' | 'material' | 'recipe'> {
   id?: number;
-  recipeId?: number;
-  materialId: number;
+  //recipeId?: number;
+  //materialId: number;
 }
 
 export interface NewRwDismantledMaterialData extends Omit<RwDismantledMaterialData, 'reworkId'> {}

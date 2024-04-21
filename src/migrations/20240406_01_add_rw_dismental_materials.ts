@@ -12,6 +12,12 @@ module.exports = {
         type: DataTypes.INTEGER,
         references: { model: 'reworks', key: 'id' }
       },
+      recipe_bom_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: 'recipe_boms', key: 'id' }
+      },
+      /*
       recipe_id: {
         type: DataTypes.INTEGER,
         allowNull: true,
@@ -21,6 +27,7 @@ module.exports = {
         type: DataTypes.INTEGER,
         references: { model: 'materials', key: 'id' }
       },
+      */
       dismantled_qty: {
         type: DataTypes.INTEGER,
         allowNull:true

@@ -1,14 +1,13 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
-//import Material from './material';
-//import Rework from './rework';
 
 class RwDismantledMaterials extends Model {
   public id!: number;
   public reworkId!: number;
-  public recipeId?: number;
-  public materialId!: number;
+  public recipeBomId!: number;
+  //public recipeId?: number;
+  //public materialId!: number;
   public dismantledQty!: number;
   public note?: string;
   public mandatoryRemove!: boolean;
@@ -32,6 +31,12 @@ class RwDismantledMaterials extends Model {
     allowNull: false,
     references: { model: 'reworks', key: 'id' }
   },
+  recipeBomId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: 'recipeBoms', key: 'id' }
+  },
+  /*
   recipeId: {
     type: DataTypes.INTEGER,
     references: { model: 'recipes', key: 'id' }
@@ -41,6 +46,7 @@ class RwDismantledMaterials extends Model {
     allowNull: false,
     references: { model: 'materials', key: 'id' }
   },
+  */
   dismantledQty: {
     type: DataTypes.INTEGER,
     allowNull:true

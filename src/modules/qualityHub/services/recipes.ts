@@ -34,6 +34,8 @@ const query: RecipeQuery = {
 // Get all Recipes
 const getAllRecipes = async(): Promise<Recipe[]> => {
 
+  console.log('Taala 3');
+
   try {
     const recipes = await Recipe.findAll(query);
     return recipes;
@@ -49,6 +51,8 @@ const getAllRecipes = async(): Promise<Recipe[]> => {
 
 // Get a Recipe based on ID
 const getRecipe = async(id: number): Promise<Recipe> => {
+  console.log('Taala 4');
+
   const recipe = await Recipe.findByPk(id,query);
  
   if (!recipe) {

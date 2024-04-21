@@ -1,4 +1,4 @@
-import { Rework, Product, Station, ReworkQuery, RwDismantledMaterials, NokCode, Material } from '../../../models';
+import { Rework, Product, Station, ReworkQuery, RwDismantledMaterials, NokCode, RecipeBoms, Material, Recipe } from '../../../models';
 import { NewRwDismantledMaterialData, RwDismantledMaterialData } from '../types';
 import { reworkDataProcessor } from '../utils/reworkDataProcessor';
 
@@ -31,20 +31,33 @@ const query: ReworkQuery = {
       attributes: [ 'dismantledQty', 'note', 'mandatoryRemove'],
       include: [
         {
-          model: Material,
-          as: 'material',
-          attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
-        }
-      ]
+        model: RecipeBoms,
+        as: 'recipeBom',
+        attributes: ['id', 'qty', 'reusable'],
+        include: [
+          {
+            model: Material,
+            as: 'material',
+            attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
+          },
+          {
+            model: Recipe,
+            as: 'recipe',
+            attributes: ['recipeCode'],
+          }
+        ],
+      }]
     }
+
   ]
 };
 
 // Get all Reworks
 const getAllReworks = async(): Promise<Rework[]> => {
-
   try {
     const reworks = await Rework.findAll(query);
+    console.log('reworks -> ', reworks);
+
     return reworks;
   } catch (err : unknown) {
     let errorMessage = '';
@@ -59,6 +72,8 @@ const getAllReworks = async(): Promise<Rework[]> => {
 // Get a Rework based on ID
 const getRework = async(id: number): Promise<Rework> => {
   const rework = await Rework.findByPk(id,query);
+  console.log('rework by id -> ', rework);
+  
  
   if (!rework) {
     throw new Error ('the rework not found');
@@ -74,6 +89,8 @@ const getReworksByProduct = async (productId: number): Promise<Rework[]> => {
       ...query,
     });
 
+    console.log(' rework by product ->', reworks);
+    
     return reworks;
   } catch (err : unknown) {
     let errorMessage = '';
@@ -177,8 +194,9 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
   for (const item of dismantledMaterialData) {
     const dismantled = {
       reworkId: rework.id,
-      recipeId: item.recipeId,
-      materialId: item.materialId,
+      recipeBomId: item.recipeBomId,
+      //recipeId: item.recipeId,
+      //materialId: item.materialId,
       dismantledQty: item.dismantledQty,
       note: item.note,
       mandatoryRemove: item.mandatoryRemove
