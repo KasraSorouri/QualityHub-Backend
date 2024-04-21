@@ -131,23 +131,7 @@ const createRework = async (reworkData: unknown): Promise<null> => {
   
   return null
 }
-  /*
 
-
-  try {
-    const rework = await Rework.create(newReworkData);
-    if (rework.id && 'materialsData' in newReworkData) {
-      await updateBoms(rework.id, newReworkData.materialsData);
-    }
-    return rework;
-  } catch(err : unknown) {
-      let errorMessage = '';
-      if (err instanceof Error) {
-        errorMessage += ' Error: ' + err.message;
-      }
-      throw new Error(errorMessage);
-    }
-    */
 
 // Update an Rework
 const updateRework = async (id: number, reworkData: unknown) => { 
@@ -158,14 +142,20 @@ const updateRework = async (id: number, reworkData: unknown) => {
   const newReworkData = await reworkDataProcessor(reworkData);
 
   console.log('** * rework -> newReworkData', newReworkData);
-/*
+
   
  try {
     const rework = await Rework.findByPk(id);
     if(!rework) {
       throw new Error('Rework not found!');
     }
-    await updateBoms(rework.id, newReworkData.materialsData);
+    // check that the rework is deprecated before
+    const isDeprecated = rework.deprecatedDate;
+    
+    if (!isDeprecated) {
+      newReworkData.deprecatedDate = new Date();
+    };
+      
     const updatedRework = await rework.update(newReworkData);
     return updatedRework;
   } catch(err : unknown) {
@@ -175,7 +165,6 @@ const updateRework = async (id: number, reworkData: unknown) => {
     }
     throw new Error(errorMessage);
   }
-  */
 };
 
 

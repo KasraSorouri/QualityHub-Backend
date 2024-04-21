@@ -1,4 +1,4 @@
-import { parseDate, parseId } from "../../../utils/dataValidator";
+import { parseId } from "../../../utils/dataValidator";
 import { NewReworkData, NewRwDismantledMaterialData } from "../types";
 import { parseActive, parseDescription, parseOrder, parseQty } from "./dataProcessor";
 
@@ -39,14 +39,11 @@ const parseDismantlesMaterial = async (dismantlesMaterialData: unknown) : Promis
 
       throw new Error('Incorrect or missing Data **!');
     }
-    if ('id' in dismantledItem && 'dismantledQty' in dismantledItem ){
+    if ('recipeBom' in dismantledItem && typeof dismantledItem.recipeBom === 'object' && 'dismantledQty' in dismantledItem ){
           console.log('+++ corect Dismantled Material Data');
           
       const dismantledmaterial = { 
-        recipeBomId: parseId(dismantledItem.id), 
-        //recipeId: parseId(dismantledItem.recipeId),
-        //materialId: parseId(dismantledItem.material.id),
-        //qty: parseQty(dismantledItem.qty),
+        recipeBomId: parseId(dismantledItem.recipeBom.id), 
         dismantledQty: parseQty(dismantledItem.dismantledQty),
         note: 'note' in dismantledItem ? parseDescription(dismantledItem.note) : '',
         mandatoryRemove: 'mandatoryRemove' in dismantledItem ? parseActive(dismantledItem.mandatoryRemove) : false,
@@ -89,7 +86,7 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
         reworkRecipes: 'reworkRecipes' in reworkData ? await parseRecipeData(reworkData.reworkRecipes) : [],
         affectedRecipes: 'affectedRecipes' in reworkData ? await parseRecipeData(reworkData.affectedRecipes) : [],
         creationDate: new Date(),
-        deprecatedDate: 'deprecatedDate' in reworkData ? parseDate(reworkData.deprecatedDate): undefined,
+        //deprecatedDate: 'deprecated' in reworkData && reworkData.deprecated ? new Date(): undefined,
         dismantledMaterials: 'dismantledMaterials' in reworkData ? await parseDismantlesMaterial(reworkData.dismantledMaterials) : []
       }
       console.log('*Rework Data Processing - reworkDataToReturn', reworkDataToReturn);
