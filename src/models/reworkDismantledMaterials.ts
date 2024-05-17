@@ -62,7 +62,7 @@ class RwDismantledMaterials extends Model {
   sequelize,
   underscored: true,
   timestamps: false,
-  modelName: 'RwDismantledMaterials'
+  modelName: 'rwDismantledMaterials'
 });
 
 export default RwDismantledMaterials;
