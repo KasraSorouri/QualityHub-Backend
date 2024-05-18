@@ -252,3 +252,46 @@ export interface NewReworkData extends Omit<Rework, 'id' | 'product' | 'nokCode'
   affectedRecipes?: number[];
   dismantledMaterials?: NewRwDismantledMaterialData[];
 }
+
+export enum ReworkStatus {
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  POSTPONED = 'POSTPONED',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}
+
+export interface DismantledMaterial {
+  id: number;
+  material: Material;
+  qty: number;
+  recipeBom: RecipeBom | 'EXTERNAL';
+}
+
+export interface DismantledMaterialData {
+  material: number;
+  dismantledQty: number;
+  recipeBom: number | string;
+  status: MaterialStatus;
+}
+
+export interface NokRework {
+  id: number;
+  nok: NOK;
+  reworkActions?: Rework[];
+  dismantledMaterials?: DismantledMaterial[];
+  AffectedRecipes?: Recipe[];
+  reworkOperator: string;
+  reworkTime: Date;
+  reworkShift: WorkShift;
+  reworkStation?: Station;
+  reworkStatus: ReworkStatus;
+}
+
+export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkActions' | 'dismantledMaterials' | 'AffectedRecipes' | 'reworkShift'> {
+  nokId: number;
+  reworkActionsId?: number[];
+  dismantledMaterials?: DismantledMaterialData[];
+  affectedRecipes?: number[];
+  reworkShiftId: number;
+}

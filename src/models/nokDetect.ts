@@ -5,7 +5,7 @@ import Product from './product';
 import { NokStatus, ProductStatus } from '../modules/qualityHub/types';
 import NokAnalyse from './nokAnalyse';
 import Rework from './rework';
-import NokReworks from './nokReworks';
+import NokReworks from './nokRework';
 
 interface NokDetectAttributes {
   id: number;

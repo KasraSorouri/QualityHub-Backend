@@ -2,16 +2,6 @@ import { parseId } from "../../../utils/dataValidator";
 import { NewReworkData, NewRwDismantledMaterialData } from "../types";
 import { parseActive, parseDescription, parseOrder, parseQty } from "./dataProcessor";
 
-/*
-const parseRecipeBom = async (recipeBomId: unknown) : Promise<number> => {
-  if (!recipeBomId || typeof recipeBomId !== 'number') {
-    console.log('++ Data processing Error 1');
-    throw new Error('Incorrect or missing Data **!');
-  }
-  return parseId(recipeBomId);
-}
-*/
-
 const parseRecipeData = async (recipeData: unknown) : Promise<number[]> => {
   if (!recipeData ||  !Array.isArray(recipeData) ) {
     console.log('++ Data processing Error 1');

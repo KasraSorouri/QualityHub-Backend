@@ -17,7 +17,7 @@ import NokGrp from './nokGrp';
 import NokDetect from './nokDetect';
 import NokAnalyse from './nokAnalyse';
 import Rework from './rework';
-import NokReworks from './nokReworks';
+import NokRework from './nokRework';
 import DismantleMaterials from './nokDismantleMaterials';
 import Rca from './rca';
 import RcaCode from './rcaCode';
@@ -261,8 +261,8 @@ WorkShift.hasMany(NokDetect, { foreignKey: 'detectShiftId'});
 NokDetect.hasOne(NokAnalyse,{ foreignKey:'nokId'});
 NokAnalyse.belongsTo(NokDetect, { foreignKey: 'nokId'});
 
-NokDetect.hasMany(NokReworks,{ foreignKey:'nokId'})
-NokReworks.belongsTo(NokDetect, { foreignKey: 'nokId'});
+NokDetect.hasMany(NokRework,{ foreignKey:'nokId'})
+NokRework.belongsTo(NokDetect, { foreignKey: 'nokId'});
 
 NokDetect.hasMany(DismantleMaterials, { foreignKey: 'nokId'});
 DismantleMaterials.belongsTo(NokDetect, { foreignKey: 'nokId'});
@@ -313,7 +313,7 @@ export {
   NokCode,
   NokDetect,
   NokAnalyse,
-  NokReworks,
+  NokRework,
   DismantleMaterials,
   RwDismantledMaterials,
   RcaCode,
