@@ -12,7 +12,7 @@ const parseProductSN = (productSN: unknown) : string => {
 
 const parseNokStatus = (nokStatus: unknown) : NokStatus => {
   if (!isString(nokStatus)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or missing data 10!');
   }
   switch(nokStatus) {
     case 'PENDING':
@@ -30,7 +30,7 @@ const parseNokStatus = (nokStatus: unknown) : NokStatus => {
 
 const parseProductStatus = (productStatus: unknown) : ProductStatus => {
   if (!isString(productStatus)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or missing data 11!');
   }
   switch(productStatus) {
     case 'NOK':
@@ -40,13 +40,13 @@ const parseProductStatus = (productStatus: unknown) : ProductStatus => {
     case 'SCRAPPED':
       return ProductStatus.SCRAPPED;
     default:
-      throw new Error('Incorrect or missing data! ---');
+      throw new Error('Incorrect or missing data! -11--');
   }
 }
 
 const parseReworkStatus = (reworkStatus: unknown) : ReworkStatus => {
   if (!isString(reworkStatus)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or missing data 12!');
   }
   switch(reworkStatus) {
     case 'PENDING':
@@ -58,13 +58,13 @@ const parseReworkStatus = (reworkStatus: unknown) : ReworkStatus => {
     case 'CANCELLED':
       return ReworkStatus.CANCELLED;
     default:
-      throw new Error('Incorrect or missing data ---');
+      throw new Error('Incorrect or missing data -12--');
   }
 }
 
 const parseMaterialStatus = (materialStatus: unknown) : MaterialStatus => {
   if (!isString(materialStatus)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or missing data 13!');
   }
   switch(materialStatus) {
     case 'SCRAPPED':
@@ -74,7 +74,7 @@ const parseMaterialStatus = (materialStatus: unknown) : MaterialStatus => {
     case 'CLAIMABLE':
       return MaterialStatus.CLAIMABLE;
     default:
-      throw new Error('Incorrect or missing data ---');
+      throw new Error('Incorrect or missing data -13--');
   }
 }
 
@@ -111,19 +111,12 @@ const parseNokDismantledMaterial = (dismantledMaterialData: unknown) : Dismantle
 
 const parseReworkActions =  (reworkActions: unknown) : number[] => {
   if (!reworkActions || !Array.isArray(reworkActions)) {
-    console.log('++ Data processing Error 2');
-    throw new Error('Incorrect or missing Data **!');
+    console.log('++ Data processing Error 4');
+    throw new Error('Incorrect or missing Data *4*!');
   }
   const reworkActionsArray : number[] = [];
   for (const reworkAction of reworkActions) {
-    if (!reworkAction || typeof reworkAction !== 'object') {
-      console.log('++ Data processing Error 3');
-
-      throw new Error('Incorrect or missing Data **!');
-    }
-    if ('reworkAction' in reworkAction) {
-      reworkActionsArray.push(parseId(reworkAction.reworkAction))
-    }
+    reworkActionsArray.push(parseId(reworkAction))
   }
 
   return reworkActionsArray;
@@ -176,7 +169,10 @@ const reworkDataProcessor = (reworkData: unknown) : NokReworkData => {
         reworkShiftId: parseId(reworkData.reworkShift),
         reworkActionsId: 'reworkActions' in reworkData ? parseReworkActions(reworkData.reworkActions) : [],
         reworkTime: 'reworkTime' in reworkData ? parseDate(reworkData.reworkTime) : new Date(),
+        reworkDuration: 'reworkDuration' in reworkData ? parseQty(Number(reworkData.reworkDuration)) : 0,
+        reworkManPower: 'reworkManPower' in reworkData ? parseQty(Number(reworkData.reworkManPower)) : 0,
         dismantledMaterials: 'dismantledMaterials' in reworkData ? parseNokDismantledMaterial(reworkData.dismantledMaterials) : [],
+        reworkNote: 'reworkNote' in reworkData ? parseDescription(reworkData.reworkNote) : '',
         reworkStatus: 'reworkStatus' in reworkData ? parseReworkStatus(reworkData.reworkStatus) : ReworkStatus.PENDING
       }
     return reworkDataToReturn

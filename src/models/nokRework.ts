@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
-
 import { sequelize } from '../configs/db';
+import Station from './station';
+import { ReworkStatus } from '../modules/qualityHub/types';
 
 interface NokReworkAttributes {
   id: number;
@@ -8,6 +9,13 @@ interface NokReworkAttributes {
   reworkActionsId?: number[];
   affectedRecipes?: number[];
   reworkShiftId: number;
+  reworkOperator: string;
+  reworkTime: Date;
+  reworkDuration: number;
+  reworkManPower: number;
+  reworkStation?: Station;
+  reworkNote?: string;
+  reworkStatus: ReworkStatus;
 }
 
 
@@ -19,6 +27,13 @@ class NokRework extends Model<NokReworkAttributes, NokReworkCreationAttributes> 
   reworkActionsId!: number[];
   affectedRecipes!: number[];
   reworkShiftId!: number;
+  reworkOperator!: string;
+  reworkTime!: Date;
+  reworkDuration!: number;
+  reworkManPower!: number;
+  reworkStation!: Station | undefined;
+  reworkNote!: string;
+  reworkStatus!: ReworkStatus;
 }
 
 NokRework.init({
@@ -39,6 +54,24 @@ NokRework.init({
   }
   ,reworkShiftId: {
     type: DataTypes.INTEGER, allowNull: false
+  },
+  reworkOperator: {
+    type: DataTypes.STRING, allowNull: false
+  },
+  reworkTime: {
+    type: DataTypes.DATE, allowNull: false
+  },
+  reworkDuration: {
+    type: DataTypes.INTEGER, allowNull: false
+  },
+  reworkManPower: {
+    type: DataTypes.INTEGER, allowNull: false
+  },
+  reworkNote: {
+    type: DataTypes.STRING
+  },
+  reworkStatus: {
+    type: DataTypes.ENUM(...Object.values(ReworkStatus)), allowNull: false
   }
 }, {
   sequelize,

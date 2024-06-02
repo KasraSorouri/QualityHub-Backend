@@ -110,14 +110,14 @@ const parseRecipeStation = (stationId: unknown): number => {
 
 const parseId = (id: unknown): number => {
   if (!isNumber(id)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or ID data!');
   }
   return id;
 }
 
 const parseQty = (qty: unknown): number => {
   if (!isNumber(qty)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or Number type!');
   }
   console.log('parse qty :', qty);
   return qty;
@@ -125,7 +125,7 @@ const parseQty = (qty: unknown): number => {
 
 const parseActive = (active: unknown): boolean => {
   if (!isBoolean(active)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or Active data!');
   }
   console.log('parse active :', active);
   return active;
@@ -133,7 +133,7 @@ const parseActive = (active: unknown): boolean => {
 
 const parseReusable = (reusable: unknown): Reusable  => {
   if (!isString(reusable)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or Reusable data!');
   }
   switch (reusable) {
     case 'YES':
@@ -143,13 +143,13 @@ const parseReusable = (reusable: unknown): Reusable  => {
     case 'IQC':
       return Reusable.IQC;
     default:
-      throw new Error('Incorrect or missing data!');
+      throw new Error('Incorrect or Reusable data!');
   }
 }
 
 const parseRecipeType = (recipeType: unknown): RecipeType => {
   if (!isString(recipeType)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or Recipe type!');
   }
   switch (recipeType) {
     case 'PRODUCTION':
@@ -157,7 +157,7 @@ const parseRecipeType = (recipeType: unknown): RecipeType => {
     case 'REWORK':
       return RecipeType.REWORK;
     default:
-      throw new Error('Incorrect or missing data!');
+      throw new Error('Incorrect or Recipe type!');
   }
 }
 

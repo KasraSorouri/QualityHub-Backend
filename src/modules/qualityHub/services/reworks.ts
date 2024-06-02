@@ -56,7 +56,6 @@ const query: ReworkQuery = {
 const getAllReworks = async(): Promise<Rework[]> => {
   try {
     const reworks = await Rework.findAll(query);
-    console.log('reworks -> ', reworks);
 
     return reworks;
   } catch (err : unknown) {
@@ -72,8 +71,6 @@ const getAllReworks = async(): Promise<Rework[]> => {
 // Get a Rework based on ID
 const getRework = async(id: number): Promise<Rework> => {
   const rework = await Rework.findByPk(id,query);
-  console.log('rework by id -> ', rework);
-  
  
   if (!rework) {
     throw new Error ('the rework not found');
@@ -89,8 +86,6 @@ const getReworksByProduct = async (productId: number): Promise<Rework[]> => {
       ...query,
     });
 
-    console.log(' rework by product ->', reworks);
-    
     return reworks;
   } catch (err : unknown) {
     let errorMessage = '';
@@ -109,11 +104,8 @@ const createRework = async (reworkData: unknown): Promise<null> => {
   // test data
   const newReworkData = await reworkDataProcessor(reworkData);
 
-  console.log('** * rework -> newReworkData', newReworkData);
-
   try {
     const rework = await Rework.create(newReworkData);
-    console.log('** * rework -> create', rework);
 
     if (rework.id && 'dismantledMaterials' in newReworkData && newReworkData.dismantledMaterials) {
     await handleDismantledMaterials(rework.id, newReworkData.dismantledMaterials);
@@ -137,14 +129,9 @@ const createRework = async (reworkData: unknown): Promise<null> => {
 const updateRework = async (id: number, reworkData: unknown) => { 
   
   // test data
-  console.log(' * rework -> id:', id, ' raw data ->',reworkData);
-  
   const newReworkData = await reworkDataProcessor(reworkData);
-
-  console.log('** * rework -> newReworkData', newReworkData);
-
-  
- try {
+ 
+  try { 
     const rework = await Rework.findByPk(id);
     if(!rework) {
       throw new Error('Rework not found!');
@@ -174,8 +161,6 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
   if(rework) {
     // delete previous rework Boms 
   //await RwDismantledMaterials.destroy({ where: { 'reworkId' : rework.id}})
-  console.log('here');
-  
 
   // create new rework Boms
   let dismantledMaterials : RwDismantledMaterialData[] = []

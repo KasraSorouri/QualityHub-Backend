@@ -284,14 +284,18 @@ export interface NokRework {
   reworkOperator: string;
   reworkTime: Date;
   reworkShift: WorkShift;
+  reworkDuration: number;
+  reworkManPower: number;
   reworkStation?: Station;
   reworkStatus: ReworkStatus;
+  reworkNote: string;
 }
 
-export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkActions' | 'dismantledMaterials' | 'AffectedRecipes' | 'reworkShift'> {
+export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkActions' | 'dismantledMaterials' | 'AffectedRecipes' | 'reworkShift' | 'reworkStation'> {
   nokId: number;
   reworkActionsId?: number[];
   dismantledMaterials?: DismantledMaterialData[];
   affectedRecipes?: number[];
   reworkShiftId: number;
+  reworkStationId?: number;
 }

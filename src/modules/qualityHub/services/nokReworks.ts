@@ -101,7 +101,8 @@ const getReworksByNok = async (nokId: number): Promise<NokRework[]> => {
 
 
 // Create a new Rework
-const createRework = async (reworkData: unknown): Promise<null> => {
+const createRework = async (reworkData: unknown): Promise<NokRework> => {
+  console.log('** NOK * rework -> newReworkData', reworkData);
 
   // test data
   const newReworkData = await reworkDataProcessor(reworkData);
@@ -116,6 +117,7 @@ const createRework = async (reworkData: unknown): Promise<null> => {
     await handleDismantledMaterials(rework.id, newReworkData.dismantledMaterials);
 
     }
+    return rework;
   } catch(err : unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
@@ -125,8 +127,6 @@ const createRework = async (reworkData: unknown): Promise<null> => {
     
     throw new Error(errorMessage);
   }
-  
-  return null
 }
 
 
@@ -164,8 +164,8 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
   const rework = await NokRework.findByPk(reworkId);
   if(rework) {
     // delete previous rework Boms 
-  //await RwDismantledMaterials.destroy({ where: { 'reworkId' : rework.id}})
-  console.log('here');
+    await DismantleMaterials.destroy({ where: { 'reworkId' : rework.id}})
+    console.log('here');
   
 
   // create new rework Boms
