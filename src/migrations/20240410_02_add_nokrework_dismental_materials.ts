@@ -65,6 +65,11 @@ module.exports = {
         allowNull: false,
         references: { model: 'nok_detects', key: 'id' }
       },
+      rework_id: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: 'nok_reworks', key: 'id' }
+      },
       material_id: {
         type: DataTypes.INTEGER,   allowNull: true,
         references: { model: 'materials', key: 'id' }
@@ -77,9 +82,13 @@ module.exports = {
         type: DataTypes.ENUM,
         values: Object.values(Reusable)
       },
+      recipe_bom_id: {
+        type: DataTypes.INTEGER,
+        allowNull: true,
+        references: { model: 'recipe_boms', key: 'id' }
+      },
       material_status: {
-        type: DataTypes.ENUM,
-        values: Object.values(MaterialStatus)
+        type: DataTypes.ENUM(...Object.values(MaterialStatus)),
       },
       claim_status: {
         type: DataTypes.ENUM,
@@ -90,7 +99,7 @@ module.exports = {
     })
   },
   down: async ({ context: queryInterface } : any) => {
-    await queryInterface.dropTable('desmantle_materials')
+    await queryInterface.dropTable('dismantle_materials')
     await queryInterface.dropTable('nok_reworks')
   }
 }

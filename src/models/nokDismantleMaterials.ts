@@ -8,9 +8,11 @@ import NokDetect from './nokDetect';
 class DismantleMaterials extends Model {
   public id!: number;
   public nokId!: number;
+  public reworkId!: number;
   public materialId!: number;
   public qty!: number;
   public reusable!: Reusable;
+  public recipeBomId!: number;
   public materialStatus!: MaterialStatus;
   public ClaimStatus!: ClaimStatus;
 
@@ -31,6 +33,11 @@ class DismantleMaterials extends Model {
     allowNull: false,
     references: { model: 'nokDetect', key: 'id' }
   },
+  reworkId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: 'nokRework', key: 'id' }
+  },
   materialId: {
     type: DataTypes.INTEGER,   allowNull: true,
     references: { model: 'material', key: 'id' }
@@ -42,6 +49,10 @@ class DismantleMaterials extends Model {
   reusable: {
     type: DataTypes.ENUM,
     values: Object.values(Reusable)
+  },
+    recipeBomId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
   materialStatus: {
     type: DataTypes.ENUM,

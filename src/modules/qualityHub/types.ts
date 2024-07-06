@@ -107,6 +107,7 @@ export enum ProductStatus {
 export enum MaterialStatus {
   OK = 'OK',
   SCRAPPED = 'SCRAPPED',
+  IQC =  'IQC',
   CLAIMABLE = 'CLAIMABLE',
 }
 
@@ -272,7 +273,7 @@ export interface DismantledMaterialData {
   material: number;
   dismantledQty: number;
   recipeBom: number | string;
-  status: MaterialStatus;
+  materialStatus: MaterialStatus;
 }
 
 export interface NokRework {

@@ -293,6 +293,9 @@ RwDismantledMaterials.belongsTo(Rework, { foreignKey: 'reworkId'});
 RwDismantledMaterials.belongsTo(RecipeBoms, { foreignKey: 'recipeBomId'})
 RecipeBoms.hasMany(RwDismantledMaterials, { foreignKey: 'recipeBomId'});
 
+DismantleMaterials.belongsTo(NokRework, { foreignKey: 'reworkId' });
+NokRework.hasMany(DismantleMaterials, { foreignKey: 'reworkId' });
+
 export {
   User,
   Role,

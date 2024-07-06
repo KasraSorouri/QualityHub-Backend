@@ -71,6 +71,8 @@ const parseMaterialStatus = (materialStatus: unknown) : MaterialStatus => {
       return MaterialStatus.SCRAPPED;
     case 'OK':
       return MaterialStatus.OK;
+    case 'IQC':
+      return MaterialStatus.IQC;
     case 'CLAIMABLE':
       return MaterialStatus.CLAIMABLE;
     default:
@@ -91,14 +93,14 @@ const parseNokDismantledMaterial = (dismantledMaterialData: unknown) : Dismantle
 
       throw new Error('Incorrect or missing Data **!');
     }
-    if ('material' in dismantledItem && 'dismantledQty' in dismantledItem ){
+    if ('material' in dismantledItem && 'actualDismantledQty' in dismantledItem ){
           console.log('+++ corect Dismantled Material Data');
           
       const dismantledmaterial = { 
         material: parseId(dismantledItem.material.id), 
-        dismantledQty: parseQty(dismantledItem.dismantledQty),
-        recipeBom: 'recipeBom' in dismantledItem ? parseId(dismantledItem.recipeBom.id) : 'EXTERNAL',
-        status: 'status' in dismantledItem ? parseMaterialStatus(dismantledItem.status) : MaterialStatus.SCRAPPED,
+        dismantledQty: parseQty(dismantledItem.actualDismantledQty),
+        recipeBom: 'recipeBomId' in dismantledItem ? parseId(dismantledItem.recipeBomId) : 0,
+        materialStatus: 'materialStatus' in dismantledItem ? parseMaterialStatus(dismantledItem.materialStatus) : MaterialStatus.SCRAPPED,
       }
       dismantledMaterials.push(dismantledmaterial)
     } else {
@@ -122,6 +124,19 @@ const parseReworkActions =  (reworkActions: unknown) : number[] => {
   return reworkActionsArray;
 }
 
+
+const parseAffectedRecipe = (affectedRecipe: unknown) : number[] => {
+  if (!affectedRecipe || !Array.isArray(affectedRecipe)) {
+    console.log('++ Data processing Error 5');
+    throw new Error('Incorrect or missing Data *5*!');
+  }
+  const affectedRecipeArray : number[] = [];
+  for (const recipe of affectedRecipe) {
+    affectedRecipeArray.push(parseId(recipe))
+  }
+
+  return affectedRecipeArray;
+}
 
 
 const nokDataProcessor = (nokData: unknown) : NewNokData => {
@@ -171,6 +186,7 @@ const reworkDataProcessor = (reworkData: unknown) : NokReworkData => {
         reworkTime: 'reworkTime' in reworkData ? parseDate(reworkData.reworkTime) : new Date(),
         reworkDuration: 'reworkDuration' in reworkData ? parseQty(Number(reworkData.reworkDuration)) : 0,
         reworkManPower: 'reworkManPower' in reworkData ? parseQty(Number(reworkData.reworkManPower)) : 0,
+        affectedRecipes: 'affectedRecipes' in reworkData ? parseAffectedRecipe(reworkData.affectedRecipes) : [],
         dismantledMaterials: 'dismantledMaterials' in reworkData ? parseNokDismantledMaterial(reworkData.dismantledMaterials) : [],
         reworkNote: 'reworkNote' in reworkData ? parseDescription(reworkData.reworkNote) : '',
         reworkStatus: 'reworkStatus' in reworkData ? parseReworkStatus(reworkData.reworkStatus) : ReworkStatus.PENDING

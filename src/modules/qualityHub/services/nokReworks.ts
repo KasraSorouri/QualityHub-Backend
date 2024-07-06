@@ -1,5 +1,5 @@
 import { DismantleMaterials, NokRework } from '../../../models';
-import { DismantledMaterialData } from '../types';
+import { ClaimStatus, DismantledMaterialData } from '../types';
 import { reworkDataProcessor } from '../utils/nokDataProcessor';
 
 // Define Rework query 
@@ -162,24 +162,29 @@ const updateRework = async (id: number, reworkData: unknown) => {
 const handleDismantledMaterials = async (reworkId: number, dismantledMaterialData: DismantledMaterialData[]) : Promise<NokRework> => {
    
   const rework = await NokRework.findByPk(reworkId);
+  console.log(' ** created Rework + dismantled Material ->', rework);
+  
   if(rework) {
     // delete previous rework Boms 
-    await DismantleMaterials.destroy({ where: { 'reworkId' : rework.id}})
+    await DismantleMaterials.destroy({ where: { 'nokId' : rework.id}})
     console.log('here');
   
 
-  // create new rework Boms
-  let dismantledMaterials : DismantledMaterialData[] = []
+  //let dismantledMaterials : DismantleMaterials[] = []
 
   for (const item of dismantledMaterialData) {
     const dismantled = {
-      material: item.material,
+      nokId: rework.nokId,
+      reworkId: rework.id,
+      materialId: item.material,
       recipeBom: item.recipeBom,
-      dismantledQty: item.dismantledQty,
-      status: item.status,
-    }
+      qty: item.dismantledQty,
+      materialStatus: item.materialStatus,
+      ClaimStatus: ClaimStatus.PENDING
+  }
+
     DismantleMaterials.create(dismantled)
-    dismantledMaterials.push(dismantled)
+    //dismantledMaterials.push(dismantled)
   }
   try {
     //await RwDismantledMaterials.bulkCreate(dismantledMaterials);
