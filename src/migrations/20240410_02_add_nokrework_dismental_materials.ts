@@ -3,6 +3,7 @@ import { ClaimStatus, MaterialStatus, Reusable, ReworkStatus } from '../modules/
 
 module.exports = {
   up: async ({ context: queryInterface } : any) => {
+
     await queryInterface.createTable('nok_reworks', {
       id: {
         type: DataTypes.INTEGER,
@@ -15,19 +16,19 @@ module.exports = {
         references: { model: 'nok_detects', key: 'id' }
       },
       rework_actions_id: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        type: DataTypes.INTEGER,
         allowNull: true,
-        refrences: { model: 'reworks' , key: 'id' }
+        references: { model: 'reworks' , key: 'id' }
       }
       ,affected_recipes: {
-        type: DataTypes.ARRAY(DataTypes.INTEGER),
+        type: DataTypes.INTEGER,
         allowNull: true,
-        refrences: { model: 'recipes', key: 'id' }
+        references: { model: 'recipes', key: 'id' }
       }
       ,rework_shift_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        refrences: { model: 'shifts', key: 'id' }
+        references: { model: 'work_shifts', key: 'id' }
       },
       rework_operator: {
         type: DataTypes.STRING,
@@ -71,7 +72,8 @@ module.exports = {
         references: { model: 'nok_reworks', key: 'id' }
       },
       material_id: {
-        type: DataTypes.INTEGER,   allowNull: true,
+        type: DataTypes.INTEGER,
+        allowNull: true,
         references: { model: 'materials', key: 'id' }
       },
       qty: {
@@ -97,9 +99,36 @@ module.exports = {
         defaultValue: ClaimStatus.PENDING
       }
     })
-  },
+    await queryInterface.createTable('nok_reworks_rework_actions', {
+      nok_reworks_id: {
+        type: DataTypes.INTEGER,
+        references: { model: 'nok_reworks', key: 'id' },
+        onDelete: 'CASCADE'
+      },
+      rework_actions_id: {
+        type: DataTypes.INTEGER,
+        references: { model: 'reworks', key: 'id' },
+        onDelete: 'CASCADE'
+      }
+    });
+    await queryInterface.createTable('nok_reworks_affected_recipes', {
+      nok_reworks_id: {
+        type: DataTypes.INTEGER,
+        references: { model: 'nok_reworks', key: 'id' },
+        onDelete: 'CASCADE'
+      },
+      affected_recipes_id: {
+        type: DataTypes.INTEGER,
+        references: { model: 'recipes', key: 'id' },
+        onDelete: 'CASCADE'
+      }
+    });
+
+ },
   down: async ({ context: queryInterface } : any) => {
     await queryInterface.dropTable('dismantle_materials')
     await queryInterface.dropTable('nok_reworks')
+    await queryInterface.dropTable('nok_reworks_rework_actions');
+    await queryInterface.dropTable('enum_dismantle_materials_material_status');
   }
 }

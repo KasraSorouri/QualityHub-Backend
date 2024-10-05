@@ -54,7 +54,7 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
     
     throw new Error('Incorrect or missing Data **!');
   }
-  if ( 'productId'  in reworkData &&
+  if ( 'productId' in reworkData &&
     'stationId' in reworkData &&
     'nokCodeId' in reworkData &&
     'reworkShortDesc' in reworkData &&
@@ -77,7 +77,7 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
         affectedRecipes: 'affectedRecipes' in reworkData ? await parseRecipeData(reworkData.affectedRecipes) : [],
         creationDate: new Date(),
         //deprecatedDate: 'deprecated' in reworkData && reworkData.deprecated ? new Date(): undefined,
-        dismantledMaterials: 'dismantledMaterials' in reworkData ? await parseDismantlesMaterial(reworkData.dismantledMaterials) : []
+        dismantledMaterials: 'rwDismantledMaterials' in reworkData ? await parseDismantlesMaterial(reworkData.rwDismantledMaterials) : []
       }
       console.log('*Rework Data Processing - reworkDataToReturn', reworkDataToReturn);
       
