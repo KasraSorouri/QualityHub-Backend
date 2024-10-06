@@ -24,6 +24,7 @@ import RcaCode from './rcaCode';
 import Machine from './machine';
 import ClassCode from './defectClass';
 import RwDismantledMaterials from './reworkDismantledMaterials';
+import NokRework_ReworkActions from './nokReork_ReworkActions';
 
 export interface UserQuery {
   attributes: {
@@ -295,6 +296,9 @@ RecipeBoms.hasMany(RwDismantledMaterials, { foreignKey: 'recipeBomId'});
 
 DismantleMaterials.belongsTo(NokRework, { foreignKey: 'reworkId' });
 NokRework.hasMany(DismantleMaterials, { foreignKey: 'reworkId' });
+
+NokRework.belongsToMany(Rework, { through: NokRework_ReworkActions , foreignKey:'nokReworkId' })
+Rework.belongsToMany(NokRework, { through: NokRework_ReworkActions , foreignKey:'reworkId' })
 
 export {
   User,

@@ -6,8 +6,8 @@ import { ReworkStatus } from '../modules/qualityHub/types';
 interface NokReworkAttributes {
   id: number;
   nokId: number;
-  reworkActionsId?: number[];
-  affectedRecipes?: number[];
+  //reworkActionsId?: number[];
+  //affectedRecipes?: number[];
   reworkShiftId: number;
   reworkOperator: string;
   reworkTime: Date;
@@ -24,8 +24,8 @@ interface NokReworkCreationAttributes extends Omit<NokReworkAttributes, 'id'> {}
 class NokRework extends Model<NokReworkAttributes, NokReworkCreationAttributes> implements NokReworkAttributes {
   id!: number;
   nokId!: number;
-  reworkActionsId!: number[];
-  affectedRecipes!: number[];
+  //reworkActionsId!: number[];
+  //affectedRecipes!: number[];
   reworkShiftId!: number;
   reworkOperator!: string;
   reworkTime!: Date;
@@ -46,12 +46,14 @@ NokRework.init({
     type: DataTypes.INTEGER,
     allowNull: false,
   }
-  ,reworkActionsId: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER), allowNull: true
-  }
-  ,affectedRecipes: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER), allowNull: true
-  }
+  //,reworkActionsId: {
+  //  type: DataTypes.INTEGER,
+  //  allowNull: true,
+  //}
+  //,affectedRecipes: {
+  //  type: DataTypes.ARRAY(DataTypes.INTEGER),
+  //  allowNull: true
+  //}
   ,reworkShiftId: {
     type: DataTypes.INTEGER, allowNull: false
   },
