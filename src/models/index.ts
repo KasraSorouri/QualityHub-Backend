@@ -18,7 +18,7 @@ import NokDetect from './nokDetect';
 import NokAnalyse from './nokAnalyse';
 import Rework from './rework';
 import NokRework from './nokRework';
-import DismantleMaterials from './nokDismantleMaterials';
+import NokDismantleMaterials from './nokDismantleMaterials';
 import Rca from './rca';
 import RcaCode from './rcaCode';
 import Machine from './machine';
@@ -265,9 +265,9 @@ NokAnalyse.belongsTo(NokDetect, { foreignKey: 'nokId'});
 NokDetect.hasMany(NokRework,{ foreignKey:'nokId'})
 NokRework.belongsTo(NokDetect, { foreignKey: 'nokId'});
 
-NokDetect.hasMany(DismantleMaterials, { foreignKey: 'nokId'});
-DismantleMaterials.belongsTo(NokDetect, { foreignKey: 'nokId'});
-DismantleMaterials.belongsTo(Material, { foreignKey: 'materialId'});
+NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId'});
+NokDismantleMaterials.belongsTo(NokDetect, { foreignKey: 'nokId'});
+NokDismantleMaterials.belongsTo(Material, { foreignKey: 'materialId'});
 
 NokAnalyse.belongsTo(Station, { foreignKey: 'stationId'});
 NokAnalyse.belongsTo(Material, { foreignKey: 'materialId'});
@@ -294,8 +294,8 @@ RwDismantledMaterials.belongsTo(Rework, { foreignKey: 'reworkId'});
 RwDismantledMaterials.belongsTo(RecipeBoms, { foreignKey: 'recipeBomId'})
 RecipeBoms.hasMany(RwDismantledMaterials, { foreignKey: 'recipeBomId'});
 
-DismantleMaterials.belongsTo(NokRework, { foreignKey: 'reworkId' });
-NokRework.hasMany(DismantleMaterials, { foreignKey: 'reworkId' });
+NokDismantleMaterials.belongsTo(NokRework, { foreignKey: 'reworkId' });
+NokRework.hasMany(NokDismantleMaterials, { foreignKey: 'reworkId' });
 
 NokRework.belongsToMany(Rework, { through: NokRework_ReworkActions , foreignKey:'nokReworkId' })
 Rework.belongsToMany(NokRework, { through: NokRework_ReworkActions , foreignKey:'reworkId' })
@@ -321,7 +321,7 @@ export {
   NokDetect,
   NokAnalyse,
   NokRework,
-  DismantleMaterials,
+  NokDismantleMaterials,
   RwDismantledMaterials,
   RcaCode,
   Rca,

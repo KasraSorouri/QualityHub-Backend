@@ -1,4 +1,4 @@
-import { DismantleMaterials, NokRework } from '../../../models';
+import { NokDismantleMaterials, NokRework } from '../../../models';
 import { ClaimStatus, DismantledMaterialData } from '../types';
 import { reworkDataProcessor } from '../utils/nokDataProcessor';
 
@@ -173,11 +173,11 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
   
   if(rework) {
     // delete previous rework Boms 
-    await DismantleMaterials.destroy({ where: { 'nokId' : rework.id}})
+    await NokDismantleMaterials.destroy({ where: { 'rework_id' : rework.id}})
     console.log('here');
   
 
-  //let dismantledMaterials : DismantleMaterials[] = []
+  //let dismantledMaterials : NokDismantleMaterials[] = []
 
   for (const item of dismantledMaterialData) {
     const dismantled = {
@@ -190,7 +190,7 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
       ClaimStatus: ClaimStatus.PENDING
   }
 
-    DismantleMaterials.create(dismantled)
+    NokDismantleMaterials.create(dismantled)
     //dismantledMaterials.push(dismantled)
   }
   try {

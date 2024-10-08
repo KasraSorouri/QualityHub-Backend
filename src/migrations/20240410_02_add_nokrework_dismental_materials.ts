@@ -55,7 +55,7 @@ module.exports = {
       }
     }),
  
-    await queryInterface.createTable('dismantle_materials', {
+    await queryInterface.createTable('nok_dismantle_materials', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -126,9 +126,10 @@ module.exports = {
 
  },
   down: async ({ context: queryInterface } : any) => {
-    await queryInterface.dropTable('dismantle_materials')
-    await queryInterface.dropTable('nok_reworks')
+    await queryInterface.dropTable('nok_dismantle_materials')
     await queryInterface.dropTable('nok_reworks_rework_actions');
+    await queryInterface.dropTable('nok_reworks_affected_recipes');
+    await queryInterface.dropTable('nok_reworks')
     await queryInterface.dropTable('enum_dismantle_materials_material_status');
   }
 }

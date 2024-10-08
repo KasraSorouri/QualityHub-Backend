@@ -5,7 +5,7 @@ import Material from './material';
 import { ClaimStatus, MaterialStatus, Reusable } from '../modules/qualityHub/types';
 import NokDetect from './nokDetect';
 
-class DismantleMaterials extends Model {
+class NokDismantleMaterials extends Model {
   public id!: number;
   public nokId!: number;
   public reworkId!: number;
@@ -17,12 +17,12 @@ class DismantleMaterials extends Model {
   public ClaimStatus!: ClaimStatus;
 
   static associate() {
-    NokDetect.hasMany(DismantleMaterials, { foreignKey: 'nokId' });
-    Material.hasMany(DismantleMaterials, { foreignKey: 'materialId' });
+    NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId' });
+    Material.hasMany(NokDismantleMaterials, { foreignKey: 'materialId' });
   }
 }
 
-  DismantleMaterials.init({
+NokDismantleMaterials.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -68,7 +68,7 @@ class DismantleMaterials extends Model {
   sequelize,
   underscored: true,
   timestamps: false,
-  modelName: 'dismantleMaterials'
+  modelName: 'nokDismantleMaterials'
 });
 
-export default DismantleMaterials;
+export default NokDismantleMaterials;
