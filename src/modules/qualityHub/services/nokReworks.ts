@@ -184,13 +184,16 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
       nokId: rework.nokId,
       reworkId: rework.id,
       materialId: item.material,
-      recipeBom: item.recipeBom,
+      recipeBomId: item.recipeBomId,
+      reusable: item.reusable,
       qty: item.dismantledQty,
       materialStatus: item.materialStatus,
       ClaimStatus: ClaimStatus.PENDING
   }
 
-    NokDismantleMaterials.create(dismantled)
+    console.log('dismantled * rady to create->', dismantled);
+    const testcreate = NokDismantleMaterials.create(dismantled)
+    console.log('++++ test create ->', testcreate);
     //dismantledMaterials.push(dismantled)
   }
   try {

@@ -1,5 +1,5 @@
 import { isString, parseId, parseDate, parseBoolean } from '../../../utils/dataValidator';
-import { DismantledMaterialData, MaterialStatus, NewNokData, NokReworkData, NokStatus, ProductStatus, ReworkStatus } from '../types';
+import { DismantledMaterialData, MaterialStatus, NewNokData, NokReworkData, NokStatus, ProductStatus, Reusable, ReworkStatus } from '../types';
 import { parseDescription, parseQty } from './dataProcessor';
 
 
@@ -80,6 +80,23 @@ const parseMaterialStatus = (materialStatus: unknown) : MaterialStatus => {
   }
 }
 
+const parseReusable = (reusable: unknown) : Reusable => {
+  
+  if (!isString(reusable)) {
+    throw new Error('Incorrect or missing data 14!');
+  }
+  switch(reusable) {
+    case 'YES':
+      return Reusable.YES;
+    case 'NO':
+      return Reusable.NO;
+    case 'IQC':
+      return Reusable.IQC;
+    default:
+      throw new Error('Incorrect or missing data -14--');
+  }
+}
+
 const parseNokDismantledMaterial = (dismantledMaterialData: unknown) : DismantledMaterialData[] => {
 
   if (!dismantledMaterialData || !Array.isArray(dismantledMaterialData)) {
@@ -99,15 +116,21 @@ const parseNokDismantledMaterial = (dismantledMaterialData: unknown) : Dismantle
       const dismantledmaterial = { 
         material: parseId(dismantledItem.material.id), 
         dismantledQty: parseQty(dismantledItem.actualDismantledQty),
-        recipeBom: 'recipeBomId' in dismantledItem ? parseId(dismantledItem.recipeBomId) : 0,
+        recipeBomId: 'recipeBomId' in dismantledItem ? parseId(dismantledItem.recipeBomId) : undefined,
+        reusable: 'reusable' in dismantledItem ? parseReusable(dismantledItem.reusable) : Reusable.NO,
         materialStatus: 'materialStatus' in dismantledItem ? parseMaterialStatus(dismantledItem.materialStatus) : MaterialStatus.SCRAPPED,
       }
+      // Renmove undefined recipe BOM ID for extera Material
+      dismantledmaterial.recipeBomId = dismantledmaterial.recipeBomId === 0 ? undefined : dismantledmaterial.recipeBomId;
+
       dismantledMaterials.push(dismantledmaterial)
     } else {
       console.log('+++ Incorrect Dismantled Material Data');
     }
   }
 
+  console.log('*+*+*+* parse Nok dismantle Material return ->', dismantledMaterials);
+  
   return dismantledMaterials;
 }
 

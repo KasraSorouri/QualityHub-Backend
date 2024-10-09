@@ -139,7 +139,7 @@ const parseReusable = (reusable: unknown): Reusable  => {
     case 'YES':
       return Reusable.YES;
     case 'NO':
-      return Reusable.No;
+      return Reusable.NO;
     case 'IQC':
       return Reusable.IQC;
     default:
@@ -311,7 +311,7 @@ const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]>
       const newConsumingMaterial: ConsumingMaterial = {
         materialId: parseId(bom.materialId),
         qty: parseQty(bom.qty),
-        reusable: 'reusable' in bom ? parseReusable(bom.reusable) : Reusable.No,
+        reusable: 'reusable' in bom ? parseReusable(bom.reusable) : Reusable.NO,
       };
       newBoms.push(newConsumingMaterial);
     }

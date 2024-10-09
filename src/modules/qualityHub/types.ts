@@ -87,7 +87,7 @@ export interface RecipeBomData extends Omit<RecipeBom,'id'> {};
 
 export enum Reusable  {
   YES = 'YES',
-  No =  'NO', 
+  NO =  'NO', 
   IQC = 'IQC'
 }
 
@@ -272,7 +272,8 @@ export interface DismantledMaterial {
 export interface DismantledMaterialData {
   material: number;
   dismantledQty: number;
-  recipeBom: number | string;
+  recipeBomId: number | undefined;
+  reusable: Reusable;
   materialStatus: MaterialStatus;
 }
 
