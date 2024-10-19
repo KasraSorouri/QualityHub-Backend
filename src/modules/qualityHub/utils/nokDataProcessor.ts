@@ -45,19 +45,25 @@ const parseProductStatus = (productStatus: unknown) : ProductStatus => {
 }
 
 const parseReworkStatus = (reworkStatus: unknown) : ReworkStatus => {
+  console.log('* Processing Rework Status ->', reworkStatus);
+  
   if (!isString(reworkStatus)) {
     throw new Error('Incorrect or missing data 12!');
   }
   switch(reworkStatus) {
     case 'PENDING':
       return ReworkStatus.PENDING;
+    case 'IN_PROGRESS':
+        return ReworkStatus.IN_PROGRESS;
     case 'POSTPONED':
       return ReworkStatus.POSTPONED;
     case 'COMPLETED':
       return ReworkStatus.COMPLETED;
     case 'CANCELLED':
       return ReworkStatus.CANCELLED;
+
     default:
+      console.log('Incorrect or missing data -12--')
       throw new Error('Incorrect or missing data -12--');
   }
 }

@@ -104,17 +104,10 @@ const getReworksByNok = async (nokId: number): Promise<NokRework[]> => {
 const createRework = async (reworkData: unknown): Promise<NokRework> => {
   console.log('** NOK * rework -> newReworkData', reworkData);
 
-  // TO DO : Compelete the data register for rework, Dismantle materials and related action and recipes
   // test data
   const newReworkData = await reworkDataProcessor(reworkData);
 
   console.log('** * rework -> newReworkData', newReworkData);
-  console.log('***** rework  Action Id-> ', newReworkData.reworkActionsId);
-  console.log('***** rework * type Action Id-> ',typeof newReworkData.reworkActionsId);
-  console.log('***** rework * type Action Id-> ', newReworkData.reworkActionsId?[0] : 'no action');
-
-  newReworkData.reworkActionsId = undefined
-  console.log('** * rework * modif -> newReworkData', newReworkData);
 
   try {
     const rework = await NokRework.create(newReworkData)

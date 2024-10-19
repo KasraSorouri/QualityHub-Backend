@@ -16,14 +16,12 @@ module.exports = {
         references: { model: 'nok_detects', key: 'id' }
       },
       rework_actions_id: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: true,
-        references: { model: 'reworks' , key: 'id' }
       }
       ,affected_recipes: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.ARRAY(DataTypes.INTEGER),
         allowNull: true,
-        references: { model: 'recipes', key: 'id' }
       }
       ,rework_shift_id: {
         type: DataTypes.INTEGER,
