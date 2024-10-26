@@ -241,7 +241,7 @@ export interface Rework {
   affectedRecipes?: Recipe[];
   creationDate: Date;
   deprecatedDate?: Date;
-  dismantledMaterials?: RwDismantledMaterial[];
+  rwDismantledMaterials?: RwDismantledMaterial[];
 }
 
 export interface NewReworkData extends Omit<Rework, 'id' | 'product' | 'nokCode' | 'station' | 'reworkRecipes' | 'affectedRecipes' | 'dismantledMaterials'> {

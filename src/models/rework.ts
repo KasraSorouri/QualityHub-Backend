@@ -1,6 +1,7 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
+import RwDismantledMaterials from './reworkDismantledMaterials';
 /*
 import Station from './station';
 import Product from './product';
@@ -42,6 +43,7 @@ class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implement
   affectedRecipes!: number[];
   creationDate!: Date;
   deprecatedDate!: Date;
+  rwDismantledMaterials?: RwDismantledMaterials;
 
   /*
   static associate() {

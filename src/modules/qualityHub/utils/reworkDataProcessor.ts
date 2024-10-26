@@ -1,4 +1,4 @@
-import { parseId } from "../../../utils/dataValidator";
+import { parseDate, parseId } from "../../../utils/dataValidator";
 import { NewReworkData, NewRwDismantledMaterialData } from "../types";
 import { parseActive, parseDescription, parseOrder, parseQty } from "./dataProcessor";
 
@@ -76,7 +76,7 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
         reworkRecipes: 'reworkRecipes' in reworkData ? await parseRecipeData(reworkData.reworkRecipes) : [],
         affectedRecipes: 'affectedRecipes' in reworkData ? await parseRecipeData(reworkData.affectedRecipes) : [],
         creationDate: new Date(),
-        //deprecatedDate: 'deprecated' in reworkData && reworkData.deprecated ? new Date(): undefined,
+        deprecatedDate: 'deprecatedDate' in reworkData ? parseDate(reworkData.deprecatedDate): undefined,
         dismantledMaterials: 'rwDismantledMaterials' in reworkData ? await parseDismantlesMaterial(reworkData.rwDismantledMaterials) : []
       }
       console.log('*Rework Data Processing - reworkDataToReturn', reworkDataToReturn);

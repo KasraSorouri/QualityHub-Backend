@@ -57,6 +57,9 @@ const getAllReworks = async(): Promise<Rework[]> => {
   try {
     const reworks = await Rework.findAll(query);
 
+    console.log('reworks -> ', reworks);
+
+
     return reworks;
   } catch (err : unknown) {
     let errorMessage = '';
@@ -71,7 +74,9 @@ const getAllReworks = async(): Promise<Rework[]> => {
 // Get a Rework based on ID
 const getRework = async(id: number): Promise<Rework> => {
   const rework = await Rework.findByPk(id,query);
- 
+  
+  console.log('rework by id -> ', rework);
+  
   if (!rework) {
     throw new Error ('the rework not found');
   }
