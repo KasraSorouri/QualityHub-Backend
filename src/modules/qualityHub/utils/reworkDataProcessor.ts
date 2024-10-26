@@ -90,7 +90,7 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
         affectedRecipes: 'affectedRecipes' in reworkData ? await parseRecipeData(reworkData.affectedRecipes) : [],
         creationDate: new Date(),
         deprecatedDate: 'deprecatedDate' in reworkData ? parseDate(reworkData.deprecatedDate): undefined,
-        dismantledMaterials: 'dismantledMaterials' in reworkData ? await parseDismantlesMaterial(reworkData.dismantledMaterials) : []
+        dismantledMaterials: 'rwDismantledMaterials' in reworkData ? await parseDismantlesMaterial(reworkData.rwDismantledMaterials) : []
       }
       console.log('*Rework Data Processing - reworkDataToReturn', reworkDataToReturn);
       

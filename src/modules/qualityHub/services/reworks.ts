@@ -27,7 +27,7 @@ const query: ReworkQuery = {
     },
     {
       model: RwDismantledMaterials,
-      as: 'RwDismantledMaterials',
+      as: 'rwDismantledMaterials',
       attributes: [ 'dismantledQty', 'note', 'mandatoryRemove'],
       include: [
         {
@@ -56,6 +56,8 @@ const query: ReworkQuery = {
 const getAllReworks = async(): Promise<Rework[]> => {
   try {
     const reworks = await Rework.findAll(query);
+    console.log('++++ **** ***** +++ **** +++* ************');
+
     console.log('reworks -> ', reworks);
 
     return reworks;
@@ -72,6 +74,8 @@ const getAllReworks = async(): Promise<Rework[]> => {
 // Get a Rework based on ID
 const getRework = async(id: number): Promise<Rework> => {
   const rework = await Rework.findByPk(id,query);
+  console.log('**** **** ***** +++ **** +++* ************');
+  
   console.log('rework by id -> ', rework);
   
  

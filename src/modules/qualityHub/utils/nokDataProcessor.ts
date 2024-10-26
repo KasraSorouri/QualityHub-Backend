@@ -73,6 +73,7 @@ const nokDataProcessor = (nokData: unknown) : NewNokData => {
       }
       return nokDataToReturn
     } else {
+      console.log('Incorrect or missing data --+-+!');
       throw new Error('Incorrect or missing data --+-+!');
     }
   }
