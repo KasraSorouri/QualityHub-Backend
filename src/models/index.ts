@@ -298,7 +298,7 @@ NokDismantleMaterials.belongsTo(NokRework, { foreignKey: 'reworkId' });
 NokRework.hasMany(NokDismantleMaterials, { foreignKey: 'reworkId' });
 
 NokRework.belongsToMany(Rework, { through: NokRework_ReworkActions , foreignKey:'nokReworkId' })
-Rework.belongsToMany(NokRework, { through: NokRework_ReworkActions , foreignKey:'reworkId' })
+Rework.belongsToMany(NokRework, { through: NokRework_ReworkActions , foreignKey:'reworkActionId' })
 
 export {
   User,

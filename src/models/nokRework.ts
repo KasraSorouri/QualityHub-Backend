@@ -6,8 +6,8 @@ import { ReworkStatus } from '../modules/qualityHub/types';
 interface NokReworkAttributes {
   id: number;
   nokId: number;
-  //reworkActionsId?: number[];
-  //affectedRecipes?: number[];
+  reworkActionsId?: number[];
+  affectedRecipes?: number[];
   reworkShiftId: number;
   reworkOperator: string;
   reworkTime: Date;
@@ -24,8 +24,8 @@ interface NokReworkCreationAttributes extends Omit<NokReworkAttributes, 'id'> {}
 class NokRework extends Model<NokReworkAttributes, NokReworkCreationAttributes> implements NokReworkAttributes {
   id!: number;
   nokId!: number;
-  //reworkActionsId!: number[];
-  //affectedRecipes!: number[];
+  reworkActionsId!: number[];
+  affectedRecipes!: number[];
   reworkShiftId!: number;
   reworkOperator!: string;
   reworkTime!: Date;
@@ -34,7 +34,10 @@ class NokRework extends Model<NokReworkAttributes, NokReworkCreationAttributes> 
   reworkStation!: Station | undefined;
   reworkNote!: string;
   reworkStatus!: ReworkStatus;
-}
+
+  public addRework!: (rework: Number[], options?: any) => Promise<void>;
+
+}   
 
 NokRework.init({
   id: {
@@ -46,14 +49,14 @@ NokRework.init({
     type: DataTypes.INTEGER,
     allowNull: false,
   }
-  //,reworkActionsId: {
-  //  type: DataTypes.INTEGER,
-  //  allowNull: true,
-  //}
-  //,affectedRecipes: {
-  //  type: DataTypes.ARRAY(DataTypes.INTEGER),
-  //  allowNull: true
-  //}
+  ,reworkActionsId: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: true,
+  }
+  ,affectedRecipes: {
+    type: DataTypes.ARRAY(DataTypes.INTEGER),
+    allowNull: true
+  }
   ,reworkShiftId: {
     type: DataTypes.INTEGER, allowNull: false
   },
@@ -79,7 +82,7 @@ NokRework.init({
   sequelize,
   underscored: true,
   timestamps: false,
-  modelName: 'nokRework'
+  modelName: 'nok_rework'
 });
 
 export default NokRework;

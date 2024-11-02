@@ -1,6 +1,7 @@
 import { NokDismantleMaterials, NokRework } from '../../../models';
-import { ClaimStatus, DismantledMaterialData } from '../types';
+import { ClaimStatus, DismantledMaterialData, ProductStatus, ReworkStatus } from '../types';
 import { reworkDataProcessor } from '../utils/nokDataProcessor';
+import nokDetects from './nokDetects';
 
 // Define Rework query 
 /*
@@ -112,6 +113,18 @@ const createRework = async (reworkData: unknown): Promise<NokRework> => {
   try {
     const rework = await NokRework.create(newReworkData)
     console.log('** * rework -> create', rework);
+    if(!rework) {
+      throw new Error('Rework not Saved - Call Administrator!');
+    }
+    // Update Nok Data
+    const nok = await nokDetects.getNokDetect(rework.nokId)
+    nok.productStatus = rework.reworkStatus === ReworkStatus.COMPLETED ? ProductStatus.REWORKED : ProductStatus.REWORK_INPROGRESS;
+    nok.update({ 'productStatus' : nok.productStatus });
+
+    if (newReworkData.reworkActionsId && newReworkData.reworkActionsId.length > 0) {
+      await rework.addRework(newReworkData.reworkActionsId);
+    }    
+    
 
     if (rework.id && 'dismantledMaterials' in newReworkData && newReworkData.dismantledMaterials) {
     await handleDismantledMaterials(rework.id, newReworkData.dismantledMaterials);
@@ -185,7 +198,7 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
   }
 
     console.log('dismantled * rady to create->', dismantled);
-    const testcreate = NokDismantleMaterials.create(dismantled)
+    const testcreate = await NokDismantleMaterials.create(dismantled)
     console.log('++++ test create ->', testcreate);
     //dismantledMaterials.push(dismantled)
   }

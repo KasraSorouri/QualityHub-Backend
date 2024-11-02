@@ -18,7 +18,7 @@ NokRework_ReworkActions.init({
     allowNull: false,
     references: { model: 'nok_reworks', key: 'id' }
   },
-  reworkId: {
+  reworkActionId: {
     type: DataTypes.INTEGER,
     allowNull: false,
     references: { model: 'reworks', key: 'id' }
