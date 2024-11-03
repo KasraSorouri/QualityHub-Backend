@@ -121,10 +121,16 @@ const createRework = async (reworkData: unknown): Promise<NokRework> => {
     nok.productStatus = rework.reworkStatus === ReworkStatus.COMPLETED ? ProductStatus.REWORKED : ProductStatus.REWORK_INPROGRESS;
     nok.update({ 'productStatus' : nok.productStatus });
 
+    // Rework Action Data
     if (newReworkData.reworkActionsId && newReworkData.reworkActionsId.length > 0) {
       await rework.addRework(newReworkData.reworkActionsId);
     }    
     
+    // Affected Recipes
+    console.log('** ** * Method test ', typeof rework.addRecipes);
+    if (newReworkData.affectedRecipes && newReworkData.affectedRecipes.length > 0) {
+      await rework.addRecipes(newReworkData.affectedRecipes);
+    }
 
     if (rework.id && 'dismantledMaterials' in newReworkData && newReworkData.dismantledMaterials) {
     await handleDismantledMaterials(rework.id, newReworkData.dismantledMaterials);

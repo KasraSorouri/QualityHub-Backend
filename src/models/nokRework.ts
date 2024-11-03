@@ -36,6 +36,7 @@ class NokRework extends Model<NokReworkAttributes, NokReworkCreationAttributes> 
   reworkStatus!: ReworkStatus;
 
   public addRework!: (rework: Number[], options?: any) => Promise<void>;
+  public addRecipes!: (recipes: Number[], options?: any) => Promise<void>;
 
 }   
 

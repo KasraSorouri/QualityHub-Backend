@@ -115,12 +115,17 @@ module.exports = {
       }
     });
     await queryInterface.createTable('nok_reworks_affected_recipes', {
-      nok_reworks_id: {
+      id: {
+        type: DataTypes.INTEGER,
+        primaryKey: true,
+        autoIncrement: true
+      },
+      nok_rework_id: {
         type: DataTypes.INTEGER,
         references: { model: 'nok_reworks', key: 'id' },
         onDelete: 'CASCADE'
       },
-      affected_recipes_id: {
+      affected_recipe_id: {
         type: DataTypes.INTEGER,
         references: { model: 'recipes', key: 'id' },
         onDelete: 'CASCADE'

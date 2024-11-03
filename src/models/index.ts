@@ -24,7 +24,8 @@ import RcaCode from './rcaCode';
 import Machine from './machine';
 import ClassCode from './defectClass';
 import RwDismantledMaterials from './reworkDismantledMaterials';
-import NokRework_ReworkActions from './nokReork_ReworkActions';
+import NokRework_ReworkActions from './nokRework_ReworkActions';
+import NokRework_AffectedRecipes from './nokRework_AffectedRecipes';
 
 export interface UserQuery {
   attributes: {
@@ -299,6 +300,9 @@ NokRework.hasMany(NokDismantleMaterials, { foreignKey: 'reworkId' });
 
 NokRework.belongsToMany(Rework, { through: NokRework_ReworkActions , foreignKey:'nokReworkId' })
 Rework.belongsToMany(NokRework, { through: NokRework_ReworkActions , foreignKey:'reworkActionId' })
+
+NokRework.belongsToMany(Recipe, { through: NokRework_AffectedRecipes, foreignKey:'nokReworkId' });
+Recipe.belongsToMany(NokRework, { through: NokRework_AffectedRecipes, foreignKey:'affectedRecipeId' });
 
 export {
   User,
