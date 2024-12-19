@@ -292,6 +292,9 @@ export interface NokRework {
   reworkStation?: Station;
   reworkStatus: ReworkStatus;
   reworkNote: string;
+  usedMaterialCost?: number;
+  dismantledMaterialCost?: number;
+  recipesWastedTime?: number;
 }
 
 export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkActions' | 'dismantledMaterials' | 'AffectedRecipes' | 'reworkShift' | 'reworkStation'> {

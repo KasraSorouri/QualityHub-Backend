@@ -16,6 +16,9 @@ interface NokReworkAttributes {
   reworkStation?: Station;
   reworkNote?: string;
   reworkStatus: ReworkStatus;
+  usedMaterialCost?: number;
+  dismantledMaterialCost?: number;
+  recipesWastedTime?: number;
 }
 
 
@@ -34,6 +37,9 @@ class NokRework extends Model<NokReworkAttributes, NokReworkCreationAttributes> 
   reworkStation!: Station | undefined;
   reworkNote!: string;
   reworkStatus!: ReworkStatus;
+  usedMaterialCost!: number;
+  dismantledMaterialCost!: number;
+  recipesWastedTime!: number;
 
   public addRework!: (rework: Number[], options?: any) => Promise<void>;
   public addRecipes!: (recipes: Number[], options?: any) => Promise<void>;
@@ -78,6 +84,18 @@ NokRework.init({
   },
   reworkStatus: {
     type: DataTypes.ENUM(...Object.values(ReworkStatus)), allowNull: false
+  },
+  usedMaterialCost: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  dismantledMaterialCost: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
+  },
+  recipesWastedTime: {
+    type: DataTypes.INTEGER,
+    defaultValue: 0
   }
 }, {
   sequelize,
