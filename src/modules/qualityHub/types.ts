@@ -1,3 +1,5 @@
+import { NokDetect } from "../../models";
+
 export interface Product {
   id: number;
   productName: string;
@@ -214,9 +216,6 @@ export interface RwDismantledMaterial {
   dismantledQty: number;
   note?: string;
   mandatoryRemove: boolean;
-  //material: Material;
-  //qty?: number;
-  //recipe?: Recipe;
 }
 
 export interface RwDismantledMaterialData extends Omit<RwDismantledMaterial, 'id' | 'material' | 'recipe'> {
@@ -304,4 +303,25 @@ export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkAct
   affectedRecipes?: number[];
   reworkShiftId: number;
   reworkStationId?: number;
+}
+
+export interface MaterialCost {
+  dismantledMaterialId: number;
+  unitPrice: number;
+}
+
+export interface NokCost {
+  nok: NokDetect;
+  rework: NokRework;
+  dismantledMaterial : MaterialCost[];
+}
+
+export interface NokCostData extends Omit<NokCost, 'nok' | 'rework'> {
+  nokId: number;
+  reworkId: number;
+}
+
+
+
+export interface NewNokCostsData extends NokCostData {
 }

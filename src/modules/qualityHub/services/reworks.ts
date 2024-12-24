@@ -77,7 +77,7 @@ const getRework = async(id: number): Promise<Rework> => {
   
   console.log('rework by id -> ', rework);
   
-  if (!rework) {
+   if (!rework) {
     throw new Error ('the rework not found');
   }
   return rework;

@@ -15,6 +15,7 @@ class NokDismantleMaterials extends Model {
   public recipeBomId!: number;
   public materialStatus!: MaterialStatus;
   public ClaimStatus!: ClaimStatus;
+  public unitPrice!: number;
 
   static associate() {
     NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId' });
@@ -63,6 +64,10 @@ NokDismantleMaterials.init({
     values: Object.values(ClaimStatus),
     allowNull: false,
     defaultValue: ClaimStatus.PENDING
+  },
+  unitPrice: {
+    type: DataTypes.DECIMAL,
+    defaultValue: 0
   }
 }, {
   sequelize,

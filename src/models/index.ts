@@ -26,6 +26,7 @@ import ClassCode from './defectClass';
 import RwDismantledMaterials from './reworkDismantledMaterials';
 import NokRework_ReworkActions from './nokRework_ReworkActions';
 import NokRework_AffectedRecipes from './nokRework_AffectedRecipes';
+import NokCost from './nokCost';
 
 export interface UserQuery {
   attributes: {
@@ -304,6 +305,12 @@ Rework.belongsToMany(NokRework, { through: NokRework_ReworkActions , foreignKey:
 NokRework.belongsToMany(Recipe, { through: NokRework_AffectedRecipes, foreignKey:'nokReworkId' });
 Recipe.belongsToMany(NokRework, { through: NokRework_AffectedRecipes, foreignKey:'affectedRecipeId' });
 
+NokCost.belongsTo(NokRework, { foreignKey: 'reworkId' });
+NokRework.hasMany(NokCost, { foreignKey: 'reworkId' });
+
+NokCost.belongsTo(NokDetect,{ foreignKey: 'nokId'});
+NokDetect.hasMany(NokCost, { foreignKey: 'nokId' });
+
 export {
   User,
   Role,
@@ -330,4 +337,7 @@ export {
   RcaCode,
   Rca,
   ClassCode,
+  NokRework_ReworkActions,
+  NokRework_AffectedRecipes,
+  NokCost
 };
