@@ -306,7 +306,7 @@ export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkAct
 }
 
 export interface MaterialCost {
-  dismantledMaterialId: number;
+  materialId: number;
   unitPrice: number;
 }
 

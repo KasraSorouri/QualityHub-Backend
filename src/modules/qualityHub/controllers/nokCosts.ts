@@ -23,22 +23,21 @@ const getCost = async (req: ExtendedRequest, res: Response)=> {
   } catch (err) {
     res.status(404).json({ error: 'Cost not found' });
   }
-};
-
-// Get Costs by Product Id
-const getCostsByNok = async (req: ExtendedRequest, res: Response) => {
+};*/
+// Get Dismantled Material by Nok Id
+const getDismantledMaterialByNok = async (req: ExtendedRequest, res: Response) => {
   const nokId = Number(req.params.id);
   if (!nokId) {
     res.status(400).json({ error: 'Invalid product id' });
   }
   try {
-    const costs = await nokCostServices.getCostsByNok(nokId);
+    const costs = await nokCostServices.getDismantledMaterialByNok(nokId);
     res.json(costs);
   } catch (err) {
     res.status(404).json({ error: 'No cost found' });
   }
 };
-*/
+
 // Create a New Cost
 const addCost = async (req: ExtendedRequest, res: Response) => {
   const costData: unknown[] = req.body;
@@ -76,7 +75,8 @@ const editCost = async (req: ExtendedRequest, res: Response) => {
 export default {
   //getAllCosts,
   //getCost,
-  //getCostsByNok,
+  //getCostsByNok,\
+  getDismantledMaterialByNok,
   addCost,
   //editCost,
 };

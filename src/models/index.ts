@@ -215,8 +215,6 @@ interface ReworkBomsInclude {
   }];
 } 
 
-
-
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
 

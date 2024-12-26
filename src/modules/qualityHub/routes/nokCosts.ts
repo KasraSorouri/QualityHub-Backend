@@ -13,9 +13,12 @@ const router = express.Router();
 router.get('/', nokCost.getAllCosts);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/:id', nokCost.getCost);
-router.get('/nok/:id', nokCost.getCostsByNok)
-
 */
+
+// get Dismantled Material by Nok Id
+router.get('/nok_material/nok/:id', nokCost.getDismantledMaterialByNok)
+
+
 // Create Rework
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokCost.addCost);

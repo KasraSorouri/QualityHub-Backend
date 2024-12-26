@@ -1,4 +1,4 @@
-import { NokDismantleMaterials, NokRework } from '../../../models';
+import { Material, NokDismantleMaterials, NokRework } from '../../../models';
 import { ClaimStatus, DismantledMaterialData, ProductStatus, ReworkStatus } from '../types';
 import { reworkDataProcessor } from '../utils/nokDataProcessor';
 import nokDetects from './nokDetects';
@@ -50,6 +50,34 @@ const query: NokReworkQuery = {
   ]
 };
 */
+/*
+// Rework Query\
+const queryByNokId : QueryByNokId = {
+  attributes: { exclude: [] },
+  include: [
+    {
+      model: RwDismantledMaterials,
+      as: 'rwDismantledMaterials',
+      attributes: ['dismantledQty', 'note', 'mandatoryRemove'],
+      include: [
+        {
+          model: RecipeBoms,
+          as: 'recipeBom',
+          attributes: ['id', 'qty', 'reusable'],
+          include: [
+            {
+              model: Material,
+              as: 'material',
+              attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
+            },
+          ],
+        }
+      ]
+    }
+  ],
+  model: NokRework
+}
+ */
 // Get all Reworks
 const getAllReworks = async(): Promise<NokRework[]> => {
   try {
@@ -84,8 +112,20 @@ const getReworksByNok = async (nokId: number): Promise<NokRework[]> => {
   try {
     const reworks = await NokRework.findAll({
       where: { nokId },
-      //...query,
+      include: [
+        {
+          model: NokDismantleMaterials, // The associated model for dismantled materials
+          as: 'dismantledMaterials', // Alias (ensure this matches the association alias)
+          include: [
+            {
+              model: Material, // The associated model for materials
+              as: 'materials', // Alias (ensure this matches the association alias)
+            },
+          ],
+        },
+      ],
     });
+
 
     console.log(' rework by product ->', reworks);
     

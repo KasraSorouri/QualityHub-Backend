@@ -1,6 +1,5 @@
 import { parseId } from "../../../utils/dataValidator";
 import { MaterialCost, NewNokCostsData } from "../types";
-import { parseQty } from "./dataProcessor";
 
 const nokCostDataProcessor = async (nokCostsData: unknown): Promise<NewNokCostsData> => {
   // Validate input data
@@ -25,16 +24,19 @@ const nokCostDataProcessor = async (nokCostsData: unknown): Promise<NewNokCostsD
   const materialCostData: MaterialCost[] = [] ;
 
   for (const item of nokCostsData.dismantledMaterial) {
+    console.log('** here ** ');
+    console.log('NOk Cost Processing * item -> ', item);
+
     // Type guard to check if the item contains the required properties
     if (
       item &&
       typeof item === 'object' &&
-      'dismantledMaterialId' in item &&
+      'materialId' in item &&
       'unitPrice' in item
     ) {
       const newItem: MaterialCost = {
-        dismantledMaterialId: parseId((item as any).dismantledMaterialId),
-        unitPrice: parseQty((item as any).unitPrice),
+        materialId: parseId((item as any).materialId),
+        unitPrice: Number(item.unitPrice),
       };
       materialCostData.push(newItem);
     } else {
@@ -46,7 +48,8 @@ const nokCostDataProcessor = async (nokCostsData: unknown): Promise<NewNokCostsD
     reworkId: reworkId,
     dismantledMaterial: materialCostData,
   };
-
+  console.log('NOk Cost Processing Finish Successfully!');
+  
   return newData;
 };
 export {

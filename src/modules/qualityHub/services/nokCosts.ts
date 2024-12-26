@@ -1,4 +1,4 @@
-import { NokCost, NokDismantleMaterials, NokRework, Recipe } from '../../../models';
+import { Material, NokCost, NokDismantleMaterials, NokRework, Recipe } from '../../../models';
 import { nokCostDataProcessor } from '../utils/nokCostProcessor';
 
 
@@ -33,17 +33,21 @@ const getCost = async(id: number): Promise<NokCost> => {
   return cost;
 };
 
+*/
 // Get Costs by product
-const getCostsByNok = async (nokId: number): Promise<NokCost[]> => {
+const getDismantledMaterialByNok = async (nokId: number): Promise<NokDismantleMaterials[]> => {
   try {
-    const costs = await NokCost.findAll({
+    const dismantledMaterial = await NokDismantleMaterials.findAll({
       where: { nokId },
-      //...query,
-    });
+      include: [
+        {
+          model: Material, // The associated model for materials
+        },
+      ]});
 
-    console.log(' cost by product ->', costs);
+    console.log(' cost by product ->', dismantledMaterial);
     
-    return costs;
+    return dismantledMaterial;
   } catch (err : unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
@@ -54,7 +58,7 @@ const getCostsByNok = async (nokId: number): Promise<NokCost[]> => {
   }
 }
 
-*/
+
 // Create a new Cost
 const createNokCost = async (costData: unknown): Promise<NokCost> => {
   console.log('** * cost -> Raw data', costData);
@@ -70,7 +74,7 @@ const createNokCost = async (costData: unknown): Promise<NokCost> => {
 
     // Update Dismantled Material Cost and Calculate Total Material Waste
     for (const item of newCostData.dismantledMaterial) {
-      const data = await NokDismantleMaterials.findByPk(item.dismantledMaterialId)
+      const data = await NokDismantleMaterials.findByPk(item.materialId)
       if (data) {
         data.unitPrice = item.unitPrice
         data.save()
@@ -131,6 +135,7 @@ export default {
   //getAllCosts,
   //getCost,
   //getCostsByNok,
+  getDismantledMaterialByNok,
   createNokCost,
   //updateCost,
 }
