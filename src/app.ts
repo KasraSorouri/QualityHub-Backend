@@ -26,6 +26,7 @@ import classCodeRouter from './modules/qualityHub/routes/classCodes';
 import nokDetectRouter from './modules/qualityHub/routes/nokDetect';
 import nokReworkRouter from './modules/qualityHub/routes/nokReworks'
 import nokCostsRouter from './modules/qualityHub/routes/nokCosts';
+import nokRCAsRouter from './modules/qualityHub/routes/nokRCAs'
 
 
 const app = express();
@@ -55,6 +56,7 @@ app.use('/api/quality/class_codes', classCodeRouter);
 app.use('/api/quality/nok_detect', nokDetectRouter);
 app.use('/api/quality/nok_rework', nokReworkRouter);
 app.use('/api/quality/nok_costs', nokCostsRouter);
+app.use('/api/quality/nok_rcas', nokRCAsRouter);
 
 app.get('/api/ping',(_req,res) => {
   res.send('Pong!');

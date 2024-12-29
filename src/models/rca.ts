@@ -9,19 +9,23 @@ class Rca extends Model<InferAttributes<Rca>, InferCreationAttributes<Rca>> {
   whCauseId?: number;
   whCauseName?: string;
   description?: string;
-  improveSugestion?: string;
+  improveSuggestion?: string;
+  createBy!: number;
+  createdAt?: Date;
 
+  
   static associate(models: any) {
     Rca.belongsTo(models.RcaCode, {
       foreignKey: 'rcaCodeId',
       as: 'racCode'
     });
 
-    Rca.belongsTo(models.nokAnalyse, {
+    Rca.belongsTo(models.NokDetect, {
       foreignKey: 'nokId', 
-      as: 'nokAnalyse'
+      as: 'nokDetects'
     });
   }
+
 }
 
 // define RCA Model
@@ -48,8 +52,16 @@ Rca.init({
   description: {
     type: DataTypes.STRING,
   },
-  improveSugestion: {
+  improveSuggestion: {
     type: DataTypes.STRING,
+  },
+  createBy: {
+    type: DataTypes.INTEGER,
+    allowNull: false
+  },
+  createdAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
 },
 

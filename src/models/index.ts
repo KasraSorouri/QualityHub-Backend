@@ -273,8 +273,8 @@ NokAnalyse.belongsTo(Station, { foreignKey: 'stationId'});
 NokAnalyse.belongsTo(Material, { foreignKey: 'materialId'});
 NokAnalyse.belongsTo(WorkShift, { foreignKey: 'causeShiftId'});
 
-Rca.belongsTo(NokAnalyse, { foreignKey: 'nokId'});
-NokAnalyse.hasMany(Rca, { foreignKey: 'nokId'});
+Rca.belongsTo(NokDetect, { foreignKey: 'nokId'});
+NokDetect.hasMany(Rca, { foreignKey: 'nokId'});
 
 Rca.belongsTo(RcaCode, { foreignKey: 'rcaCodeId'});
 RcaCode.hasMany(Rca, { foreignKey: 'rcaCodeId'});

@@ -321,7 +321,21 @@ export interface NokCostData extends Omit<NokCost, 'nok' | 'rework'> {
   reworkId: number;
 }
 
-
-
 export interface NewNokCostsData extends NokCostData {
+}
+
+export interface NokRcaData {
+  id: number;
+  nokId: number;
+  rcaCodeId: number;
+  whCauseId?: number;
+  whCauseName?: string;
+  description?: string;
+  improveSuggestion?: string;
+  createBy: number;
+  createAt: Date;
+}
+
+export interface NewNokRcaData extends Omit<NokRcaData, 'id'> {
+  id?: number; 
 }
