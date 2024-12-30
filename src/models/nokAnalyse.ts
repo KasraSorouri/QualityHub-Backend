@@ -1,11 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
-import Station from './station';
-import WorkShift from './workShif';
-import NokCode from './nokCode';
-import NokDetect from './nokDetect';
-import Rca from './rca';
 
 interface NokAnalyseAttributes {
   id: number;
@@ -13,11 +8,14 @@ interface NokAnalyseAttributes {
   nokCodeId: number;
   causeStationId: number;
   causeShiftId: number;
+  classCodeId: number;
   description: string;
   timeWaste?: number;
   materialWaste?: number;
   closed: boolean;
-  closeDate: Date;
+  closeDate?: Date;
+  updatedBy: number;
+  updatedAt: Date;
 }
 
 interface NokAnalyseCreationAttributes extends Omit<NokAnalyseAttributes, 'id'> {}
@@ -28,12 +26,16 @@ class NokAnalyse extends Model<NokAnalyseAttributes, NokAnalyseCreationAttribute
   nokCodeId!: number;
   causeStationId!: number;
   causeShiftId!: number;
+  classCodeId!: number;
   description!: string;
   timeWaste?: number;
   materialWaste?: number;
   closed: boolean = false;
-  closeDate!: Date;
+  closeDate?: Date;
+  updatedBy!: number;
+  updatedAt!: Date;
 
+  /*
   static associate() {
     NokAnalyse.belongsTo(NokDetect,{
       foreignKey: 'nokId',
@@ -41,17 +43,17 @@ class NokAnalyse extends Model<NokAnalyseAttributes, NokAnalyseCreationAttribute
     });
 
     NokAnalyse.belongsTo(Station, {
-      foreignKey: 'detectStationId',
-      as: 'station'
+      foreignKey: 'causeStationId',
+      as: 'causeStation'
     });
 
     NokAnalyse.belongsTo(WorkShift, {
-      foreignKey: 'detectShiftId',
-      as: 'workShift'
+      foreignKey: 'causeShiftId',
+      as: 'causeShift'
     });
 
     NokAnalyse.belongsTo(NokCode, {
-      foreignKey: 'initNokCodeId',
+      foreignKey: 'nokCodeId',
       as: 'nokCode'
     });
 
@@ -59,7 +61,8 @@ class NokAnalyse extends Model<NokAnalyseAttributes, NokAnalyseCreationAttribute
       foreignKey: 'nokId',
       as: 'rca'
     });
-  }  
+  } 
+  */ 
 }
 
 // define Product Model
@@ -87,6 +90,10 @@ NokAnalyse.init({
     type: DataTypes.INTEGER,
     allowNull: false,
   },
+  classCodeId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
   description: {
     type: DataTypes.STRING,
   },
@@ -102,6 +109,14 @@ NokAnalyse.init({
   },
   closeDate: {
     type: DataTypes.DATE,
+  },
+  updatedBy: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+  },
+  updatedAt: {
+    type: DataTypes.DATE,
+    defaultValue: DataTypes.NOW
   }
 },
 

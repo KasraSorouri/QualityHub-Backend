@@ -87,6 +87,15 @@ module.exports = {
       },
       close_date: {
         type: DataTypes.DATE,
+      },
+      updatedBy: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: 'users', key: 'id' },
+      },
+      updatedAt: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
       }
     })
   },

@@ -339,3 +339,32 @@ export interface NokRcaData {
 export interface NewNokRcaData extends Omit<NokRcaData, 'id'> {
   id?: number; 
 }
+
+export interface Analyse {
+  id: number;
+  nokId: number;
+  nokCodeId: number;
+  causeStationId: number;
+  causeShiftId: number;
+  description: string;
+  timeWaste?: number;
+  materialWaste?: number;
+  closed: boolean;
+  closeDate?: Date;
+  updatedBy: number;
+  updatedAt: Date;
+  nok?: NOK;
+  nokCode?: NokCode;
+  causeStation?: Station;
+  causeShift?: WorkShift;
+  classCode?: ClassCode;
+}
+
+export interface NewAnalyseData extends Omit<Analyse, 'id' | 'nok' | 'nokCode' | 'causeStation' | 'causeShift' | 'classCode' | 'rca'> {
+  id?: number;
+  nokId: number;
+  nokCodeId: number;
+  causeStationId: number;
+  causeShiftId: number;
+  classCodeId: number;
+}

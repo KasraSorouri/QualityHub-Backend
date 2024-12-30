@@ -269,9 +269,10 @@ NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId'});
 NokDismantleMaterials.belongsTo(NokDetect, { foreignKey: 'nokId'});
 NokDismantleMaterials.belongsTo(Material, { foreignKey: 'materialId'});
 
-NokAnalyse.belongsTo(Station, { foreignKey: 'stationId'});
-NokAnalyse.belongsTo(Material, { foreignKey: 'materialId'});
-NokAnalyse.belongsTo(WorkShift, { foreignKey: 'causeShiftId'});
+NokAnalyse.belongsTo(NokCode, { foreignKey: 'nokCodeId'});
+NokAnalyse.belongsTo(Station, { foreignKey: 'causeStationId', as: 'causeStation'});
+NokAnalyse.belongsTo(WorkShift, { foreignKey: 'causeStationId', as: 'causeShift'});
+NokAnalyse.belongsTo(ClassCode, { foreignKey: 'classCodeId', as: 'classCode'});
 
 Rca.belongsTo(NokDetect, { foreignKey: 'nokId'});
 NokDetect.hasMany(Rca, { foreignKey: 'nokId'});
