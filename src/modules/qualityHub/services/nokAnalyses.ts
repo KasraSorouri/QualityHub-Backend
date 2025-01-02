@@ -1,6 +1,7 @@
 import { ClassCode, NokAnalyse, NokCode, NokDetectQuery, Station, WorkShift } from '../../../models';
 import { Analyse } from '../types';
 import { nokAnalyseDataProcessor } from '../utils/nokAnalyseDataProcessor';
+import nokCostsServise from './nokCosts';
 
 const query: NokDetectQuery = {
   attributes: { exclude: [] },
@@ -46,7 +47,6 @@ const getAnalyse = async(id: number): Promise<Analyse> => {
 
 // Get a Analyse by NOK ID
 const getNokAnalyseByNok = async (nokId: number): Promise<Analyse> => {
-  console.log('taala');
   
   try {
     const nokAnalyses = await NokAnalyse.findAll({
@@ -55,7 +55,19 @@ const getNokAnalyseByNok = async (nokId: number): Promise<Analyse> => {
       include: query.include,
       });
 
-    return nokAnalyses[0];
+
+      if (nokAnalyses.length === 0) {
+        throw new Error(`No analyses found for nokId: ${nokId}`);
+      }
+      // add Nok Cost to the result 
+
+      const costResult  =await nokCostsServise.calculateNokCost(nokId)
+
+      console.log('Nok Analyse * costResult ->', costResult);
+
+      const result = { ...nokAnalyses[0].toJSON(), costResult }
+      console.log('Nok Analyse * result ->', result);
+    return result;
   } catch (err : unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
@@ -67,7 +79,7 @@ const getNokAnalyseByNok = async (nokId: number): Promise<Analyse> => {
 }
 
 
-// Create a new Cost
+// Create a new Analyse
 const createNokAnalyse = async (nokAnalyseData: unknown): Promise<Analyse> => {
   console.log('** NOK Analysis Srvice * Analyse -> Raw data', nokAnalyseData);
 

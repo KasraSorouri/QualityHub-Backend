@@ -35,6 +35,8 @@ const getNokAnalyseByNok = async (req: ExtendedRequest, res: Response) => {
     const rcas = await nokAnalyseServices.getNokAnalyseByNok(nokId);
     res.json(rcas);
   } catch (err) {
+    console.log('Nok Analayze * controller * Error ->', err);
+    
     res.status(404).json({ error: 'No NOK found' });
   }
 };

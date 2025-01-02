@@ -324,6 +324,8 @@ export interface NokCostData extends Omit<NokCost, 'nok' | 'rework'> {
 export interface NewNokCostsData extends NokCostData {
 }
 
+export interface AnalyseCost { [key: string]: number };
+
 export interface NokRcaData {
   id: number;
   nokId: number;
@@ -358,6 +360,7 @@ export interface Analyse {
   causeStation?: Station;
   causeShift?: WorkShift;
   classCode?: ClassCode;
+  cost?: NokCost
 }
 
 export interface NewAnalyseData extends Omit<Analyse, 'id' | 'nok' | 'nokCode' | 'causeStation' | 'causeShift' | 'classCode' | 'rca'> {

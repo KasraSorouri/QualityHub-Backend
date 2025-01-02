@@ -1,4 +1,5 @@
 import { Material, NokCost, NokDismantleMaterials, NokRework, Recipe } from '../../../models';
+import { AnalyseCost } from '../types';
 import { nokCostDataProcessor } from '../utils/nokCostProcessor';
 
 
@@ -58,6 +59,58 @@ const getDismantledMaterialByNok = async (nokId: number): Promise<NokDismantleMa
   }
 }
 
+// Calculate Costs For Nok Id
+const calculateNokCost = async (nokId: number): Promise<AnalyseCost> => {
+
+  try {
+    let totalMaterialWaste: AnalyseCost = {} 
+
+    let dismantledMaterial = await NokDismantleMaterials.findAll({ where: { nokId: nokId}})
+    // update unit price
+    await dismantledMaterial.forEach(async (item: NokDismantleMaterials) => {
+      if (item.unitPrice == 0) {
+        updateUnitPrice(item)
+      }
+      const {materialStatus, qty, unitPrice} = item;
+      const totalCost = qty * unitPrice 
+      console.log('Cost Calculate *  calculation * qty: ', qty, ' material price: ', unitPrice, ' totalCost: ->', totalCost, ' status  ->', materialStatus, 'material Id :', item.materialId);
+
+      if (totalMaterialWaste[materialStatus]) {
+        totalMaterialWaste[materialStatus] += totalCost;
+      } else {
+      totalMaterialWaste[materialStatus] = totalCost;
+      }
+  })
+  /*
+    const nokCost ={
+      materialWaste: Object.values(totalMaterialWaste).reduce((sum, value) => sum + value, 0),
+    }
+  */
+    console.log('##Cost Calculate *  totalMaterialWaste ->', totalMaterialWaste);
+
+   
+    return totalMaterialWaste
+   
+  } catch(err : unknown) {
+    let errorMessage = '';
+    if (err instanceof Error) {
+      errorMessage += ' Error: ' + err.message;
+    }
+    console.log('## ERROR * creqate cost ', errorMessage);
+    
+    throw new Error(errorMessage);
+  }
+}
+
+// Update Price Data
+const updateUnitPrice = async(dismantledMaterial: NokDismantleMaterials) => {
+  
+  // Find missed Price
+  const material = await Material.findByPk(dismantledMaterial.materialId);
+  dismantledMaterial.unitPrice = material?.price || 0
+  await dismantledMaterial.save();
+}
+  
 
 // Create a new Cost
 const createNokCost = async (costData: unknown): Promise<NokCost> => {
@@ -70,17 +123,25 @@ const createNokCost = async (costData: unknown): Promise<NokCost> => {
 
   try {
 
-    let totalMaterialWaste: number = 0
+    let totalMaterialWaste: { [key: string]: number } = {} 
 
-    // Update Dismantled Material Cost and Calculate Total Material Waste
-    for (const item of newCostData.dismantledMaterial) {
-      const data = await NokDismantleMaterials.findByPk(item.materialId)
-      if (data) {
-        data.unitPrice = item.unitPrice
-        data.save()
-        totalMaterialWaste += data.qty * item.unitPrice
+    const data = await NokDismantleMaterials.findAll({ where: { nokId: newCostData.nokId}})
+
+   data.forEach(async (dismantledMaterial: NokDismantleMaterials) => {
+    const {materialStatus, materialId, qty} = dismantledMaterial;
+    const material = await Material.findByPk(materialId);
+    if ( material && material.price) {
+    const totalCost = qty * (material?.price || 0) 
+
+      if (totalMaterialWaste[materialStatus]) {
+        totalMaterialWaste[materialStatus] += totalCost;
+      } else {
+      totalMaterialWaste[materialStatus] = totalCost;
       }
+    } else {
+      console.log('** * cost -> material not found', materialId);
     }
+  })
 
     // Calculate Time Waste
     let totalTimeWaste: number = 0
@@ -103,7 +164,7 @@ const createNokCost = async (costData: unknown): Promise<NokCost> => {
     const nokCost ={
       nokId: newCostData.nokId,
       reworkId: newCostData.reworkId,
-      materialWaste: totalMaterialWaste,
+      materialWaste: Object.values(totalMaterialWaste).reduce((sum, value) => sum + value, 0),
       timeWaste: totalTimeWaste,
       editLocked: false,
       updatedAt: new Date(),
@@ -137,6 +198,7 @@ export default {
   //getCostsByNok,
   getDismantledMaterialByNok,
   createNokCost,
+  calculateNokCost
   //updateCost,
 }
 
