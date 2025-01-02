@@ -63,33 +63,52 @@ const getDismantledMaterialByNok = async (nokId: number): Promise<NokDismantleMa
 const calculateNokCost = async (nokId: number): Promise<AnalyseCost> => {
 
   try {
-    let totalMaterialWaste: AnalyseCost = {} 
+    let totalMaterialWaste: AnalyseCost = { } 
+    let issue : boolean = false
+    let claimStatus = {
+      pendding: 0,
+      approved: 0,
+      rejected: 0
+    }
 
     let dismantledMaterial = await NokDismantleMaterials.findAll({ where: { nokId: nokId}})
     // update unit price
-    await dismantledMaterial.forEach(async (item: NokDismantleMaterials) => {
+    dismantledMaterial.forEach(async (item: NokDismantleMaterials) => {
+      // if price = 0 read price from Material
       if (item.unitPrice == 0) {
-        updateUnitPrice(item)
+        updateUnitPrice(item);
+        issue = true;
       }
-      const {materialStatus, qty, unitPrice} = item;
-      const totalCost = qty * unitPrice 
+
+      // Calculate Total Cost
+      const { materialStatus, qty, unitPrice } = item;
+      const totalCost = qty * unitPrice;
       console.log('Cost Calculate *  calculation * qty: ', qty, ' material price: ', unitPrice, ' totalCost: ->', totalCost, ' status  ->', materialStatus, 'material Id :', item.materialId);
 
       if (totalMaterialWaste[materialStatus]) {
         totalMaterialWaste[materialStatus] += totalCost;
       } else {
-      totalMaterialWaste[materialStatus] = totalCost;
+        totalMaterialWaste[materialStatus] = totalCost;
       }
-  })
-  /*
-    const nokCost ={
-      materialWaste: Object.values(totalMaterialWaste).reduce((sum, value) => sum + value, 0),
-    }
-  */
+
+      // Analyse Clame Status
+      if (item.materialStatus === 'CLAIMABLE' && item.ClaimStatus === 'PENDING') {
+        claimStatus.pendding += 1;
+      }
+      if (item.materialStatus === 'CLAIMABLE' && item.ClaimStatus === 'ACCEPTED') {
+        claimStatus.approved += 1;
+      }
+      if (item.materialStatus === 'CLAIMABLE' && item.ClaimStatus === 'REJECTED') {
+        claimStatus.rejected += 1;
+      }
+
+    })
+
+    totalMaterialWaste.issue = issue ? 1 : 0 ;
     console.log('##Cost Calculate *  totalMaterialWaste ->', totalMaterialWaste);
 
    
-    return totalMaterialWaste
+    return { ...totalMaterialWaste, ...claimStatus}
    
   } catch(err : unknown) {
     let errorMessage = '';

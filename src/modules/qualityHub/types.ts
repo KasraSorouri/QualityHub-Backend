@@ -117,7 +117,7 @@ export enum MaterialStatus {
 export enum ClaimStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
-  DENIED = 'DENIED',
+  DENIED = 'REJECTED',
 }
 
 export enum RecipeType {
