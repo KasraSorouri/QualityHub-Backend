@@ -212,12 +212,14 @@ const reworkDataProcessor = (reworkData: unknown) : NokReworkData => {
         reworkOperator: parseDescription(reworkData.reworkOperator),
         //reworkOperator: parseId(reworkData.reworkOperator)
         reworkShiftId: parseId(reworkData.reworkShift),
-        reworkActionsId: 'reworkActions' in reworkData ? parseReworkActions(reworkData.reworkActions) : [],
+        id: 'id' in reworkData ? parseId(reworkData.id) : undefined,
+        reworkStationId: 'reworkStation' in reworkData ? parseId(reworkData.reworkStation) : undefined,
+        reworkActionsId: 'reworkActionsId' in reworkData ? parseReworkActions(reworkData.reworkActionsId) : [],
         reworkTime: 'reworkTime' in reworkData ? parseDate(reworkData.reworkTime) : new Date(),
         reworkDuration: 'reworkDuration' in reworkData ? parseQty(Number(reworkData.reworkDuration)) : 0,
         reworkManPower: 'reworkManPower' in reworkData ? parseQty(Number(reworkData.reworkManPower)) : 0,
         affectedRecipes: 'affectedRecipes' in reworkData ? parseAffectedRecipe(reworkData.affectedRecipes) : [],
-        dismantledMaterials: 'dismantledMaterials' in reworkData ? parseNokDismantledMaterial(reworkData.dismantledMaterials) : [],
+        dismantledMaterials: 'nokDismantleMaterials' in reworkData ? parseNokDismantledMaterial(reworkData.nokDismantleMaterials) : [],
         reworkNote: 'reworkNote' in reworkData ? parseDescription(reworkData.reworkNote) : '',
         reworkStatus: 'reworkStatus' in reworkData ? parseReworkStatus(reworkData.reworkStatus) : ReworkStatus.PENDING
       }

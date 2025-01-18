@@ -1,83 +1,36 @@
-import { Material, NokDismantleMaterials, NokRework } from '../../../models';
+import { Material, NokDismantleMaterials, NokRework, Recipe, Station, WorkShift } from '../../../models';
 import { ClaimStatus, DismantledMaterialData, ProductStatus, ReworkStatus } from '../types';
 import { reworkDataProcessor } from '../utils/nokDataProcessor';
 import nokDetects from './nokDetects';
 
 // Define Rework query 
-/*
-const query: NokReworkQuery = {
+const query = {
   attributes: { exclude: [] },
   include: [
     {
-      model: Product,
-      as: 'product',
-      attributes: ['id', 'productName', 'productCode'],
-    },
-    {
-      model: Station,
-      as: 'station',
-      attributes: ['id', 'stationName', 'stationCode'],
-    },
-    {
-      model: NokCode,
-      as: 'nokCode',
-      attributes: ['id', 'nokCode'],
-    },
-    {
-      model: RwDismantledMaterials,
-      as: 'rwDismantledMaterials',
-      attributes: [ 'dismantledQty', 'note', 'mandatoryRemove'],
+      model: NokDismantleMaterials,
+      attributes: { exclude: [] },
       include: [
         {
-        model: RecipeBoms,
-        as: 'recipeBom',
-        attributes: ['id', 'qty', 'reusable'],
-        include: [
-          {
-            model: Material,
-            as: 'material',
-            attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
-          },
-          {
-            model: Recipe,
-            as: 'recipe',
-            attributes: ['recipeCode'],
-          }
-        ],
-      }]
-    }
-
-  ]
+          model: Material,
+          as: 'material',
+          attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
+        }],
+      },
+      {
+        model: WorkShift,
+        as: 'reworkShift'
+      },
+      {
+        model: Recipe
+      },
+      {
+        model: Station,
+        as: 'reworkStation'
+      },
+    ]
 };
-*/
-/*
-// Rework Query\
-const queryByNokId : QueryByNokId = {
-  attributes: { exclude: [] },
-  include: [
-    {
-      model: RwDismantledMaterials,
-      as: 'rwDismantledMaterials',
-      attributes: ['dismantledQty', 'note', 'mandatoryRemove'],
-      include: [
-        {
-          model: RecipeBoms,
-          as: 'recipeBom',
-          attributes: ['id', 'qty', 'reusable'],
-          include: [
-            {
-              model: Material,
-              as: 'material',
-              attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
-            },
-          ],
-        }
-      ]
-    }
-  ],
-  model: NokRework
-}
- */
+
 // Get all Reworks
 const getAllReworks = async(): Promise<NokRework[]> => {
   try {
@@ -107,29 +60,20 @@ const getRework = async(id: number): Promise<NokRework> => {
   return rework;
 };
 
-// Get Reworks by product
-const getReworksByNok = async (nokId: number): Promise<NokRework[]> => {
+// Get Reworks by Nok ID
+const getReworksByNok = async (nokId: number): Promise<NokRework> => {
   try {
     const reworks = await NokRework.findAll({
       where: { nokId },
-      include: [
-        {
-          model: NokDismantleMaterials, // The associated model for dismantled materials
-          as: 'dismantledMaterials', // Alias (ensure this matches the association alias)
-          include: [
-            {
-              model: Material, // The associated model for materials
-              as: 'materials', // Alias (ensure this matches the association alias)
-            },
-          ],
-        },
-      ],
+      attributes: query.attributes,
+      include: query.include,
     });
 
 
     console.log(' rework by product ->', reworks);
+    const result = reworks[0]
+    return result;
     
-    return reworks;
   } catch (err : unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
@@ -143,7 +87,7 @@ const getReworksByNok = async (nokId: number): Promise<NokRework[]> => {
 
 // Create a new Rework
 const createRework = async (reworkData: unknown): Promise<NokRework> => {
-  console.log('** NOK * rework -> newReworkData', reworkData);
+  console.log('** NOK * rework ->Raw Rework Data', reworkData);
 
   // test data
   const newReworkData = await reworkDataProcessor(reworkData);
@@ -151,7 +95,7 @@ const createRework = async (reworkData: unknown): Promise<NokRework> => {
   console.log('** * rework -> newReworkData', newReworkData);
 
   try {
-    const rework = await NokRework.create(newReworkData)
+    const [rework] = await NokRework.upsert(newReworkData)
     console.log('** * rework -> create', rework);
     if(!rework) {
       throw new Error('Rework not Saved - Call Administrator!');

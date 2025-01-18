@@ -297,6 +297,7 @@ export interface NokRework {
 }
 
 export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkActions' | 'dismantledMaterials' | 'AffectedRecipes' | 'reworkShift' | 'reworkStation'> {
+  id?: number;
   nokId: number;
   reworkActionsId?: number[];
   dismantledMaterials?: DismantledMaterialData[];

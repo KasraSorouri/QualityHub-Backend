@@ -34,7 +34,7 @@ class NokRework extends Model<NokReworkAttributes, NokReworkCreationAttributes> 
   reworkTime!: Date;
   reworkDuration!: number;
   reworkManPower!: number;
-  reworkStation!: Station | undefined;
+  reworkStationId!: Station | undefined;
   reworkNote!: string;
   reworkStatus!: ReworkStatus;
   usedMaterialCost!: number;
