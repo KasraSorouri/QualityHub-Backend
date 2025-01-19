@@ -125,6 +125,7 @@ const parseNokDismantledMaterial = (dismantledMaterialData: unknown) : Dismantle
         recipeBomId: 'recipeBomId' in dismantledItem ? parseId(dismantledItem.recipeBomId) : undefined,
         reusable: 'reusable' in dismantledItem ? parseReusable(dismantledItem.reusable) : Reusable.NO,
         materialStatus: 'materialStatus' in dismantledItem ? parseMaterialStatus(dismantledItem.materialStatus) : MaterialStatus.SCRAPPED,
+        rwDismantledMaterialId: 'rwDismantledMaterialId' in dismantledItem ? parseId(dismantledItem.rwDismantledMaterialId) : undefined,
       }
       // Renmove undefined recipe BOM ID for extera Material
       dismantledmaterial.recipeBomId = dismantledmaterial.recipeBomId === 0 ? undefined : dismantledmaterial.recipeBomId;

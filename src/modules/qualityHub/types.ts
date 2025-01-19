@@ -270,6 +270,7 @@ export interface DismantledMaterial {
 }
 
 export interface DismantledMaterialData {
+  rwDismantledMaterialId: number | undefined;
   material: number;
   dismantledQty: number;
   recipeBomId: number | undefined;

@@ -105,6 +105,7 @@ const createRework = async (reworkData: unknown): Promise<NokRework> => {
     nok.productStatus = rework.reworkStatus === ReworkStatus.COMPLETED ? ProductStatus.REWORKED : ProductStatus.REWORK_INPROGRESS;
     nok.update({ 'productStatus' : nok.productStatus });
 
+    /*
     // Rework Action Data
     if (newReworkData.reworkActionsId && newReworkData.reworkActionsId.length > 0) {
       await rework.addRework(newReworkData.reworkActionsId);
@@ -115,7 +116,7 @@ const createRework = async (reworkData: unknown): Promise<NokRework> => {
     if (newReworkData.affectedRecipes && newReworkData.affectedRecipes.length > 0) {
       await rework.addRecipes(newReworkData.affectedRecipes);
     }
-
+*/
     if (rework.id && 'dismantledMaterials' in newReworkData && newReworkData.dismantledMaterials) {
     await handleDismantledMaterials(rework.id, newReworkData.dismantledMaterials);
 
@@ -184,7 +185,8 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
       reusable: item.reusable,
       qty: item.dismantledQty,
       materialStatus: item.materialStatus,
-      ClaimStatus: ClaimStatus.PENDING
+      ClaimStatus: ClaimStatus.PENDING,
+      rwDismantledMaterialId: item.rwDismantledMaterialId
   }
 
     console.log('dismantled * rady to create->', dismantled);

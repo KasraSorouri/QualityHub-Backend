@@ -16,6 +16,7 @@ class NokDismantleMaterials extends Model {
   public materialStatus!: MaterialStatus;
   public ClaimStatus!: ClaimStatus;
   public unitPrice!: number;
+  public rwDismantledMaterialId!: number;
 
   static associate() {
     NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId' });
@@ -68,6 +69,11 @@ NokDismantleMaterials.init({
   unitPrice: {
     type: DataTypes.DECIMAL,
     defaultValue: 0
+  },
+  rwDismantledMaterialId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: { model: 'rwDismantledMaterial', key: 'id' }
   }
 }, {
   sequelize,
