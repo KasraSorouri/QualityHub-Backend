@@ -46,7 +46,7 @@ NokDismantleMaterials.init({
   },
   qty: {
     type: DataTypes.INTEGER,
-    allowNull:true
+    allowNull: true,
   },
   reusable: {
     type: DataTypes.ENUM,

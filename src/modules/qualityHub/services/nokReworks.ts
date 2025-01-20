@@ -1,4 +1,4 @@
-import { Material, NokDismantleMaterials, NokRework, Recipe, Station, WorkShift } from '../../../models';
+import { Material, NokDismantleMaterials, NokRework, Recipe, RecipeBoms, RwDismantledMaterials, Station, WorkShift } from '../../../models';
 import { ClaimStatus, DismantledMaterialData, ProductStatus, ReworkStatus } from '../types';
 import { reworkDataProcessor } from '../utils/nokDataProcessor';
 import nokDetects from './nokDetects';
@@ -15,7 +15,25 @@ const query = {
           model: Material,
           as: 'material',
           attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
-        }],
+        },
+        {
+          model: RwDismantledMaterials,
+          as: 'rwDismantledMaterial',
+          attributes: { exclude: ['id', 'reworkId', 'recipeBomId'] },
+        },
+        {
+          model: RecipeBoms,
+          as: 'recipeBom',
+          attributes: { exclude: ['id', 'recipeId', 'materialId'] },
+          include: [
+            {
+              model: Recipe,
+              as: 'recipe',
+              attributes: ['id', 'recipeCode', 'description', 'recipeType'],
+            },
+          ],
+        }
+      ],
       },
       {
         model: WorkShift,

@@ -298,6 +298,12 @@ RecipeBoms.hasMany(RwDismantledMaterials, { foreignKey: 'recipeBomId'});
 NokDismantleMaterials.belongsTo(NokRework, { foreignKey: 'reworkId' });
 NokRework.hasMany(NokDismantleMaterials, { foreignKey: 'reworkId' });
 
+NokDismantleMaterials.belongsTo(RwDismantledMaterials, { foreignKey: 'rwDismantledMaterialId' });
+RwDismantledMaterials.hasMany(NokDismantleMaterials, { foreignKey: 'rwDismantledMaterialId' });
+
+NokDismantleMaterials.belongsTo(RecipeBoms, { foreignKey: 'recipeBomId' });
+RecipeBoms.hasMany(NokDismantleMaterials, { foreignKey: 'recipeBomId' });
+
 NokRework.belongsToMany(Rework, { through: NokRework_ReworkActions , foreignKey:'nokReworkId', as: 'reworkActions' });
 Rework.belongsToMany(NokRework, { through: NokRework_ReworkActions , foreignKey:'reworkActionId', as: 'reworkActions' });
 
@@ -315,6 +321,7 @@ NokRework.hasMany(NokCost, { foreignKey: 'reworkId' });
 
 NokCost.belongsTo(NokDetect,{ foreignKey: 'nokId'});
 NokDetect.hasMany(NokCost, { foreignKey: 'nokId' });
+
 
 export {
   User,
