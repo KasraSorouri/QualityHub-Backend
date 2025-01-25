@@ -10,7 +10,7 @@ class NokDismantleMaterials extends Model {
   public nokId!: number;
   public reworkId!: number;
   public materialId!: number;
-  public qty!: number;
+  public actualDismantledQty!: number;
   public reusable!: Reusable;
   public recipeBomId!: number;
   public materialStatus!: MaterialStatus;
@@ -44,7 +44,7 @@ NokDismantleMaterials.init({
     type: DataTypes.INTEGER,   allowNull: true,
     references: { model: 'material', key: 'id' }
   },
-  qty: {
+  actualDismantledQty: {
     type: DataTypes.INTEGER,
     allowNull: true,
   },

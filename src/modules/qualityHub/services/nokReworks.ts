@@ -201,7 +201,7 @@ const handleDismantledMaterials = async (reworkId: number, dismantledMaterialDat
       materialId: item.material,
       recipeBomId: item.recipeBomId,
       reusable: item.reusable,
-      qty: item.dismantledQty,
+      actualDismantledQty: item.actualDismantledQty,
       materialStatus: item.materialStatus,
       ClaimStatus: ClaimStatus.PENDING,
       rwDismantledMaterialId: item.rwDismantledMaterialId

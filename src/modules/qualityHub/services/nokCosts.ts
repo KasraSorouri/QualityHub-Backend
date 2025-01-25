@@ -81,9 +81,9 @@ const calculateNokCost = async (nokId: number): Promise<AnalyseCost> => {
       }
 
       // Calculate Total Cost
-      const { materialStatus, qty, unitPrice } = item;
-      const totalCost = qty * unitPrice;
-      console.log('Cost Calculate *  calculation * qty: ', qty, ' material price: ', unitPrice, ' totalCost: ->', totalCost, ' status  ->', materialStatus, 'material Id :', item.materialId);
+      const { materialStatus, actualDismantledQty, unitPrice } = item;
+      const totalCost = actualDismantledQty * unitPrice;
+      console.log('Cost Calculate *  calculation * qty: ', actualDismantledQty, ' material price: ', unitPrice, ' totalCost: ->', totalCost, ' status  ->', materialStatus, 'material Id :', item.materialId);
 
       if (totalMaterialWaste[materialStatus]) {
         totalMaterialWaste[materialStatus] += totalCost;
@@ -147,10 +147,10 @@ const createNokCost = async (costData: unknown): Promise<NokCost> => {
     const data = await NokDismantleMaterials.findAll({ where: { nokId: newCostData.nokId}})
 
    data.forEach(async (dismantledMaterial: NokDismantleMaterials) => {
-    const {materialStatus, materialId, qty} = dismantledMaterial;
+    const {materialStatus, materialId, actualDismantledQty} = dismantledMaterial;
     const material = await Material.findByPk(materialId);
     if ( material && material.price) {
-    const totalCost = qty * (material?.price || 0) 
+    const totalCost = actualDismantledQty * (material?.price || 0) 
 
       if (totalMaterialWaste[materialStatus]) {
         totalMaterialWaste[materialStatus] += totalCost;

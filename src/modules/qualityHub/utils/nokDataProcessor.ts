@@ -121,7 +121,7 @@ const parseNokDismantledMaterial = (dismantledMaterialData: unknown) : Dismantle
           
       const dismantledmaterial = { 
         material: parseId(dismantledItem.material.id), 
-        dismantledQty: parseQty(dismantledItem.actualDismantledQty),
+        actualDismantledQty: parseQty(dismantledItem.actualDismantledQty),
         recipeBomId: 'recipeBomId' in dismantledItem ? parseId(dismantledItem.recipeBomId) : undefined,
         reusable: 'reusable' in dismantledItem ? parseReusable(dismantledItem.reusable) : Reusable.NO,
         materialStatus: 'materialStatus' in dismantledItem ? parseMaterialStatus(dismantledItem.materialStatus) : MaterialStatus.SCRAPPED,
