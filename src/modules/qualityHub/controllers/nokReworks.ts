@@ -54,6 +54,7 @@ const addRework = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
+/*
 // Edit an Existing Rework
 const editRework = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
@@ -71,12 +72,13 @@ const editRework = async (req: ExtendedRequest, res: Response) => {
     }
     res.status(409).json({ error: `${errorMessage}` });
   }
-};
+};\
+*/
 
 export default {
   getAllReworks,
   getRework,
   getReworksByNok,
   addRework,
-  editRework,
+  //editRework,
 };

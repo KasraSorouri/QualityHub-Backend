@@ -19,7 +19,7 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), reworkControll
 
 // Edit Rework
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), reworkControllers.editRework);
+//router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), reworkControllers.editRework);
 
 
 export default router;

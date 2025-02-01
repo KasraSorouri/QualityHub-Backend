@@ -1,7 +1,11 @@
 import { parseBoolean, parseId } from '../../../utils/dataValidator';
-import { NewAnalyseData } from '../types';
+import { NewAnalyseData, NokStatus } from '../types';
 import { parseDescription } from './dataProcessor';
 
+type analyseStatusData = {
+  analyseStatus: NokStatus;
+  removeFromReportStatus: boolean;
+}
 
 const nokAnalyseDataProcessor = (nokData: unknown) : NewAnalyseData => {
   if (!nokData || typeof nokData !== 'object') {
@@ -39,6 +43,40 @@ const nokAnalyseDataProcessor = (nokData: unknown) : NewAnalyseData => {
   }
 }
 
+const statusProcessor = (analyseStatusData: unknown) : NokStatus => {
+
+  switch (analyseStatusData) {
+    case 'ANALYSED':
+      return NokStatus.ANALYSED;
+
+    case 'NEED INVESTIGATION':
+      return NokStatus.NEED_INVESTIGATION;
+
+    case 'NOT FOUND':
+      return NokStatus.NOT_FOUND;
+    
+    default:
+      return NokStatus.PENDING;
+  }
+}
+
+// Analyse Status processor
+const analyaseStatusProcessor = (analyseStatusData: unknown) : analyseStatusData => {
+  if (!analyseStatusData || typeof analyseStatusData !== 'object') {
+    throw new Error('Incorrect or missing Data **!');
+  }
+
+  if ('analyseStatus' in analyseStatusData && 'removeFromReportStatus' in analyseStatusData) {
+    return {
+      analyseStatus: statusProcessor(analyseStatusData.analyseStatus),
+      removeFromReportStatus: parseBoolean(analyseStatusData.removeFromReportStatus)
+    }
+  } else {
+    throw new Error('Incorrect or missing Data in analyse Status**!');
+  }
+}
+
 export {
   nokAnalyseDataProcessor,
+  analyaseStatusProcessor
 }

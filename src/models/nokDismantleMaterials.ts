@@ -14,7 +14,7 @@ class NokDismantleMaterials extends Model {
   public reusable!: Reusable;
   public recipeBomId!: number;
   public materialStatus!: MaterialStatus;
-  public ClaimStatus!: ClaimStatus;
+  public claimStatus!: ClaimStatus;
   public unitPrice!: number;
   public rwDismantledMaterialId!: number;
 

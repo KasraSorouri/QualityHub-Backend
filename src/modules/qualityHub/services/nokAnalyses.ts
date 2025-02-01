@@ -1,6 +1,6 @@
-import { ClassCode, NokAnalyse, NokCode, NokDetectQuery, Station, WorkShift } from '../../../models';
-import { Analyse } from '../types';
-import { nokAnalyseDataProcessor } from '../utils/nokAnalyseDataProcessor';
+import { ClassCode, NokAnalyse, NokCode, NokDetect, NokDetectQuery, Station, WorkShift } from '../../../models';
+import { Analyse, NokStatus } from '../types';
+import { analyaseStatusProcessor, nokAnalyseDataProcessor } from '../utils/nokAnalyseDataProcessor';
 import nokCostsServise from './nokCosts';
 
 const query: NokDetectQuery = {
@@ -121,13 +121,64 @@ const deleteAnalyse = async (id : number) : Promise<boolean>=> {
   }
 };
 
+// Update Analyse Status
+const updateAnalyseStatue = async (nokId: number, newAnalyseStatusData: unknown): Promise<boolean> => {
+
+  const newAnalyseStatus = analyaseStatusProcessor(newAnalyseStatusData)
+  console.log('NOK Service * set Analyse Done * nokId ->', nokId , 'analyse Status ->', newAnalyseStatus);
+  try {
+    // set Nok Analysed Status
+    const nokAnalyse = await NokAnalyse.findOne({where: { nokId }})
+    if (!nokAnalyse) {
+      throw new Error('Analyse not found');
+    }
+
+    const nokDetect = await NokDetect.findByPk(nokId); 
+    if (!nokDetect) {
+      throw new Error('Nok Detect not found');
+    }
+    
+    try {
+      nokDetect.nokStatus = newAnalyseStatus.analyseStatus;
+      nokDetect.removeReport = newAnalyseStatus.removeFromReportStatus;
+      nokDetect.save();
+    } catch (err) {
+      let errorMessage = 'Cannot update the analyse status';
+      if (err instanceof Error) {
+        errorMessage += ' Error: ' + err.message;
+      }
+      console.log('## ERROR * set Analyse Done ', errorMessage);
+      throw new Error(errorMessage);
+    }
+
+    if (newAnalyseStatus.analyseStatus === NokStatus.ANALYSED) {
+      nokAnalyse.closed = true;
+      nokAnalyse.closeDate = new Date();
+      nokAnalyse.save();
+    } else {
+      nokAnalyse.closed = false;
+      nokAnalyse.save();
+    }
+
+    return true;
+  } catch (err) {
+    let errorMessage = 'Cannot update the analyse status';
+    if (err instanceof Error) {
+      errorMessage += ' Error: ' + err.message;
+    }
+    console.log('## ERROR * set Analyse Done ', errorMessage);
+    throw new Error(errorMessage);
+  }
+};
+
 
 export default {
   getAllAnalyses,
   getAnalyse,
   getNokAnalyseByNok,
   createNokAnalyse,
-  deleteAnalyse
+  deleteAnalyse,
+  updateAnalyseStatue
 }
 
 

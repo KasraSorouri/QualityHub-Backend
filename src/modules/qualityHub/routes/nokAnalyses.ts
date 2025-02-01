@@ -21,6 +21,9 @@ router.get('/nok/:id', nokAnalyseController.getNokAnalyseByNok);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokAnalyseController.addAnalyse);
 
+// Set NOK Analyse is Done
+router.put('/status/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokAnalyseController.updateAnalyseStatue);
+
 // Edit Rework
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 //router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokAnalyse.editAnalyse);

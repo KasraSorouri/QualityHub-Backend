@@ -67,10 +67,25 @@ const deleteAnalyse = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
+// Update Analyse Status
+const updateAnalyseStatue = async (req: ExtendedRequest, res: Response) => {
+  const id = req.params.id;
+  const analyseStatus : unknown []= req.body;
+  console.log(' Nok Analyse * controller * set Nok analyse status * analyse status ->', analyseStatus);
+  
+  try {
+    const result = await nokAnalyseServices.updateAnalyseStatue(Number(id), analyseStatus);
+    res.status(200).json(result);
+  } catch (err) {
+    res.status(404).json({ error: 'Analyse not found' });
+  }
+};
+
 export default {
   getAllAnalyses,
   getAnalyse,
   getNokAnalyseByNok,
   addAnalyse,
-  deleteAnalyse
+  deleteAnalyse,
+  updateAnalyseStatue
 };

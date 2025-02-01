@@ -103,7 +103,7 @@ const getReworksByNok = async (nokId: number): Promise<NokRework> => {
 }
 
 
-// Create a new Rework
+// Create Or Update a Rework
 const createRework = async (reworkData: unknown): Promise<NokRework> => {
   console.log('** NOK * rework ->Raw Rework Data', reworkData);
 
@@ -120,9 +120,12 @@ const createRework = async (reworkData: unknown): Promise<NokRework> => {
     }
     // Update Nok Data
     const nok = await nokDetects.getNokDetect(rework.nokId)
+    
+    // Update Nok Product Status
     nok.productStatus = rework.reworkStatus === ReworkStatus.COMPLETED ? ProductStatus.REWORKED : ProductStatus.REWORK_INPROGRESS;
     nok.update({ 'productStatus' : nok.productStatus });
 
+    
     /*
     // Rework Action Data
     if (newReworkData.reworkActionsId && newReworkData.reworkActionsId.length > 0) {
@@ -151,7 +154,7 @@ const createRework = async (reworkData: unknown): Promise<NokRework> => {
   }
 }
 
-
+/*
 // Update an Rework
 const updateRework = async (id: number, reworkData: unknown) => { 
   
@@ -179,7 +182,7 @@ const updateRework = async (id: number, reworkData: unknown) => {
     throw new Error(errorMessage);
   }
 };
-
+*/
 
 const handleDismantledMaterials = async (reworkId: number, dismantledMaterialData: DismantledMaterialData[]) : Promise<NokRework> => {
    
@@ -242,5 +245,5 @@ export default {
   getRework,
   getReworksByNok,
   createRework,
-  updateRework,
+  //updateRework,
 }

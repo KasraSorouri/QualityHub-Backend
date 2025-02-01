@@ -2,47 +2,14 @@ import { Material, NokCost, NokDismantleMaterials, NokRework, Recipe } from '../
 import { AnalyseCost } from '../types';
 import { nokCostDataProcessor } from '../utils/nokCostProcessor';
 
-
-/*
-
-// Get all Costs
-const getAllCosts = async(): Promise<NokCost[]> => {
-  try {
-    const costs = await NokCost.findAll();
-    console.log('costs -> ', costs);
-
-    return costs;
-  } catch (err : unknown) {
-    let errorMessage = '';
-    if (err instanceof Error) {
-      errorMessage += ' Error: ' + err.message;
-    }
-    console.log('**** error :', errorMessage);
-    throw new Error(errorMessage);
-  }
-};
-
-// Get a Cost based on ID
-const getCost = async(id: number): Promise<NokCost> => {
-  const cost = await NokCost.findByPk(id);
-  console.log('cost by id -> ', cost);
-  
- 
-  if (!cost) {
-    throw new Error ('the cost not found');
-  }
-  return cost;
-};
-
-*/
-// Get Costs by product
+// Get Dismantled Material By Nok Id
 const getDismantledMaterialByNok = async (nokId: number): Promise<NokDismantleMaterials[]> => {
   try {
     const dismantledMaterial = await NokDismantleMaterials.findAll({
       where: { nokId },
       include: [
         {
-          model: Material, // The associated model for materials
+          model: Material, 
         },
       ]});
 
@@ -92,13 +59,13 @@ const calculateNokCost = async (nokId: number): Promise<AnalyseCost> => {
       }
 
       // Analyse Clame Status
-      if (item.materialStatus === 'CLAIMABLE' && item.ClaimStatus === 'PENDING') {
+      if (item.materialStatus === 'CLAIMABLE' && item.claimStatus === 'PENDING') {
         claimStatus.pendding += 1;
       }
-      if (item.materialStatus === 'CLAIMABLE' && item.ClaimStatus === 'ACCEPTED') {
+      if (item.materialStatus === 'CLAIMABLE' && item.claimStatus === 'ACCEPTED') {
         claimStatus.approved += 1;
       }
-      if (item.materialStatus === 'CLAIMABLE' && item.ClaimStatus === 'REJECTED') {
+      if (item.materialStatus === 'CLAIMABLE' && item.claimStatus === 'REJECTED') {
         claimStatus.rejected += 1;
       }
 
