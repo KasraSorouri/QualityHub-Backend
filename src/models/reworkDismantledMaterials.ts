@@ -6,18 +6,9 @@ class RwDismantledMaterials extends Model {
   public id!: number;
   public reworkId!: number;
   public recipeBomId!: number;
-  //public recipeId?: number;
-  //public materialId!: number;
   public dismantledQty!: number;
   public note?: string;
   public mandatoryRemove!: boolean;
-
-  /*
-  static associate() {
-    RwDismantledMaterials.belongsTo(Rework, { foreignKey: 'reworkId' });
-    RwDismantledMaterials.belongsTo(Material, { foreignKey: 'materialId' });
-  }
-  */
 }
 
   RwDismantledMaterials.init({
@@ -36,17 +27,6 @@ class RwDismantledMaterials extends Model {
     allowNull: false,
     references: { model: 'recipeBoms', key: 'id' }
   },
-  /*
-  recipeId: {
-    type: DataTypes.INTEGER,
-    references: { model: 'recipes', key: 'id' }
-  },
-  materialId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'materials', key: 'id' }
-  },
-  */
   dismantledQty: {
     type: DataTypes.INTEGER,
     allowNull:true

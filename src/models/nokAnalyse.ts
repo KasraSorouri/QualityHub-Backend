@@ -12,7 +12,7 @@ interface NokAnalyseAttributes {
   description: string;
   timeWaste?: number;
   materialWaste?: number;
-  closed: boolean;
+  closed?: boolean;
   closeDate?: Date;
   updatedBy: number;
   updatedAt: Date;
@@ -30,7 +30,7 @@ class NokAnalyse extends Model<NokAnalyseAttributes, NokAnalyseCreationAttribute
   description!: string;
   timeWaste?: number;
   materialWaste?: number;
-  closed: boolean = false;
+  closed?: boolean = false;
   closeDate?: Date;
   updatedBy!: number;
   updatedAt!: Date;
@@ -80,7 +80,6 @@ NokAnalyse.init({
   nokCodeId: {
     type: DataTypes.INTEGER,
     allowNull: false,
-    unique: true
   },
   causeStationId: {
     type: DataTypes.INTEGER,

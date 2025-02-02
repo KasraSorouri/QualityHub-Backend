@@ -84,8 +84,8 @@ const createNokAnalyse = async (nokAnalyseData: unknown): Promise<Analyse> => {
   console.log('** NOK Analysis Srvice * Analyse -> Raw data', nokAnalyseData);
 
   // Validate data
-  const newNokAnalyseData = await nokAnalyseDataProcessor(nokAnalyseData);
-  console.log('** NOK Analysis Srvice * Analyse -> Processed data', nokAnalyseData);
+  const newNokAnalyseData = nokAnalyseDataProcessor(nokAnalyseData);
+  console.log('** NOK Analysis Srvice * Analyse -> Processed data', newNokAnalyseData);
 
   try {
     const [result] = await NokAnalyse.upsert(newNokAnalyseData)

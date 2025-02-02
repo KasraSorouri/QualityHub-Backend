@@ -26,7 +26,7 @@ const nokAnalyseDataProcessor = (nokData: unknown) : NewAnalyseData => {
         description: 'description' in nokData ? parseDescription(nokData.description) : '',
         updatedBy: 1,
         updatedAt: new Date(),
-        closed: 'closeNok' in nokData? parseBoolean(nokData.closeNok) : false,
+        closed: 'closed' in nokData ? parseBoolean(nokData.closed) : false
       }
       if (nokDataToReturn.closed) {
         nokDataToReturn.closeDate = new Date();

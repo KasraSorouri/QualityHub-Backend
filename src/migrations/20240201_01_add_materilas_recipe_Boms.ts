@@ -17,7 +17,6 @@ module.exports = {
       item_long_name: {
         type: DataTypes.STRING,
         allowNull: false,
-        unique: true
       },
       item_code: {
         type: DataTypes.STRING,
@@ -70,6 +69,14 @@ module.exports = {
       },
       time_duration: {
         type: DataTypes.INTEGER
+      },
+      manpower: {
+        type: DataTypes.INTEGER,
+      },
+      recipe_type: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: 'PRODUCTION'
       }
     })
     await queryInterface.createTable('recipe_boms', {

@@ -94,6 +94,7 @@ Recipe.init({
   },
   recipeType: {
     type: DataTypes.STRING,
+    allowNull: false,
     defaultValue: 'PRODUCTION'
   }
 },

@@ -353,7 +353,7 @@ export interface Analyse {
   description: string;
   timeWaste?: number;
   materialWaste?: number;
-  closed: boolean;
+  closed?: boolean;
   closeDate?: Date;
   updatedBy: number;
   updatedAt: Date;
@@ -372,4 +372,6 @@ export interface NewAnalyseData extends Omit<Analyse, 'id' | 'nok' | 'nokCode' |
   causeStationId: number;
   causeShiftId: number;
   classCodeId: number;
+  updatedBy: number;
+  updatedAt: Date;
 }
