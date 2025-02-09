@@ -232,5 +232,6 @@ const reworkDataProcessor = (reworkData: unknown) : NokReworkData => {
 
 export {
   nokDataProcessor,
-  reworkDataProcessor
+  reworkDataProcessor,
+  parseMaterialStatus
 }

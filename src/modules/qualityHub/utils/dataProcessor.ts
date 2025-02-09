@@ -1,4 +1,4 @@
-import { ClassCodeData, ConsumingMaterial, MachineData, MaterialData, NokCodeData, NokGrpData, Product, ProductData, ProductGrpData, RcaCodeData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
+import { ClaimStatus, ClassCodeData, ConsumingMaterial, MachineData, MaterialData, NewClaimData, NokCodeData, NokGrpData, Product, ProductData, ProductGrpData, RcaCodeData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
@@ -370,6 +370,22 @@ const rcaCodeProcessor = (rcaCodeData: unknown): RcaCodeData => {
   }
 }
 
+const parseClaimStatus = (claimStatusData: unknown): ClaimStatus => {
+  if (!isString(claimStatusData)) {
+    throw new Error('Incorrect or missing Data!');
+  }
+  switch (claimStatusData) {
+    case 'PENDING':
+      return ClaimStatus.PENDING;
+    case 'ACCEPTED':
+      return ClaimStatus.ACCEPTED;
+    case 'DENIED':
+      return ClaimStatus.DENIED;
+    default:
+      throw new Error('Incorrect or missing Data!');
+  }
+}
+
 const machineProcessor = async(machineData: unknown): Promise<MachineData> => {
   if (!machineData || typeof machineData !== 'object') {
     throw new Error('Incorrect or missing Data!');
@@ -405,6 +421,26 @@ const classCodeProcessor = (classCodeData: unknown): ClassCodeData => {
   }
 }
 
+// Claim Status Processor
+const claimStatusProcessor = (claimData: unknown): NewClaimData  => {
+  if (!claimData || typeof claimData !== 'object') {
+    throw new Error('Incorrect or missing Data!');
+  }
+  if ('claimStatus' in claimData && 'dismantledMaterialId' in claimData) {
+    const newClaim: NewClaimData = {
+      dismantledMaterialId: parseId(claimData.dismantledMaterialId),
+      claimStatus: parseClaimStatus(claimData.claimStatus),
+      date: new Date(),
+      referenceType: 'referenceType' in claimData ? parseName(claimData.referenceType) : '',
+      reference: 'reference' in claimData ? parseName(claimData.reference) : '',
+      description: 'description' in claimData ? parseDescription(claimData.description) : '',
+  };
+    return newClaim;
+  } else {
+    throw new Error('Data is missing');
+  }
+}
+
 export {
   parseDescription,
   parseOrder,
@@ -421,5 +457,6 @@ export {
   nokCodeProcessor,
   rcaCodeProcessor,
   machineProcessor,
-  classCodeProcessor
+  classCodeProcessor,
+  claimStatusProcessor
 };

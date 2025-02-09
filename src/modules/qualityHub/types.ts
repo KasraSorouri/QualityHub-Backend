@@ -117,7 +117,7 @@ export enum MaterialStatus {
 export enum ClaimStatus {
   PENDING = 'PENDING',
   ACCEPTED = 'ACCEPTED',
-  DENIED = 'REJECTED',
+  DENIED = 'DENIED',
 }
 
 export enum RecipeType {
@@ -374,4 +374,18 @@ export interface NewAnalyseData extends Omit<Analyse, 'id' | 'nok' | 'nokCode' |
   classCodeId: number;
   updatedBy: number;
   updatedAt: Date;
+}
+
+export interface Claim {
+  id: number;
+  dismantledMaterialId: number;
+  date: Date;
+  claimStatus: ClaimStatus;
+  referenceType?: string;
+  reference?: string;
+  description?: string;
+}
+
+export interface NewClaimData extends Omit<Claim, 'id'> {
+  id?: number;
 }

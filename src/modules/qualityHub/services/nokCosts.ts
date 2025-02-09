@@ -65,7 +65,7 @@ const calculateNokCost = async (nokId: number): Promise<AnalyseCost> => {
       if (item.materialStatus === 'CLAIMABLE' && item.claimStatus === 'ACCEPTED') {
         claimStatus.approved += 1;
       }
-      if (item.materialStatus === 'CLAIMABLE' && item.claimStatus === 'REJECTED') {
+      if (item.materialStatus === 'CLAIMABLE' && item.claimStatus === 'DENIED') {
         claimStatus.rejected += 1;
       }
 
