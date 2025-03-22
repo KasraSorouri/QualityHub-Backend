@@ -29,6 +29,7 @@ const query: ReworkQuery = {
       model: RwDismantledMaterials,
       as: 'rwDismantledMaterials',
       attributes: [ 'id', 'dismantledQty', 'note', 'mandatoryRemove'],
+
       include: [
         {
         model: RecipeBoms,

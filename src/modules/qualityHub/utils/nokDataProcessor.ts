@@ -227,6 +227,7 @@ const reworkDataProcessor = (reworkData: unknown) : NokReworkData => {
     return reworkDataToReturn
   } else {
     throw new Error('Incorrect or missing data --+-+!');
+
   }
 } 
 
