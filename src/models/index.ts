@@ -17,13 +17,18 @@ import NokGrp from './nokGrp';
 import NokDetect from './nokDetect';
 import NokAnalyse from './nokAnalyse';
 import Rework from './rework';
-import NokReworks from './nokReworks';
-import DismantleMaterials from './nokDismantleMaterials';
+import NokRework from './nokRework';
+import NokDismantleMaterials from './nokDismantleMaterials';
 import Rca from './rca';
 import RcaCode from './rcaCode';
 import Machine from './machine';
 import ClassCode from './defectClass';
 import RwDismantledMaterials from './reworkDismantledMaterials';
+import NokRework_ReworkActions from './nokRework_ReworkActions';
+import NokRework_AffectedRecipes from './nokRework_AffectedRecipes';
+import NokCost from './nokCost';
+import Claim from './claim';
+import Iqc from './iqc';
 
 export interface UserQuery {
   attributes: {
@@ -190,7 +195,7 @@ export interface ReworkNokCode {
   attributes: string[];
 }
 
-interface RwDismantledMaterialsInclude {
+export interface RwDismantledMaterialsInclude {
   model: typeof RwDismantledMaterials;
   as: string;
   attributes: string[];
@@ -211,8 +216,6 @@ interface ReworkBomsInclude {
     attributes: string[];
   }];
 } 
-
-
 
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
@@ -261,19 +264,20 @@ WorkShift.hasMany(NokDetect, { foreignKey: 'detectShiftId'});
 NokDetect.hasOne(NokAnalyse,{ foreignKey:'nokId'});
 NokAnalyse.belongsTo(NokDetect, { foreignKey: 'nokId'});
 
-NokDetect.hasMany(NokReworks,{ foreignKey:'nokId'})
-NokReworks.belongsTo(NokDetect, { foreignKey: 'nokId'});
+NokDetect.hasMany(NokRework,{ foreignKey:'nokId'})
+NokRework.belongsTo(NokDetect, { foreignKey: 'nokId'});
 
-NokDetect.hasMany(DismantleMaterials, { foreignKey: 'nokId'});
-DismantleMaterials.belongsTo(NokDetect, { foreignKey: 'nokId'});
-DismantleMaterials.belongsTo(Material, { foreignKey: 'materialId'});
+NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId'});
+NokDismantleMaterials.belongsTo(NokDetect, { foreignKey: 'nokId'});
+NokDismantleMaterials.belongsTo(Material, { foreignKey: 'materialId'});
 
-NokAnalyse.belongsTo(Station, { foreignKey: 'stationId'});
-NokAnalyse.belongsTo(Material, { foreignKey: 'materialId'});
-NokAnalyse.belongsTo(WorkShift, { foreignKey: 'causeShiftId'});
+NokAnalyse.belongsTo(NokCode, { foreignKey: 'nokCodeId'});
+NokAnalyse.belongsTo(Station, { foreignKey: 'causeStationId', as: 'causeStation'});
+NokAnalyse.belongsTo(WorkShift, { foreignKey: 'causeStationId', as: 'causeShift'});
+NokAnalyse.belongsTo(ClassCode, { foreignKey: 'classCodeId', as: 'classCode'});
 
-Rca.belongsTo(NokAnalyse, { foreignKey: 'nokId'});
-NokAnalyse.hasMany(Rca, { foreignKey: 'nokId'});
+Rca.belongsTo(NokDetect, { foreignKey: 'nokId'});
+NokDetect.hasMany(Rca, { foreignKey: 'nokId'});
 
 Rca.belongsTo(RcaCode, { foreignKey: 'rcaCodeId'});
 RcaCode.hasMany(Rca, { foreignKey: 'rcaCodeId'});
@@ -292,6 +296,45 @@ RwDismantledMaterials.belongsTo(Rework, { foreignKey: 'reworkId'});
 
 RwDismantledMaterials.belongsTo(RecipeBoms, { foreignKey: 'recipeBomId'})
 RecipeBoms.hasMany(RwDismantledMaterials, { foreignKey: 'recipeBomId'});
+
+NokDismantleMaterials.belongsTo(NokRework, { foreignKey: 'reworkId' });
+NokRework.hasMany(NokDismantleMaterials, { foreignKey: 'reworkId' });
+
+NokDismantleMaterials.belongsTo(RwDismantledMaterials, { foreignKey: 'rwDismantledMaterialId' });
+RwDismantledMaterials.hasMany(NokDismantleMaterials, { foreignKey: 'rwDismantledMaterialId' });
+
+NokDismantleMaterials.belongsTo(Material, { foreignKey: 'materialId'});
+Material.hasMany(NokDismantleMaterials, { foreignKey: 'materialId'});
+
+NokDismantleMaterials.belongsTo(NokDetect, { foreignKey: 'nokId'});
+NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId'})
+
+NokDismantleMaterials.belongsTo(RecipeBoms, { foreignKey: 'recipeBomId' });
+RecipeBoms.hasMany(NokDismantleMaterials, { foreignKey: 'recipeBomId' });
+
+NokRework.belongsToMany(Rework, { through: NokRework_ReworkActions , foreignKey:'nokReworkId', as: 'reworkActions' });
+Rework.belongsToMany(NokRework, { through: NokRework_ReworkActions , foreignKey:'reworkActionId', as: 'reworkActions' });
+
+NokRework.belongsToMany(Recipe, { through: NokRework_AffectedRecipes, foreignKey:'nokReworkId' });
+Recipe.belongsToMany(NokRework, { through: NokRework_AffectedRecipes, foreignKey:'affectedRecipeId' });
+
+NokRework.belongsTo(WorkShift, { foreignKey: 'reworkShiftId' , as: 'reworkShift'});
+WorkShift.hasMany(NokRework, { foreignKey: 'reworkShiftId' , as: 'reworkShift'} );
+
+NokRework.belongsTo(Station, { foreignKey: 'reworkStationId' , as: 'reworkStation'});
+Station.hasMany(NokRework, { foreignKey: 'reworkStationId' , as: 'reworkStation'} );
+
+NokCost.belongsTo(NokRework, { foreignKey: 'reworkId' });
+NokRework.hasMany(NokCost, { foreignKey: 'reworkId' });
+
+NokCost.belongsTo(NokDetect,{ foreignKey: 'nokId'});
+NokDetect.hasMany(NokCost, { foreignKey: 'nokId' });
+
+Claim.belongsTo(NokDismantleMaterials, { foreignKey: 'dismantledMaterialId'});
+NokDismantleMaterials.hasMany(Claim, { foreignKey: 'dismantledMaterialId' });
+
+Iqc.belongsTo(NokDismantleMaterials, { foreignKey: 'dismantledMaterialId'});
+NokDismantleMaterials.hasMany(Iqc, { foreignKey: 'dismantledMaterialId' });
 
 export {
   User,
@@ -313,10 +356,13 @@ export {
   NokCode,
   NokDetect,
   NokAnalyse,
-  NokReworks,
-  DismantleMaterials,
+  NokRework,
+  NokDismantleMaterials,
   RwDismantledMaterials,
   RcaCode,
   Rca,
   ClassCode,
+  NokRework_ReworkActions,
+  NokRework_AffectedRecipes,
+  NokCost
 };

@@ -138,7 +138,7 @@ const updateBoms = async (id: number, bomData: ConsumingMaterial[]): Promise<Rec
 
   for (const item of bomData) {
     
-    bom.push({recipeId: recipe.id, materialId: item.materialId, qty: item.qty, reusable: item.reusable ? item.reusable : Reusable.No }) 
+    bom.push({recipeId: recipe.id, materialId: item.materialId, qty: item.qty, reusable: item.reusable ? item.reusable : Reusable.NO }) 
   }
   try {
     await RecipeBoms.bulkCreate(bom);

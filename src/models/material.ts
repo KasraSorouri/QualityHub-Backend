@@ -36,7 +36,6 @@ Material.init({
   itemLongName: {
     type: DataTypes.STRING,
     allowNull: false,
-    unique: true
   },
   itemCode: {
     type: DataTypes.STRING,

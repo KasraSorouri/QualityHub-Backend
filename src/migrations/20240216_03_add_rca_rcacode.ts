@@ -20,7 +20,7 @@ module.exports = {
         type: DataTypes.BOOLEAN
       },
     }),
-    await queryInterface.createTable('rca', {
+    await queryInterface.createTable('rcas', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
@@ -35,7 +35,7 @@ module.exports = {
       nok_id : {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: { model: 'nok_analyses', key: 'id' },
+        references: { model: 'nok_detects', key: 'id' },
         onUpdate: 'CASCADE',
         onDelete: 'CASCADE'
       },
@@ -48,13 +48,21 @@ module.exports = {
       description: {
         type: DataTypes.STRING,
       },
-      improve_sugestion: {
+      improve_suggestion: {
         type: DataTypes.STRING,
+      },
+      create_by: {
+        type: DataTypes.INTEGER,
+        allowNull: false
+      },
+      created_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
       }
     })
   },
   down: async ({ context: queryInterface } : any) => {
-    await queryInterface.dropTable('rca')
+    await queryInterface.dropTable('rcas')
     await queryInterface.dropTable('rca_codes')
   }
 }

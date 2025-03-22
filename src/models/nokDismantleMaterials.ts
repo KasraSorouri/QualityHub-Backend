@@ -5,22 +5,26 @@ import Material from './material';
 import { ClaimStatus, MaterialStatus, Reusable } from '../modules/qualityHub/types';
 import NokDetect from './nokDetect';
 
-class DismantleMaterials extends Model {
+class NokDismantleMaterials extends Model {
   public id!: number;
   public nokId!: number;
+  public reworkId!: number;
   public materialId!: number;
-  public qty!: number;
+  public actualDismantledQty!: number;
   public reusable!: Reusable;
+  public recipeBomId!: number;
   public materialStatus!: MaterialStatus;
-  public ClaimStatus!: ClaimStatus;
+  public claimStatus!: ClaimStatus;
+  public unitPrice!: number;
+  public rwDismantledMaterialId!: number;
 
   static associate() {
-    NokDetect.hasMany(DismantleMaterials, { foreignKey: 'nokId' });
-    Material.hasMany(DismantleMaterials, { foreignKey: 'materialId' });
+    NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId' });
+    Material.hasMany(NokDismantleMaterials, { foreignKey: 'materialId' });
   }
 }
 
-  DismantleMaterials.init({
+NokDismantleMaterials.init({
   id: {
     type: DataTypes.INTEGER,
     primaryKey: true,
@@ -31,17 +35,26 @@ class DismantleMaterials extends Model {
     allowNull: false,
     references: { model: 'nokDetect', key: 'id' }
   },
+  reworkId: {
+    type: DataTypes.INTEGER,
+    allowNull: false,
+    references: { model: 'nokRework', key: 'id' }
+  },
   materialId: {
     type: DataTypes.INTEGER,   allowNull: true,
     references: { model: 'material', key: 'id' }
   },
-  qty: {
+  actualDismantledQty: {
     type: DataTypes.INTEGER,
-    allowNull:true
+    allowNull: true,
   },
   reusable: {
     type: DataTypes.ENUM,
     values: Object.values(Reusable)
+  },
+    recipeBomId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
   },
   materialStatus: {
     type: DataTypes.ENUM,
@@ -52,12 +65,21 @@ class DismantleMaterials extends Model {
     values: Object.values(ClaimStatus),
     allowNull: false,
     defaultValue: ClaimStatus.PENDING
+  },
+  unitPrice: {
+    type: DataTypes.DECIMAL,
+    defaultValue: 0
+  },
+  rwDismantledMaterialId: {
+    type: DataTypes.INTEGER,
+    allowNull: true,
+    references: { model: 'rwDismantledMaterial', key: 'id' }
   }
 }, {
   sequelize,
   underscored: true,
   timestamps: false,
-  modelName: 'dismantleMaterials'
+  modelName: 'nokDismantleMaterials'
 });
 
-export default DismantleMaterials;
+export default NokDismantleMaterials;

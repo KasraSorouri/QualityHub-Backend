@@ -2,16 +2,6 @@ import { parseDate, parseId } from "../../../utils/dataValidator";
 import { NewReworkData, NewRwDismantledMaterialData } from "../types";
 import { parseActive, parseDescription, parseOrder, parseQty } from "./dataProcessor";
 
-/*
-const parseRecipeBom = async (recipeBomId: unknown) : Promise<number> => {
-  if (!recipeBomId || typeof recipeBomId !== 'number') {
-    console.log('++ Data processing Error 1');
-    throw new Error('Incorrect or missing Data **!');
-  }
-  return parseId(recipeBomId);
-}
-*/
-
 const parseRecipeData = async (recipeData: unknown) : Promise<number[]> => {
   if (!recipeData ||  !Array.isArray(recipeData) ) {
     console.log('++ Data processing Error 1');
@@ -39,14 +29,11 @@ const parseDismantlesMaterial = async (dismantlesMaterialData: unknown) : Promis
 
       throw new Error('Incorrect or missing Data **!');
     }
-    if ('id' in dismantledItem && 'dismantledQty' in dismantledItem ){
+    if ('recipeBom' in dismantledItem && typeof dismantledItem.recipeBom === 'object' && 'dismantledQty' in dismantledItem ){
           console.log('+++ corect Dismantled Material Data');
           
       const dismantledmaterial = { 
-        recipeBomId: parseId(dismantledItem.id), 
-        //recipeId: parseId(dismantledItem.recipeId),
-        //materialId: parseId(dismantledItem.material.id),
-        //qty: parseQty(dismantledItem.qty),
+        recipeBomId: parseId(dismantledItem.recipeBom.id), 
         dismantledQty: parseQty(dismantledItem.dismantledQty),
         note: 'note' in dismantledItem ? parseDescription(dismantledItem.note) : '',
         mandatoryRemove: 'mandatoryRemove' in dismantledItem ? parseActive(dismantledItem.mandatoryRemove) : false,
@@ -67,7 +54,7 @@ const reworkDataProcessor = async ( reworkData: unknown) : Promise<NewReworkData
     
     throw new Error('Incorrect or missing Data **!');
   }
-  if ( 'productId'  in reworkData &&
+  if ( 'productId' in reworkData &&
     'stationId' in reworkData &&
     'nokCodeId' in reworkData &&
     'reworkShortDesc' in reworkData &&

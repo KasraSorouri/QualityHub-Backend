@@ -68,7 +68,6 @@ module.exports = {
       nok_code_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        unique: true
       },
       cause_station_id: {
         type: DataTypes.INTEGER,
@@ -81,12 +80,27 @@ module.exports = {
       description: {
         type: DataTypes.STRING,
       },
+      time_waste: {
+        type: DataTypes.INTEGER,
+      },
+      material_waste: {
+        type: DataTypes.INTEGER,
+      },
       closed: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
       close_date: {
         type: DataTypes.DATE,
+      },
+      updated_by: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        references: { model: 'users', key: 'id' },
+      },
+      updated_at: {
+        type: DataTypes.DATE,
+        defaultValue: DataTypes.NOW
       }
     })
   },

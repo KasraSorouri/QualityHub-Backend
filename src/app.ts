@@ -24,6 +24,13 @@ import rcaCodeRouter from './modules/qualityHub/routes/rcaCodes';
 import classCodeRouter from './modules/qualityHub/routes/classCodes';
 
 import nokDetectRouter from './modules/qualityHub/routes/nokDetect';
+import nokReworkRouter from './modules/qualityHub/routes/nokReworks'
+import nokCostsRouter from './modules/qualityHub/routes/nokCosts';
+import nokRCAsRouter from './modules/qualityHub/routes/nokRCAs'
+import nokAnalysesRouter from './modules/qualityHub/routes/nokAnalyses';
+
+import claimManagerRouter from './modules/qualityHub/routes/claimManager';
+import iqcManagerRouter from './modules/qualityHub/routes/iqcManager';
 
 
 const app = express();
@@ -51,6 +58,13 @@ app.use('/api/quality/rca_codes', rcaCodeRouter);
 app.use('/api/quality/class_codes', classCodeRouter);
 
 app.use('/api/quality/nok_detect', nokDetectRouter);
+app.use('/api/quality/nok_rework', nokReworkRouter);
+app.use('/api/quality/nok_costs', nokCostsRouter);
+app.use('/api/quality/nok_rcas', nokRCAsRouter);
+app.use('/api/quality/nok_analyses', nokAnalysesRouter);
+
+app.use('/api/quality/claims', claimManagerRouter);
+app.use('/api/quality/iqcs', iqcManagerRouter);
 
 app.get('/api/ping',(_req,res) => {
   res.send('Pong!');

@@ -1,3 +1,5 @@
+import { NokDetect } from "../../models";
+
 export interface Product {
   id: number;
   productName: string;
@@ -87,7 +89,7 @@ export interface RecipeBomData extends Omit<RecipeBom,'id'> {};
 
 export enum Reusable  {
   YES = 'YES',
-  No =  'NO', 
+  NO =  'NO', 
   IQC = 'IQC'
 }
 
@@ -100,6 +102,7 @@ export enum NokStatus {
 
 export enum ProductStatus {
   NOK = 'NOK',
+  REWORK_INPROGRESS = 'REWORK IN PROGRESS',
   REWORKED = 'REWORKED',
   SCRAPPED = 'SCRAPPED',
 }
@@ -107,6 +110,7 @@ export enum ProductStatus {
 export enum MaterialStatus {
   OK = 'OK',
   SCRAPPED = 'SCRAPPED',
+  IQC =  'IQC',
   CLAIMABLE = 'CLAIMABLE',
 }
 
@@ -212,9 +216,6 @@ export interface RwDismantledMaterial {
   dismantledQty: number;
   note?: string;
   mandatoryRemove: boolean;
-  //material: Material;
-  //qty?: number;
-  //recipe?: Recipe;
 }
 
 export interface RwDismantledMaterialData extends Omit<RwDismantledMaterial, 'id' | 'material' | 'recipe'> {
@@ -251,4 +252,140 @@ export interface NewReworkData extends Omit<Rework, 'id' | 'product' | 'nokCode'
   reworkRecipes?: number[];
   affectedRecipes?: number[];
   dismantledMaterials?: NewRwDismantledMaterialData[];
+}
+
+export enum ReworkStatus {
+  PENDING = 'PENDING',
+  IN_PROGRESS = 'IN_PROGRESS',
+  POSTPONED = 'POSTPONED',
+  COMPLETED = 'COMPLETED',
+  CANCELLED = 'CANCELLED',
+}
+
+export interface DismantledMaterial {
+  id: number;
+  material: Material;
+  qty: number;
+  recipeBom: RecipeBom | 'EXTERNAL';
+}
+
+export interface DismantledMaterialData {
+  rwDismantledMaterialId: number | undefined;
+  material: number;
+  actualDismantledQty: number;
+  recipeBomId: number | undefined;
+  reusable: Reusable;
+  materialStatus: MaterialStatus;
+}
+
+export interface NokRework {
+  id: number;
+  nok: NOK;
+  reworkActions?: Rework[];
+  dismantledMaterials?: DismantledMaterial[];
+  AffectedRecipes?: Recipe[];
+  reworkOperator: string;
+  reworkTime: Date;
+  reworkShift: WorkShift;
+  reworkDuration: number;
+  reworkManPower: number;
+  reworkStation?: Station;
+  reworkStatus: ReworkStatus;
+  reworkNote: string;
+  usedMaterialCost?: number;
+  dismantledMaterialCost?: number;
+  recipesWastedTime?: number;
+}
+
+export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkActions' | 'dismantledMaterials' | 'AffectedRecipes' | 'reworkShift' | 'reworkStation'> {
+  id?: number;
+  nokId: number;
+  reworkActionsId?: number[];
+  dismantledMaterials?: DismantledMaterialData[];
+  affectedRecipes?: number[];
+  reworkShiftId: number;
+  reworkStationId?: number;
+}
+
+export interface MaterialCost {
+  materialId: number;
+  unitPrice: number;
+}
+
+export interface NokCost {
+  nok: NokDetect;
+  rework: NokRework;
+  dismantledMaterial : MaterialCost[];
+}
+
+export interface NokCostData extends Omit<NokCost, 'nok' | 'rework'> {
+  nokId: number;
+  reworkId: number;
+}
+
+export interface NewNokCostsData extends NokCostData {
+}
+
+export interface AnalyseCost { [key: string]: number };
+
+export interface NokRcaData {
+  id: number;
+  nokId: number;
+  rcaCodeId: number;
+  whCauseId?: number;
+  whCauseName?: string;
+  description?: string;
+  improveSuggestion?: string;
+  createBy: number;
+  createAt: Date;
+}
+
+export interface NewNokRcaData extends Omit<NokRcaData, 'id'> {
+  id?: number; 
+}
+
+export interface Analyse {
+  id: number;
+  nokId: number;
+  nokCodeId: number;
+  causeStationId: number;
+  causeShiftId: number;
+  description: string;
+  timeWaste?: number;
+  materialWaste?: number;
+  closed?: boolean;
+  closeDate?: Date;
+  updatedBy: number;
+  updatedAt: Date;
+  nok?: NOK;
+  nokCode?: NokCode;
+  causeStation?: Station;
+  causeShift?: WorkShift;
+  classCode?: ClassCode;
+  cost?: NokCost
+}
+
+export interface NewAnalyseData extends Omit<Analyse, 'id' | 'nok' | 'nokCode' | 'causeStation' | 'causeShift' | 'classCode' | 'rca'> {
+  id?: number;
+  nokId: number;
+  nokCodeId: number;
+  causeStationId: number;
+  causeShiftId: number;
+  classCodeId: number;
+  updatedBy: number;
+  updatedAt: Date;
+}
+
+export interface Claim {
+  id: number;
+  dismantledMaterialId: number;
+  date: Date;
+  claimStatus: ClaimStatus;
+  referenceType?: string;
+  reference?: string;
+  description?: string;
+}
+
+export interface NewClaimData extends Omit<Claim, 'id'> {
+  id?: number;
 }

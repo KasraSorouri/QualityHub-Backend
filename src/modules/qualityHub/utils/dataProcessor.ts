@@ -1,4 +1,4 @@
-import { ClassCodeData, ConsumingMaterial, MachineData, MaterialData, NokCodeData, NokGrpData, Product, ProductData, ProductGrpData, RcaCodeData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
+import { ClaimStatus, ClassCodeData, ConsumingMaterial, MachineData, MaterialData, NewClaimData, NokCodeData, NokGrpData, Product, ProductData, ProductGrpData, RcaCodeData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
@@ -110,14 +110,14 @@ const parseRecipeStation = (stationId: unknown): number => {
 
 const parseId = (id: unknown): number => {
   if (!isNumber(id)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or ID data!');
   }
   return id;
 }
 
 const parseQty = (qty: unknown): number => {
   if (!isNumber(qty)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or Number type!');
   }
   console.log('parse qty :', qty);
   return qty;
@@ -125,7 +125,7 @@ const parseQty = (qty: unknown): number => {
 
 const parseActive = (active: unknown): boolean => {
   if (!isBoolean(active)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or Active data!');
   }
   console.log('parse active :', active);
   return active;
@@ -133,23 +133,23 @@ const parseActive = (active: unknown): boolean => {
 
 const parseReusable = (reusable: unknown): Reusable  => {
   if (!isString(reusable)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or Reusable data!');
   }
   switch (reusable) {
     case 'YES':
       return Reusable.YES;
     case 'NO':
-      return Reusable.No;
+      return Reusable.NO;
     case 'IQC':
       return Reusable.IQC;
     default:
-      throw new Error('Incorrect or missing data!');
+      throw new Error('Incorrect or Reusable data!');
   }
 }
 
 const parseRecipeType = (recipeType: unknown): RecipeType => {
   if (!isString(recipeType)) {
-    throw new Error('Incorrect or missing data!');
+    throw new Error('Incorrect or Recipe type!');
   }
   switch (recipeType) {
     case 'PRODUCTION':
@@ -157,7 +157,7 @@ const parseRecipeType = (recipeType: unknown): RecipeType => {
     case 'REWORK':
       return RecipeType.REWORK;
     default:
-      throw new Error('Incorrect or missing data!');
+      throw new Error('Incorrect or Recipe type!');
   }
 }
 
@@ -311,7 +311,7 @@ const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]>
       const newConsumingMaterial: ConsumingMaterial = {
         materialId: parseId(bom.materialId),
         qty: parseQty(bom.qty),
-        reusable: 'reusable' in bom ? parseReusable(bom.reusable) : Reusable.No,
+        reusable: 'reusable' in bom ? parseReusable(bom.reusable) : Reusable.NO,
       };
       newBoms.push(newConsumingMaterial);
     }
@@ -370,6 +370,22 @@ const rcaCodeProcessor = (rcaCodeData: unknown): RcaCodeData => {
   }
 }
 
+const parseClaimStatus = (claimStatusData: unknown): ClaimStatus => {
+  if (!isString(claimStatusData)) {
+    throw new Error('Incorrect or missing Data!');
+  }
+  switch (claimStatusData) {
+    case 'PENDING':
+      return ClaimStatus.PENDING;
+    case 'ACCEPTED':
+      return ClaimStatus.ACCEPTED;
+    case 'DENIED':
+      return ClaimStatus.DENIED;
+    default:
+      throw new Error('Incorrect or missing Data!');
+  }
+}
+
 const machineProcessor = async(machineData: unknown): Promise<MachineData> => {
   if (!machineData || typeof machineData !== 'object') {
     throw new Error('Incorrect or missing Data!');
@@ -405,6 +421,26 @@ const classCodeProcessor = (classCodeData: unknown): ClassCodeData => {
   }
 }
 
+// Claim Status Processor
+const claimStatusProcessor = (claimData: unknown): NewClaimData  => {
+  if (!claimData || typeof claimData !== 'object') {
+    throw new Error('Incorrect or missing Data!');
+  }
+  if ('claimStatus' in claimData && 'dismantledMaterialId' in claimData) {
+    const newClaim: NewClaimData = {
+      dismantledMaterialId: parseId(claimData.dismantledMaterialId),
+      claimStatus: parseClaimStatus(claimData.claimStatus),
+      date: new Date(),
+      referenceType: 'referenceType' in claimData ? parseName(claimData.referenceType) : '',
+      reference: 'reference' in claimData ? parseName(claimData.reference) : '',
+      description: 'description' in claimData ? parseDescription(claimData.description) : '',
+  };
+    return newClaim;
+  } else {
+    throw new Error('Data is missing');
+  }
+}
+
 export {
   parseDescription,
   parseOrder,
@@ -421,5 +457,6 @@ export {
   nokCodeProcessor,
   rcaCodeProcessor,
   machineProcessor,
-  classCodeProcessor
+  classCodeProcessor,
+  claimStatusProcessor
 };

@@ -17,17 +17,6 @@ module.exports = {
         allowNull: false,
         references: { model: 'recipe_boms', key: 'id' }
       },
-      /*
-      recipe_id: {
-        type: DataTypes.INTEGER,
-        allowNull: true,
-        references: { model: 'recipes', key: 'id' }
-      },
-      material_id: {
-        type: DataTypes.INTEGER,
-        references: { model: 'materials', key: 'id' }
-      },
-      */
       dismantled_qty: {
         type: DataTypes.INTEGER,
         allowNull:true
