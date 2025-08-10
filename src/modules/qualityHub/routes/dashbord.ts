@@ -8,6 +8,13 @@ const router = express.Router();
 
 // Get Dashboard Data
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
-router.post("/nok-params", tokenExtractor, rightAuthority(["DASHBOARD"]), dashboardController.NokDashboardController.getNokData);
+router.post("/detected-nok", tokenExtractor, rightAuthority(["DASHBOARD"]), dashboardController.NokDashboardController);
 
+// Get Analysed NOK Data
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.post("/analysed-nok", tokenExtractor, rightAuthority(["DASHBOARD"]), dashboardController.nokAnalysedDashboardController);
+
+// Get Top NOK Data
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.post("/top-nok", tokenExtractor, rightAuthority(["DASHBOARD"]), dashboardController.NokDashboardControllerTopNok);
 export default router;
