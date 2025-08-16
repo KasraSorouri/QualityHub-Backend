@@ -12,3 +12,19 @@ export interface DashboardNokData {
   openNOKs: number;
   inProgressNOKs: number;
 }
+
+export interface DashboardNokData {
+  productName: string;
+  pending: number;
+  analysed: number;
+}
+
+export interface ProductNokAnalysedData {
+  productName: string;
+  shifts: { [key: string]: number };
+}
+
+export interface DashboardNokAnalysedData {
+  shifts: string[];
+  productsNok: ProductNokAnalysedData[];
+} 

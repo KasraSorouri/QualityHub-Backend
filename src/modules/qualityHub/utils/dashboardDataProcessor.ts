@@ -1,4 +1,5 @@
 import sequelize from "sequelize";
+import { DashboardNokAnalysedData, DashboardNokData, ProductNokAnalysedData } from "../dashboardTypes";
 
 type QueryParams = {
   startDate?: string;
@@ -9,7 +10,7 @@ type QueryParams = {
 type DashboardParams_AnalysedQuery = {
   detectTimeCondition?: object;
   productRange?: number[];
-};
+};  
 
 const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery => {
 
@@ -44,10 +45,68 @@ const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery =>
     queryParams.productRange = [];
   }
     
-  console.log(' ** * Processed Query Parameters:', queryParams);
   return queryParams;
 };
 
+const nokDataFormatter = (dashboardNokData: any[]): DashboardNokData[] => {
+  const formattedData: DashboardNokData[] = [];
+
+  const Data: DashboardNokData[] = Object.values(
+    dashboardNokData.reduce((acc, item) => {
+      if (!acc[item.product]) {
+        acc[item.product] = { productName: item.product, pending: 0, analysed: 0 };
+      }
+      if (item.nokStatus === 'PENDING') {
+        acc[item.product].pending += Number(item.count);
+      } else if (item.nokStatus === 'ANALYSED') {
+        acc[item.product].analysed += Number(item.count);
+      }
+      return acc;
+    }, {} as Record<string, DashboardNokData>)
+  );
+
+  for (const item of Data) {
+    formattedData.push(item);
+  }
+
+  return formattedData;
+}
+
+const analysedDataFormatter = (analysedNokData: any[]): DashboardNokAnalysedData => {
+  console.log('Analysed Data:', analysedNokData);
+  
+
+  // Collect all unique shifts
+  const allShifts = Array.from(new Set(analysedNokData.map(item => item.shiftName)));
+
+  // Build Report Structure
+  const Data: ProductNokAnalysedData[] = Object.values(
+    analysedNokData.reduce<Record<string, ProductNokAnalysedData>>((acc, item) => {
+      if (!acc[item.productName]) {
+        acc[item.productName] = {
+          productName: item.productName,
+          shifts : {} 
+        }
+          allShifts.forEach(shift => {
+            acc[item.productName].shifts[shift] = 0;  
+          });      
+      }
+      acc[item.productName].shifts[item.shiftName] = item.count;
+
+      return acc;
+    }, {} as Record<string, { productName: string; shifts: Record<string,number> }>)
+  );
+
+  const formattedData: DashboardNokAnalysedData = {
+    shifts: allShifts,
+    productsNok: Data
+  };
+
+  return formattedData;
+}
+
 export default {
-  analysedNokQuery
+  analysedNokQuery,
+  nokDataFormatter,
+  analysedDataFormatter,
 };

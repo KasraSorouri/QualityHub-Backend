@@ -1,8 +1,9 @@
 import { ClassCode, NokAnalyse, NokCode, NokDetect, Product, WorkShift } from '../../../models';
 import sequelize from 'sequelize';
 import dashboardDataProcessor from '../utils/dashboardDataProcessor';
+import { DashboardNokData } from '../dashboardTypes';
 
-const nokDashboard = async(params: any): Promise<any> => {
+const nokDashboard = async(params: any): Promise<DashboardNokData[]> => {
   
   // converting Parameters
   const processedParams = dashboardDataProcessor.analysedNokQuery(params);
@@ -31,7 +32,7 @@ const nokDashboard = async(params: any): Promise<any> => {
         [sequelize.Op.and]: [
           { 'removeReport': false },
           { 'detectTime': detectTimeCondition },
-          { 'productId': productRange.length > 0 ? { [sequelize.Op.in]: productRange } : { [sequelize.Op.ne]: undefined } }
+          { '$nokDetect.product_id$': productRange.length > 0 ? { [sequelize.Op.in]: productRange } : { [sequelize.Op.ne]: null } }
         ]
       },
       attributes: [ 
@@ -41,7 +42,11 @@ const nokDashboard = async(params: any): Promise<any> => {
       group: ['product','nokStatus'],
       raw: true,
     });
-    return dashboardNokData;
+
+    // Preparing the dashboard data for response
+    const dashboardNokDataFormatted = dashboardDataProcessor.nokDataFormatter(dashboardNokData);
+    
+    return dashboardNokDataFormatted;
   } catch (error) {
     console.error('Error fetching NOK data:', error);
     throw new Error('Failed to fetch NOK dashboard data');
@@ -76,12 +81,7 @@ const nokAnalysedDashboard = async(params: any): Promise<any> => {
           model: WorkShift,
           as: 'causeShift',
           attributes: [],
-        },
-        {
-          model: ClassCode,
-          as: 'classCode',
-          attributes: [],
-        },
+        }
       ],
       where: {
         [sequelize.Op.and]: [
@@ -93,20 +93,22 @@ const nokAnalysedDashboard = async(params: any): Promise<any> => {
       attributes: [
         [sequelize.col('nokDetect.product.product_name'), 'productName'],
         [sequelize.col('causeShift.shift_name'), 'shiftName'],
-        [sequelize.col('nokAnalyse.nok_code_id'), 'nokCodeId'],
-        [sequelize.col('classCode.class_name'), 'className'],
 
         [sequelize.fn('COUNT', sequelize.col('nokAnalyse.id')), 'count']
       ],
       group: [
-        'nokAnalyse.nok_code_id',
-        'causeShift.shift_name',
-        'classCode.class_name',
         'nokDetect.product.product_name',
+        'causeShift.shift_name',
+       
       ],
       raw: true,
     });
-    return analysedNokData;
+
+    // Preparing the analysed NOK data for response
+    const analysedNokDataFormatted = dashboardDataProcessor.analysedDataFormatter(analysedNokData);
+    console.log('Analysed NOK Data:', analysedNokDataFormatted);
+
+    return analysedNokDataFormatted;
   } catch (error) {
     console.error('Error fetching analysed NOK data:', error);
     throw new Error('Failed to fetch NOK analysed dashboard data');
