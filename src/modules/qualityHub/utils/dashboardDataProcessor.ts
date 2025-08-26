@@ -1,5 +1,5 @@
 import sequelize from "sequelize";
-import { DashboardNokAnalysedData, DashboardNokData, ProductNokAnalysedData } from "../dashboardTypes";
+import { DashboardNokAnalysedData, DashboardNokData, ProductNokAnalysedData, DashboardTopNokData, TopNokData } from "../dashboardTypes";
 
 type QueryParams = {
   startDate?: string;
@@ -80,7 +80,7 @@ const analysedDataFormatter = (analysedNokData: any[]): DashboardNokAnalysedData
   const allShifts = Array.from(new Set(analysedNokData.map(item => item.shiftName)));
 
   // Build Report Structure
-  const Data: ProductNokAnalysedData[] = Object.values(
+  const data: ProductNokAnalysedData[] = Object.values(
     analysedNokData.reduce<Record<string, ProductNokAnalysedData>>((acc, item) => {
       if (!acc[item.productName]) {
         acc[item.productName] = {
@@ -99,8 +99,47 @@ const analysedDataFormatter = (analysedNokData: any[]): DashboardNokAnalysedData
 
   const formattedData: DashboardNokAnalysedData = {
     shifts: allShifts,
-    productsNok: Data
+    productsNok: data
   };
+
+  return formattedData;
+}
+
+// Formatting the Top N NOK Codes Data for Response
+
+const topNDataFormatter = (topNData: any[]): DashboardTopNokData => {
+
+  // Collect all unique shifts
+  const allShifts = Array.from(new Set(topNData.map(item => item.shiftName)));
+
+  // Build Report Structure
+  const data: TopNokData[] = Object.values(
+    topNData.reduce<Record<string, TopNokData>>((acc, item) => {
+      const key = `${item.productName}-${item.nokCode}`;
+      const count = Number(item.count);
+      if (!acc[key]) {
+        acc[key] = {
+          productName: item.productName,
+          nokCode: item.nokCode,
+          count:0,
+          shifts : {} 
+        }
+          allShifts.forEach(shift => {
+            acc[key].shifts[shift] = 0;  
+          });      
+      }
+      acc[key].count += count;
+      acc[key].shifts[item.shiftName] = item.count;
+
+      return acc;
+    }, {} as Record<string, { productName: string; nokCode: string; count: number; shifts: Record<string,number> }>)
+  );
+
+  const formattedData: DashboardTopNokData = {
+    shifts: allShifts as string[],
+    TopNok: data
+  };
+
 
   return formattedData;
 }
@@ -109,4 +148,5 @@ export default {
   analysedNokQuery,
   nokDataFormatter,
   analysedDataFormatter,
+  topNDataFormatter
 };

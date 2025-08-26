@@ -1,4 +1,4 @@
-import { ClassCode, NokAnalyse, NokCode, NokDetect, Product, WorkShift } from '../../../models';
+import { NokAnalyse, NokCode, NokDetect, Product, WorkShift } from '../../../models';
 import sequelize from 'sequelize';
 import dashboardDataProcessor from '../utils/dashboardDataProcessor';
 import { DashboardNokData } from '../dashboardTypes';
@@ -13,7 +13,6 @@ const nokDashboard = async(params: any): Promise<DashboardNokData[]> => {
 
   // Fetching dashboard data for NOK analysis
   try {
-    console.log('Fetching NOK data from the database...');
     const dashboardNokData = await NokDetect.findAll({
       include: [
         {
@@ -142,8 +141,8 @@ const topNokCodes = async (params: any): Promise<any> => {
           ]
         },
         {
-          model: ClassCode,
-          as: 'classCode',
+          model: WorkShift,
+          as: 'causeShift',
           attributes: [],
         },
         { 
@@ -160,24 +159,25 @@ const topNokCodes = async (params: any): Promise<any> => {
         ]
       },
       attributes: [
-        [sequelize.col('nokAnalyse.nok_code_id'), 'nokCodeId'],
         [sequelize.col('nokDetect.product.product_name'), 'productName'],
         [sequelize.col('nokCode.nok_code'), 'nokCode'],
-        [sequelize.col('nokCode.nok_desc'), 'nokDescription'],
-        [sequelize.fn('COUNT', sequelize.col('nokAnalyse.id')), 'count']
+        [sequelize.fn('COUNT', sequelize.col('nokAnalyse.id')), 'count'],
+        [sequelize.col('causeShift.shift_name'), 'shiftName'],
       ],
       group: [
-        'nokAnalyse.nok_code_id',
         'nokCode.nok_code',
-        'nokCode.nok_desc',
-        'classCode.class_name',
         'nokDetect.product.product_name',
+        'causeShift.shift_name'
       ],
       order: [[sequelize.fn('COUNT', sequelize.col('nokAnalyse.id')), 'DESC']],
       limit: topN,
       raw: true,
     });
-    return topNokCodes;
+
+    // Preparing the top N NOK codes data for response
+    const topNokCodesFormatted = dashboardDataProcessor.topNDataFormatter(topNokCodes);
+
+    return topNokCodesFormatted;
   } catch (error) {
     console.error('Error fetching top NOK codes:', error);
     throw new Error('Failed to fetch top NOK codes');

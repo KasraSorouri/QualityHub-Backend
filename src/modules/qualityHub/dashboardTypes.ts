@@ -28,3 +28,15 @@ export interface DashboardNokAnalysedData {
   shifts: string[];
   productsNok: ProductNokAnalysedData[];
 } 
+
+export interface TopNokData {
+  productName: string;
+  nokCode: string;
+  count: number;
+  shifts: { [key: string]: number };
+}
+
+export interface DashboardTopNokData {
+  shifts: string[];
+  TopNok: TopNokData[];
+}
