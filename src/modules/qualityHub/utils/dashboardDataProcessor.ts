@@ -5,11 +5,13 @@ type QueryParams = {
   startDate?: string;
   endDate?: string;
   productId?: string | string[];
+  shiftId?: string | string[];
 };
 
 type DashboardParams_AnalysedQuery = {
   detectTimeCondition?: object;
   productRange?: number[];
+  shiftRange?: number[];
 };  
 
 const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery => {
@@ -17,9 +19,10 @@ const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery =>
   const queryParams: DashboardParams_AnalysedQuery = {
     detectTimeCondition: {},
     productRange: [],
+    shiftRange: []
   };
-  // Process the parameters as needed for the analysed NOK query
 
+ 
   // Process Date Range
   if (('startDate' in params) || ('endDate' in params)) {
     console.log('Processing parameters for analysed NOK query:', params);
@@ -43,6 +46,15 @@ const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery =>
     queryParams.productRange = [parseInt(params.productId)];
   } else {
     queryParams.productRange = [];
+  }
+
+  // Process Shift Range
+  if (params.shiftId && Array.isArray(params.shiftId)) {
+    queryParams.shiftRange = params.shiftId.map((id) => parseInt(id));
+  } else if (params.shiftId && typeof params.shiftId === 'string') {
+    queryParams.shiftRange = [parseInt(params.shiftId)];
+  } else {
+    queryParams.shiftRange = [];
   }
     
   return queryParams;

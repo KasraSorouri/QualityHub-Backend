@@ -25,13 +25,13 @@ const nokDashboard = async(params: any): Promise<DashboardNokData[]> => {
           as: 'nokAnalyse',
           required: false,
           attributes: [],
-        }
+        },
       ],
       where: {
         [sequelize.Op.and]: [
           { 'removeReport': false },
           { 'detectTime': detectTimeCondition },
-          { '$nokDetect.product_id$': productRange.length > 0 ? { [sequelize.Op.in]: productRange } : { [sequelize.Op.ne]: null } }
+          { '$nokDetect.product_id$': productRange.length > 0 ? { [sequelize.Op.in]: productRange } : { [sequelize.Op.ne]: null } },
         ]
       },
       attributes: [ 
