@@ -1,5 +1,5 @@
 import { NokAnalyse, NokCode, NokDetect, Product, WorkShift } from '../../../models';
-import sequelize from 'sequelize';
+import sequelize, { Op , WhereOptions } from 'sequelize';
 import dashboardDataProcessor from '../utils/dashboardDataProcessor';
 import { DashboardNokData } from '../dashboardTypes';
 
@@ -10,6 +10,34 @@ const nokDashboard = async(params: any): Promise<DashboardNokData[]> => {
 
   const detectTimeCondition = processedParams.detectTimeCondition;
   const productRange = processedParams.productRange || [];
+  const shiftRange = processedParams.shiftRange || [];
+
+  const andCondition : WhereOptions[] = [
+      { 'removeReport': false },
+  ]
+  console.log('  ** Dashbord service * NOK Detect * ** ');
+  console.log('  ** Dashbord service * NOK Detect * Product Range ->', productRange);
+  console.log('  ** Dashbord service * NOK Detect * detect Time  ->', detectTimeCondition);
+  console.log('  ** Dashbord service * NOK Detect * Shift Range  ->', shiftRange);
+
+  
+  if (detectTimeCondition) {
+    andCondition.push({ 'detect_time': detectTimeCondition });
+  }
+
+  if (productRange.length > 0) {
+    andCondition.push({ 'product_id': { [Op.in]: productRange } });
+  }
+
+  if (shiftRange.length > 0) {
+    andCondition.push({ 'detectShiftId': { [Op.in]: shiftRange } });
+  }
+
+  const whereCondition: WhereOptions = {
+    [Op.and]: andCondition
+  }
+
+  console.log('  ** Dashbord service * NOK Detect * Where Condition ->', whereCondition);
 
   // Fetching dashboard data for NOK analysis
   try {
@@ -27,13 +55,7 @@ const nokDashboard = async(params: any): Promise<DashboardNokData[]> => {
           attributes: [],
         },
       ],
-      where: {
-        [sequelize.Op.and]: [
-          { 'removeReport': false },
-          { 'detectTime': detectTimeCondition },
-          { '$nokDetect.product_id$': productRange.length > 0 ? { [sequelize.Op.in]: productRange } : { [sequelize.Op.ne]: null } },
-        ]
-      },
+      where: whereCondition,
       attributes: [ 
         [sequelize.col('product.product_name'), 'product'],
         'nokStatus',
@@ -59,6 +81,37 @@ const nokAnalysedDashboard = async(params: any): Promise<any> => {
 
   const detectTimeCondition = processedParams.detectTimeCondition;
   const productRange = processedParams.productRange || [];
+  const shiftRange = processedParams.shiftRange || [];
+
+  const andCondition : WhereOptions[] = [
+      { '$nokDetect.remove_report$': false },
+  ]
+  
+  console.log('  ** Dashbord service * NOK Analysed * ** ');
+  console.log('  ** Dashbord service * NOK Analysed * Product Range ->', productRange);
+  console.log('  ** Dashbord service * NOK Analysed * detect Time  ->', detectTimeCondition);
+  console.log('  ** Dashbord service * NOK Analysed * Shift Range  ->', shiftRange);
+
+  
+  if (detectTimeCondition) {
+    andCondition.push({ '$nokDetect.detect_time$': detectTimeCondition });
+  }
+
+  
+  if (productRange.length > 0) {
+    andCondition.push({ '$nokDetect.product_id$': { [Op.in]: productRange } });
+  }
+
+  if (shiftRange.length > 0) {
+    andCondition.push({ '$nokDetect.detect_shift_id$': { [Op.in]: shiftRange } });
+  }
+
+  const whereCondition: WhereOptions = {
+    [Op.and]: andCondition
+  }
+
+  console.log('  ** Dashbord service * NOK Detect * Where Condition ->', whereCondition);
+
 
   // Fetching analysed dashboard data for NOK analysis
   try {
@@ -82,13 +135,7 @@ const nokAnalysedDashboard = async(params: any): Promise<any> => {
           attributes: [],
         }
       ],
-      where: {
-        [sequelize.Op.and]: [
-          {'$nokDetect.remove_report$': false },
-          {'$nokDetect.detect_time$': detectTimeCondition },
-          {'$nokDetect.product_id$': productRange.length > 0 ? { [sequelize.Op.in]: productRange } : { [sequelize.Op.ne]: null } }
-        ]
-      },
+      where: whereCondition,
       attributes: [
         [sequelize.col('nokDetect.product.product_name'), 'productName'],
         [sequelize.col('causeShift.shift_name'), 'shiftName'],
@@ -119,10 +166,39 @@ const topNokCodes = async (params: any): Promise<any> => {
 
   // converting Parameters
   const processedParams = dashboardDataProcessor.analysedNokQuery(params);
-  console.log('Processed Parameters ->', processedParams);  
   const detectTimeCondition = processedParams.detectTimeCondition;
   const productRange = processedParams.productRange || [];
-  const topN = params.topN || 10; // Default to top 10 if not specified
+  const shiftRange = processedParams.shiftRange || [];
+  const topN = processedParams.topN || 10;
+
+  const andCondition : WhereOptions[] = [
+      { '$nokDetect.remove_report$': false },
+  ]
+  
+  console.log('  ** Dashbord service * TOP NOK  * ** ');
+  console.log('  ** Dashbord service * TOP NOK  * Product Range ->', productRange);
+  console.log('  ** Dashbord service * TOP NOK  * detect Time  ->', detectTimeCondition);
+  console.log('  ** Dashbord service * TOP NOK  * Shift Range  ->', shiftRange);
+
+  
+  if (detectTimeCondition) {
+    andCondition.push({ '$nokDetect.detect_time$': detectTimeCondition });
+  }
+
+  
+  if (productRange.length > 0) {
+    andCondition.push({ '$nokDetect.product_id$': { [Op.in]: productRange } });
+  }
+
+  if (shiftRange.length > 0) {
+    andCondition.push({ 'causeShiftId': { [Op.in]: shiftRange } });
+  }
+
+  const whereCondition: WhereOptions = {
+    [Op.and]: andCondition
+  }
+
+  console.log('  ** Dashbord service * NOK Detect * Where Condition ->', whereCondition);
 
   // Fetching top N NOK codes
   try {
@@ -151,13 +227,7 @@ const topNokCodes = async (params: any): Promise<any> => {
           attributes: [],
         }        
       ],
-      where: {
-        [sequelize.Op.and]: [
-          {'$nokDetect.remove_report$': false },
-          {'$nokDetect.detect_time$': detectTimeCondition },
-          {'$nokDetect.product_id$': productRange.length > 0 ? { [sequelize.Op.in]: productRange } : { [sequelize.Op.ne]: null } }
-        ]
-      },
+      where: whereCondition,
       attributes: [
         [sequelize.col('nokDetect.product.product_name'), 'productName'],
         [sequelize.col('nokCode.nok_code'), 'nokCode'],

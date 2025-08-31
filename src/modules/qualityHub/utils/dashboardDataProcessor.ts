@@ -6,12 +6,14 @@ type QueryParams = {
   endDate?: string;
   productId?: string | string[];
   shiftId?: string | string[];
+  topN?: string | number;
 };
 
 type DashboardParams_AnalysedQuery = {
   detectTimeCondition?: object;
   productRange?: number[];
   shiftRange?: number[];
+  topN?: number;
 };  
 
 const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery => {
@@ -36,7 +38,11 @@ const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery =>
       (queryParams.detectTimeCondition as Record<symbol, any>)[sequelize.Op.gte] = startDate;
     } else if (endDate) {
       (queryParams.detectTimeCondition as Record<symbol, any>)[sequelize.Op.lte] = endDate;
-    }
+    }  else {
+    delete queryParams.detectTimeCondition;
+  }
+  } else {
+    delete queryParams.detectTimeCondition;
   }
 
   // Process Product Range
@@ -45,7 +51,7 @@ const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery =>
   } else if (params.productId && typeof params.productId === 'string') {
     queryParams.productRange = [parseInt(params.productId)];
   } else {
-    queryParams.productRange = [];
+    delete queryParams.productRange;
   }
 
   // Process Shift Range
@@ -54,7 +60,14 @@ const analysedNokQuery = (params:QueryParams) : DashboardParams_AnalysedQuery =>
   } else if (params.shiftId && typeof params.shiftId === 'string') {
     queryParams.shiftRange = [parseInt(params.shiftId)];
   } else {
-    queryParams.shiftRange = [];
+    delete queryParams.shiftRange;
+  }
+
+  // Process Top N
+  if (params.topN) {
+    queryParams.topN = typeof params.topN === 'string' ? parseInt(params.topN) : params.topN;
+  } else {
+    delete queryParams.topN;
   }
     
   return queryParams;
