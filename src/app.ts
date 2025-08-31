@@ -32,6 +32,8 @@ import nokAnalysesRouter from './modules/qualityHub/routes/nokAnalyses';
 import claimManagerRouter from './modules/qualityHub/routes/claimManager';
 import iqcManagerRouter from './modules/qualityHub/routes/iqcManager';
 
+import dashboard from './modules/qualityHub/routes/dashbord';
+
 
 const app = express();
 app.use(express.json(), cors());
@@ -65,6 +67,8 @@ app.use('/api/quality/nok_analyses', nokAnalysesRouter);
 
 app.use('/api/quality/claims', claimManagerRouter);
 app.use('/api/quality/iqcs', iqcManagerRouter);
+
+app.use('/api/quality/dashboard', dashboard);
 
 app.get('/api/ping',(_req,res) => {
   res.send('Pong!');
