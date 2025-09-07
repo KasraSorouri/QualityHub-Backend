@@ -5,15 +5,15 @@ import { Umzug, SequelizeStorage } from 'umzug';
 import logger from '../utils/logger';
 
 if (!DATABASE_URI) {
-  logger.info('Database URI is not found!');  
+  logger.info('Database URI is not found!');
 }
-const sequelize = new Sequelize(DATABASE_URI as string,{
+const sequelize = new Sequelize(DATABASE_URI as string, {
   logging: true,
 });
 
 const migrationConf = {
   migrations: {
-    glob: './src/migrations/*.ts'
+    glob: './src/migrations/*.ts',
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migration' }),
   context: sequelize.getQueryInterface(),
@@ -28,15 +28,13 @@ const runMigration = async () => {
   });
 };
 
-
 const connectToDatabase = async () => {
   try {
     await sequelize.authenticate();
     await runMigration();
     logger.info('Connection has been established successfully.');
   } catch (error) {
-    if ( error instanceof Error )
-    logger.info('Unable to connect to the database:', error.message);
+    if (error instanceof Error) logger.info('Unable to connect to the database:', error.message);
     return process.exit(1);
   }
   return null;
@@ -48,8 +46,4 @@ const rollbackMigration = async () => {
   await migrator.down();
 };
 
-export {
-  connectToDatabase,
-  sequelize,
-  rollbackMigration
-};
+export { connectToDatabase, sequelize, rollbackMigration };

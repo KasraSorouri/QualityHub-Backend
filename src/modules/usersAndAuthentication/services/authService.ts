@@ -3,7 +3,7 @@ import bcrypt from 'bcrypt';
 
 import { SECRET } from '../../../configs/config';
 
-import { User, Role, Right }from '../../../models';
+import { User, Role, Right } from '../../../models';
 
 import { UserCredentials } from '../types';
 
@@ -12,30 +12,32 @@ type Credentials = {
   password: string;
 };
 
-const login = async ({ username, password } : Credentials) : Promise<UserCredentials> => {
-
+const login = async ({ username, password }: Credentials): Promise<UserCredentials> => {
   if (!username || !password) {
     throw new Error('username and password are required!');
   }
 
   const user = await User.findOne({
     where: {
-      username: username
+      username: username,
     },
-    include: [{
-      model: Role,
-      attributes: ['roleName'],
-      through: { attributes: [] },
-      include: [{
-        model: Right,
-        attributes: ['right'],
+    include: [
+      {
+        model: Role,
+        attributes: ['roleName'],
         through: { attributes: [] },
-      }]
-    }],
+        include: [
+          {
+            model: Right,
+            attributes: ['right'],
+            through: { attributes: [] },
+          },
+        ],
+      },
+    ],
   });
-  
-  const passwordCorrect = user === null ? false
-    : await bcrypt.compare(password, user.password);
+
+  const passwordCorrect = user === null ? false : await bcrypt.compare(password, user.password);
 
   if (!user || !passwordCorrect) {
     throw new Error('invalid username or password!');
@@ -52,10 +54,15 @@ const login = async ({ username, password } : Credentials) : Promise<UserCredent
 
   const token = jwt.sign(userForToken, SECRET);
 
-  return { token, user: user.username, firstName: user.firstName, lastName: user.lastName, roles };
-
+  return {
+    token,
+    user: user.username,
+    firstName: user.firstName,
+    lastName: user.lastName,
+    roles,
+  };
 };
 
-export default{
-  login
+export default {
+  login,
 };

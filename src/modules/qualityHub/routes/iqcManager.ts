@@ -13,7 +13,7 @@ router.get('/', iqcControllers.getAllIQCs);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/pending', iqcControllers.getPendingIQCs);
 
-// Update Material Status 
+// Update Material Status
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), iqcControllers.updateMaterialStatus);
 

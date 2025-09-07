@@ -4,7 +4,7 @@ import { ExtendedRequest } from '../types';
 import { parseUserResponse } from '../utils/dataProcessor';
 
 const getAllUsers = async (_req: Request, res: Response) => {
-  try{
+  try {
     const users = await userServices.getAllUsers();
     res.json(users);
   } catch (err) {
@@ -12,7 +12,7 @@ const getAllUsers = async (_req: Request, res: Response) => {
   }
 };
 
-const getUser = async (req: ExtendedRequest, res: Response)=> {
+const getUser = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const user = await userServices.getUser(Number(id));
@@ -28,7 +28,7 @@ const addUser = async (req: ExtendedRequest, res: Response) => {
     const newUser = await userServices.createUser(userData);
     const result = parseUserResponse(newUser);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -39,15 +39,15 @@ const addUser = async (req: ExtendedRequest, res: Response) => {
 
 const editUser = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const userData: unknown = req.body;
   try {
-    const newUser = await userServices.updateUser(id,userData);
+    const newUser = await userServices.updateUser(id, userData);
     const result = parseUserResponse(newUser);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

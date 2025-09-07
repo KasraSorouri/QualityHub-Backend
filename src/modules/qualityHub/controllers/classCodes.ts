@@ -5,7 +5,7 @@ import classCodeServices from '../services/classCodes';
 
 // Get All ClassCode
 const getAllClassCodes = async (_req: Request, res: Response) => {
-  try{
+  try {
     const classCode = await classCodeServices.getAllClassCodes();
     res.json(classCode);
   } catch (err) {
@@ -13,9 +13,8 @@ const getAllClassCodes = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a ClassCode by Id
-const getClassCode = async (req: ExtendedRequest, res: Response)=> {
+const getClassCode = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const classCode = await classCodeServices.getClassCode(Number(id));
@@ -31,7 +30,7 @@ const addClassCode = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await classCodeServices.createClassCode(classCodeData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -43,14 +42,14 @@ const addClassCode = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing ClassCode
 const editClassCode = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const classCodeData: unknown = req.body;
   try {
-    const result = await classCodeServices.updateClassCode(id,classCodeData);
+    const result = await classCodeServices.updateClassCode(id, classCodeData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

@@ -24,62 +24,66 @@ class NokDismantleMaterials extends Model {
   }
 }
 
-NokDismantleMaterials.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
-  },
-  nokId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'nokDetect', key: 'id' }
-  },
-  reworkId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'nokRework', key: 'id' }
-  },
-  materialId: {
-    type: DataTypes.INTEGER,   allowNull: true,
-    references: { model: 'material', key: 'id' }
-  },
-  actualDismantledQty: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-  },
-  reusable: {
-    type: DataTypes.ENUM,
-    values: Object.values(Reusable)
-  },
+NokDismantleMaterials.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    nokId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: 'nokDetect', key: 'id' },
+    },
+    reworkId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: 'nokRework', key: 'id' },
+    },
+    materialId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: { model: 'material', key: 'id' },
+    },
+    actualDismantledQty: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    reusable: {
+      type: DataTypes.ENUM,
+      values: Object.values(Reusable),
+    },
     recipeBomId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
+      type: DataTypes.INTEGER,
+      allowNull: true,
+    },
+    materialStatus: {
+      type: DataTypes.ENUM,
+      values: Object.values(MaterialStatus),
+    },
+    claimStatus: {
+      type: DataTypes.ENUM,
+      values: Object.values(ClaimStatus),
+      allowNull: false,
+      defaultValue: ClaimStatus.PENDING,
+    },
+    unitPrice: {
+      type: DataTypes.DECIMAL,
+      defaultValue: 0,
+    },
+    rwDismantledMaterialId: {
+      type: DataTypes.INTEGER,
+      allowNull: true,
+      references: { model: 'rwDismantledMaterial', key: 'id' },
+    },
   },
-  materialStatus: {
-    type: DataTypes.ENUM,
-    values: Object.values(MaterialStatus)
+  {
+    sequelize,
+    underscored: true,
+    timestamps: false,
+    modelName: 'nokDismantleMaterials',
   },
-  claimStatus: {
-    type: DataTypes.ENUM,
-    values: Object.values(ClaimStatus),
-    allowNull: false,
-    defaultValue: ClaimStatus.PENDING
-  },
-  unitPrice: {
-    type: DataTypes.DECIMAL,
-    defaultValue: 0
-  },
-  rwDismantledMaterialId: {
-    type: DataTypes.INTEGER,
-    allowNull: true,
-    references: { model: 'rwDismantledMaterial', key: 'id' }
-  }
-}, {
-  sequelize,
-  underscored: true,
-  timestamps: false,
-  modelName: 'nokDismantleMaterials'
-});
+);
 
 export default NokDismantleMaterials;

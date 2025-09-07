@@ -62,68 +62,70 @@ class NokAnalyse extends Model<NokAnalyseAttributes, NokAnalyseCreationAttribute
       as: 'rca'
     });
   } 
-  */ 
+  */
 }
 
 // define Product Model
-NokAnalyse.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+NokAnalyse.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    nokId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      unique: true,
+    },
+    nokCodeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    causeStationId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    causeShiftId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    classCodeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    timeWaste: {
+      type: DataTypes.INTEGER,
+    },
+    materialWaste: {
+      type: DataTypes.INTEGER,
+    },
+    closed: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    closeDate: {
+      type: DataTypes.DATE,
+    },
+    updatedBy: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    updatedAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
   },
-  nokId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    unique: true
-  },
-  nokCodeId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  causeStationId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  causeShiftId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  classCodeId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  description: {
-    type: DataTypes.STRING,
-  },
-  timeWaste: {
-    type: DataTypes.INTEGER,
-  },
-  materialWaste: {
-    type: DataTypes.INTEGER,
-  },
-  closed: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-  closeDate: {
-    type: DataTypes.DATE,
-  },
-  updatedBy: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  updatedAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  }
-},
 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'nokAnalyse',
-  sequelize,
-});
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'nokAnalyse',
+    sequelize,
+  },
+);
 
 export default NokAnalyse;

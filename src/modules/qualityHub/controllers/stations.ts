@@ -2,10 +2,9 @@ import stationServices from '../services/stations';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
-
 // Get All Stations
 const getAllStations = async (_req: Request, res: Response) => {
-  try{
+  try {
     const stations = await stationServices.getAllStations();
     res.json(stations);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllStations = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Station by Id
-const getStation = async (req: ExtendedRequest, res: Response)=> {
+const getStation = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const station = await stationServices.getStation(Number(id));
@@ -31,7 +29,7 @@ const addStation = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await stationServices.createStation(stationData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -43,14 +41,14 @@ const addStation = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing Station
 const editStation = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const stationData: unknown = req.body;
   try {
-    const result = await stationServices.updateStation(id,stationData);
+    const result = await stationServices.updateStation(id, stationData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

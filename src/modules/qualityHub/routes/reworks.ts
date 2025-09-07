@@ -9,9 +9,12 @@ const router = express.Router();
 // Get Reworks
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/', reworkControllers.getAllReworks);
+
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/:id', reworkControllers.getRework);
-router.get('/product/:id', reworkControllers.getReworksByProduct)
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.get('/product/:id', reworkControllers.getReworksByProduct);
 
 // Create Rework
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -20,6 +23,5 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), reworkControll
 // Edit Rework
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), reworkControllers.editRework);
-
 
 export default router;

@@ -8,31 +8,33 @@ class WorkShift extends Model<InferAttributes<WorkShift>, InferCreationAttribute
   active!: boolean;
 }
 
-  WorkShift.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+WorkShift.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    shiftName: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    shiftCode: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+    },
   },
-  shiftName: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'workShift',
+    sequelize,
   },
-  shiftCode: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
-  },
-  active: {
-    type: DataTypes.BOOLEAN
-  },
-}, 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'workShift',
-  sequelize,
-});
+);
 
 export default WorkShift;

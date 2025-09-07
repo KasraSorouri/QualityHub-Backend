@@ -1,3 +1,4 @@
+import { NokStatus } from './types';
 
 export interface DashboardNokParams {
   startDate?: string;
@@ -5,12 +6,6 @@ export interface DashboardNokParams {
   machineId?: number;
   nokGroupId?: number;
   productId?: number;
-}
-
-export interface DashboardNokData {
-  totalNOKs: number;
-  openNOKs: number;
-  inProgressNOKs: number;
 }
 
 export interface DashboardNokData {
@@ -27,7 +22,7 @@ export interface ProductNokAnalysedData {
 export interface DashboardNokAnalysedData {
   shifts: string[];
   productsNok: ProductNokAnalysedData[];
-} 
+}
 
 export interface TopNokData {
   productName: string;
@@ -39,4 +34,31 @@ export interface TopNokData {
 export interface DashboardTopNokData {
   shifts: string[];
   TopNok: TopNokData[];
+}
+
+export interface QueryParams {
+  startDate?: string;
+  endDate?: string;
+  productId?: string | string[];
+  shiftId?: string | string[];
+  topN?: string | number;
+}
+
+export interface DashboardNokDetect {
+  product: { productName: string };
+  count: number;
+  nokStatus: NokStatus;
+}
+
+export interface DashboardNokAnalysed {
+  productName: string;
+  shiftName: string;
+  count: number;
+}
+
+export interface DashboardTopNok {
+  productName: string;
+  nokCode: string;
+  shiftName: string;
+  count: number;
 }

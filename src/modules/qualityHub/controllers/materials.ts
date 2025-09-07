@@ -2,10 +2,9 @@ import materialServices from '../services/materials';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
-
 // Get All Materials
 const getAllMaterials = async (_req: Request, res: Response) => {
-  try{
+  try {
     const materials = await materialServices.getAllMaterials();
     res.json(materials);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllMaterials = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Material by Id
-const getMaterial = async (req: ExtendedRequest, res: Response)=> {
+const getMaterial = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const material = await materialServices.getMaterial(Number(id));
@@ -31,7 +29,7 @@ const addMaterial = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await materialServices.createMaterial(materialData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -43,14 +41,14 @@ const addMaterial = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing Material
 const editMaterial = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const materialData: unknown = req.body;
   try {
-    const result = await materialServices.updateMaterial(id,materialData);
+    const result = await materialServices.updateMaterial(id, materialData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

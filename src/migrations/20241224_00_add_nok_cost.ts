@@ -1,12 +1,12 @@
 import { DataTypes } from 'sequelize';
 
 module.exports = {
-  up: async ({ context: queryInterface } : any) => {
+  up: async ({ context: queryInterface }: any) => {
     await queryInterface.createTable('nok_costs', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       nok_id: {
         type: DataTypes.INTEGER,
@@ -35,10 +35,10 @@ module.exports = {
         type: DataTypes.DATE,
         allowNull: false,
         defaultValue: DataTypes.NOW,
-      }
-    })
+      },
+    });
   },
-  down: async ({ context: queryInterface } : any) => {
-    await queryInterface.dropTable('nok_costs')
-  }
-}
+  down: async ({ context: queryInterface }: any) => {
+    await queryInterface.dropTable('nok_costs');
+  },
+};

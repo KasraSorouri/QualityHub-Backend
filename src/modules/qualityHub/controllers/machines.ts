@@ -2,10 +2,9 @@ import machineServices from '../services/machines';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
-
 // Get All Machines
 const getAllMachines = async (_req: Request, res: Response) => {
-  try{
+  try {
     const machines = await machineServices.getAllMachines();
     res.json(machines);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllMachines = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Machine by Id
-const getMachine = async (req: ExtendedRequest, res: Response)=> {
+const getMachine = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const machine = await machineServices.getMachine(Number(id));
@@ -31,7 +29,7 @@ const addMachine = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await machineServices.createMachine(machineData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -43,14 +41,14 @@ const addMachine = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing Machine
 const editMachine = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const machineData: unknown = req.body;
   try {
-    const result = await machineServices.updateMachine(id,machineData);
+    const result = await machineServices.updateMachine(id, machineData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

@@ -1,7 +1,7 @@
 import express from 'express';
 import cors from 'cors';
 
-// *** Import Routers 
+// *** Import Routers
 // import Authentication and User Routes
 import userRouter from './modules/usersAndAuthentication/routes/users';
 import roleRouter from './modules/usersAndAuthentication/routes/roles';
@@ -24,16 +24,15 @@ import rcaCodeRouter from './modules/qualityHub/routes/rcaCodes';
 import classCodeRouter from './modules/qualityHub/routes/classCodes';
 
 import nokDetectRouter from './modules/qualityHub/routes/nokDetect';
-import nokReworkRouter from './modules/qualityHub/routes/nokReworks'
+import nokReworkRouter from './modules/qualityHub/routes/nokReworks';
 import nokCostsRouter from './modules/qualityHub/routes/nokCosts';
-import nokRCAsRouter from './modules/qualityHub/routes/nokRCAs'
+import nokRCAsRouter from './modules/qualityHub/routes/nokRCAs';
 import nokAnalysesRouter from './modules/qualityHub/routes/nokAnalyses';
 
 import claimManagerRouter from './modules/qualityHub/routes/claimManager';
 import iqcManagerRouter from './modules/qualityHub/routes/iqcManager';
 
 import dashboard from './modules/qualityHub/routes/dashbord';
-
 
 const app = express();
 app.use(express.json(), cors());
@@ -70,7 +69,7 @@ app.use('/api/quality/iqcs', iqcManagerRouter);
 
 app.use('/api/quality/dashboard', dashboard);
 
-app.get('/api/ping',(_req,res) => {
+app.get('/api/ping', (_req, res) => {
   res.send('Pong!');
 });
 

@@ -1,5 +1,5 @@
 import { Model, DataTypes, Optional } from 'sequelize';
-import { sequelize } from '../configs/db'; 
+import { sequelize } from '../configs/db';
 import Role from './role';
 
 interface UserAttributes {
@@ -17,7 +17,6 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  
   public id!: number;
   public username!: string;
   public password!: string;
@@ -54,10 +53,10 @@ User.init(
     },
     email: {
       type: DataTypes.TEXT,
-      unique: true
+      unique: true,
     },
-    phone: { 
-      type: DataTypes.TEXT
+    phone: {
+      type: DataTypes.TEXT,
     },
     active: {
       type: DataTypes.BOOLEAN,
@@ -71,7 +70,7 @@ User.init(
     underscored: true,
     timestamps: false,
     modelName: 'User',
-  }
+  },
 );
 
 export default User;

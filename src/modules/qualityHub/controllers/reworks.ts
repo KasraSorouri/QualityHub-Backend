@@ -2,10 +2,9 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 import reworkServices from '../services/reworks';
 
-
 // Get All Reworks
 const getAllReworks = async (_req: Request, res: Response) => {
-  try{
+  try {
     const reworks = await reworkServices.getAllReworks();
     res.json(reworks);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllReworks = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Rework by Id
-const getRework = async (req: ExtendedRequest, res: Response)=> {
+const getRework = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const rework = await reworkServices.getRework(Number(id));
@@ -45,7 +43,7 @@ const addRework = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await reworkServices.createRework(reworkData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -57,14 +55,14 @@ const addRework = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing Rework
 const editRework = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const reworkData: unknown = req.body;
   try {
-    const result = await reworkServices.updateRework(id,reworkData);
+    const result = await reworkServices.updateRework(id, reworkData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

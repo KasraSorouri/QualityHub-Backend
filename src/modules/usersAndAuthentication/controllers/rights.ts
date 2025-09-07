@@ -2,10 +2,9 @@ import rightServices from '../services/rights';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../types';
 
-
 // Get all rights
 const getAllRights = async (_req: Request, res: Response) => {
-  try{
+  try {
     const rights = await rightServices.getAllRights();
     res.json(rights);
   } catch (err) {
@@ -14,7 +13,7 @@ const getAllRights = async (_req: Request, res: Response) => {
 };
 
 // get a right with ID
-const getRight = async (req: ExtendedRequest, res: Response)=> {
+const getRight = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const right = await rightServices.getRight(Number(id));
@@ -26,7 +25,6 @@ const getRight = async (req: ExtendedRequest, res: Response)=> {
 
 // Create a new Right
 const addRight = async (req: ExtendedRequest, res: Response) => {
-  
   const rightData: unknown = req.body;
   try {
     const newRight = await rightServices.createRight(rightData);
@@ -46,7 +44,7 @@ const editRight = async (req: ExtendedRequest, res: Response) => {
   } catch (err) {
     res.status(404).json({ error: 'Right not found' });
   }
-}
+};
 
 export default {
   getAllRights,

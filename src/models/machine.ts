@@ -10,37 +10,39 @@ class Machine extends Model<InferAttributes<Machine>, InferCreationAttributes<Ma
   stationId?: number;
 }
 
-Machine.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Machine.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    machineName: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    machineCode: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+    },
+    stationId: {
+      type: DataTypes.INTEGER,
+    },
   },
-  machineName: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'machine',
+    sequelize,
   },
-  machineCode: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
-  },
-  description: {
-    type: DataTypes.TEXT,
-  },
-  active: {
-    type: DataTypes.BOOLEAN
-  },
-  stationId: {
-    type: DataTypes.INTEGER
-  }
-}, 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'machine',
-  sequelize,
-});
+);
 
 export default Machine;

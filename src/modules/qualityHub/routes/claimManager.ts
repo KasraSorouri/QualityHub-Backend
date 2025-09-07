@@ -17,5 +17,4 @@ router.get('/pending', claimControllers.getPendingClaims);
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), claimControllers.updateClaimStatus);
 
-
 export default router;

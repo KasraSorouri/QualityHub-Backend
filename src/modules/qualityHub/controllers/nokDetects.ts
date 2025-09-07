@@ -2,10 +2,9 @@ import nokDetectServices from '../services/nokDetects';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
-
 // Get All NOK Detects
 const getAllNokDetects = async (_req: Request, res: Response) => {
-  try{
+  try {
     const nokDetects = await nokDetectServices.getAllNokDetects();
     res.json(nokDetects);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllNokDetects = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a NOK Detect by Id
-const getNokDetect = async (req: ExtendedRequest, res: Response)=> {
+const getNokDetect = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const nokDetect = await nokDetectServices.getNokDetect(Number(id));
@@ -45,7 +43,7 @@ const addNokDetect = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await nokDetectServices.createNokDetect(nokDetectData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -57,14 +55,14 @@ const addNokDetect = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing NOK Detect
 const editNokDetect = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const nokDetectData: unknown = req.body;
   try {
-    const result = await nokDetectServices.updateNokDetect(id,nokDetectData);
+    const result = await nokDetectServices.updateNokDetect(id, nokDetectData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

@@ -5,8 +5,7 @@ import authService from '../services/authService';
 import { UserCredentials } from '../types';
 import { credentialsProcessor } from '../utils/dataProcessor';
 
-const login = async(req: Request, res: Response): Promise<void> => {
-  
+const login = async (req: Request, res: Response): Promise<void> => {
   const credential = credentialsProcessor(req.body);
   try {
     const { token, user, firstName, lastName, roles }: UserCredentials = await authService.login(credential);

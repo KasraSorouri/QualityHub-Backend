@@ -1,4 +1,4 @@
-import { NokDetect } from "../../models";
+import { NokDetect } from '../../models';
 
 export interface Product {
   id: number;
@@ -15,11 +15,11 @@ export interface ProductGroup {
   active: boolean;
 }
 
-export interface ProductData extends Omit<Product,'id' | 'group'> {
+export interface ProductData extends Omit<Product, 'id' | 'group'> {
   productGrpId: number;
-};
+}
 
-export interface ProductGrpData extends Omit<ProductGroup,'id'> {};
+export interface ProductGrpData extends Omit<ProductGroup, 'id'> {}
 
 export interface WorkShift {
   id: number;
@@ -28,7 +28,7 @@ export interface WorkShift {
   active: boolean;
 }
 
-export interface WorkShiftData extends Omit<WorkShift,'id'> {};
+export interface WorkShiftData extends Omit<WorkShift, 'id'> {}
 
 export interface Station {
   id: number;
@@ -37,7 +37,7 @@ export interface Station {
   active: boolean;
 }
 
-export interface StationData extends Omit<Station,'id'> {};
+export interface StationData extends Omit<Station, 'id'> {}
 
 export interface Material {
   id: number;
@@ -49,7 +49,7 @@ export interface Material {
   active: boolean;
   traceable: boolean;
 }
-export interface MaterialData extends Omit<Material,'id'> {};
+export interface MaterialData extends Omit<Material, 'id'> {}
 
 export interface Recipe {
   id: number;
@@ -71,11 +71,11 @@ export interface ConsumingMaterial {
   reusable?: Reusable;
 }
 
-export interface RecipeData extends Omit<Recipe,'id' | 'product' | 'station' | 'material'> {
+export interface RecipeData extends Omit<Recipe, 'id' | 'product' | 'station' | 'material'> {
   productId: number;
   stationId: number;
   materialsData: ConsumingMaterial[];
-};
+}
 
 export interface RecipeBom {
   id: number;
@@ -85,19 +85,19 @@ export interface RecipeBom {
   reusable: Reusable;
 }
 
-export interface RecipeBomData extends Omit<RecipeBom,'id'> {};
+export interface RecipeBomData extends Omit<RecipeBom, 'id'> {}
 
-export enum Reusable  {
+export enum Reusable {
   YES = 'YES',
-  NO =  'NO', 
-  IQC = 'IQC'
+  NO = 'NO',
+  IQC = 'IQC',
 }
 
 export enum NokStatus {
   PENDING = 'PENDING',
   ANALYSED = 'ANALYSED',
   NEED_INVESTIGATION = 'NEED INVESTIGATION',
-  NOT_FOUND = 'NOT FOUND'
+  NOT_FOUND = 'NOT FOUND',
 }
 
 export enum ProductStatus {
@@ -110,7 +110,7 @@ export enum ProductStatus {
 export enum MaterialStatus {
   OK = 'OK',
   SCRAPPED = 'SCRAPPED',
-  IQC =  'IQC',
+  IQC = 'IQC',
   CLAIMABLE = 'CLAIMABLE',
 }
 
@@ -128,13 +128,13 @@ export enum RecipeType {
 export interface NokGroup {
   id: number;
   nokGrpName: string;
-  nokGrpCode: string;  
+  nokGrpCode: string;
   nokGrpDesc?: string;
   active: boolean;
 }
 
 export interface NokGrpData extends Omit<NokGroup, 'id'> {
-  id? : number;
+  id?: number;
 }
 
 export interface NokCode {
@@ -244,7 +244,11 @@ export interface Rework {
   rwDismantledMaterials?: RwDismantledMaterial[];
 }
 
-export interface NewReworkData extends Omit<Rework, 'id' | 'product' | 'nokCode' | 'station' | 'reworkRecipes' | 'affectedRecipes' | 'dismantledMaterials'> {
+export interface NewReworkData
+  extends Omit<
+    Rework,
+    'id' | 'product' | 'nokCode' | 'station' | 'reworkRecipes' | 'affectedRecipes' | 'dismantledMaterials'
+  > {
   id?: number;
   productId: number;
   nokCodeId: number;
@@ -297,7 +301,11 @@ export interface NokRework {
   recipesWastedTime?: number;
 }
 
-export interface NokReworkData extends Omit<NokRework, 'id' | 'nok' | 'reworkActions' | 'dismantledMaterials' | 'AffectedRecipes' | 'reworkShift' | 'reworkStation'> {
+export interface NokReworkData
+  extends Omit<
+    NokRework,
+    'id' | 'nok' | 'reworkActions' | 'dismantledMaterials' | 'AffectedRecipes' | 'reworkShift' | 'reworkStation'
+  > {
   id?: number;
   nokId: number;
   reworkActionsId?: number[];
@@ -315,7 +323,7 @@ export interface MaterialCost {
 export interface NokCost {
   nok: NokDetect;
   rework: NokRework;
-  dismantledMaterial : MaterialCost[];
+  dismantledMaterial: MaterialCost[];
 }
 
 export interface NokCostData extends Omit<NokCost, 'nok' | 'rework'> {
@@ -323,10 +331,11 @@ export interface NokCostData extends Omit<NokCost, 'nok' | 'rework'> {
   reworkId: number;
 }
 
-export interface NewNokCostsData extends NokCostData {
-}
+export interface NewNokCostsData extends NokCostData {}
 
-export interface AnalyseCost { [key: string]: number };
+export interface AnalyseCost {
+  [key: string]: number;
+}
 
 export interface NokRcaData {
   id: number;
@@ -341,7 +350,7 @@ export interface NokRcaData {
 }
 
 export interface NewNokRcaData extends Omit<NokRcaData, 'id'> {
-  id?: number; 
+  id?: number;
 }
 
 export interface Analyse {
@@ -362,10 +371,11 @@ export interface Analyse {
   causeStation?: Station;
   causeShift?: WorkShift;
   classCode?: ClassCode;
-  cost?: NokCost
+  cost?: NokCost;
 }
 
-export interface NewAnalyseData extends Omit<Analyse, 'id' | 'nok' | 'nokCode' | 'causeStation' | 'causeShift' | 'classCode' | 'rca'> {
+export interface NewAnalyseData
+  extends Omit<Analyse, 'id' | 'nok' | 'nokCode' | 'causeStation' | 'causeShift' | 'classCode' | 'rca'> {
   id?: number;
   nokId: number;
   nokCodeId: number;

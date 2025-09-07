@@ -2,10 +2,9 @@ import recipeServices from '../services/recipes';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
-
 // Get All Recipes
 const getAllRecipes = async (_req: Request, res: Response) => {
-  try{
+  try {
     const recipes = await recipeServices.getAllRecipes();
     res.json(recipes);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllRecipes = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Recipe by Id
-const getRecipe = async (req: ExtendedRequest, res: Response)=> {
+const getRecipe = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const recipe = await recipeServices.getRecipe(Number(id));
@@ -45,7 +43,7 @@ const addRecipe = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await recipeServices.createRecipe(recipeData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -57,14 +55,14 @@ const addRecipe = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing Recipe
 const editRecipe = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const recipeData: unknown = req.body;
   try {
-    const result = await recipeServices.updateRecipe(id,recipeData);
+    const result = await recipeServices.updateRecipe(id, recipeData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

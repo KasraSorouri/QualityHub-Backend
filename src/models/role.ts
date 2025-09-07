@@ -1,36 +1,40 @@
-import { Model, DataTypes } from 'sequelize';
-import {sequelize} from '../configs/db';
-import {Right} from '../modules/usersAndAuthentication/types';
+import { Model, DataTypes, BelongsToManySetAssociationsMixin } from 'sequelize';
+import { sequelize } from '../configs/db';
+import { Right } from '../modules/usersAndAuthentication/types';
 
 // define Role Model
 class Role extends Model {
-  [x: string]: any;
   public id!: number;
   public roleName!: string;
   public active!: boolean;
   public rights?: Right[];
+
+  public setRights!: BelongsToManySetAssociationsMixin<Right, number>;
+
 }
 
-Role.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Role.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    roleName: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+    },
   },
-  roleName: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'role',
+    sequelize,
   },
-  active: {
-    type: DataTypes.BOOLEAN
-  },
-}, 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'role',
-  sequelize,
-});
+);
 
 export default Role;

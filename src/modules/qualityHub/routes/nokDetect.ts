@@ -9,9 +9,12 @@ const router = express.Router();
 // Get NOK Detect
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/', nokDetectControllers.getAllNokDetects);
+
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/:id', nokDetectControllers.getNokDetect);
-router.get('/product/:id', nokDetectControllers.getNokDetectsByProduct)
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.get('/product/:id', nokDetectControllers.getNokDetectsByProduct);
 
 // Create NOK Detect
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -20,6 +23,5 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokDetectContr
 // Edit NOK Detect
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokDetectControllers.editNokDetect);
-
 
 export default router;

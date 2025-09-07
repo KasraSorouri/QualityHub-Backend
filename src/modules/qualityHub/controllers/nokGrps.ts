@@ -2,10 +2,9 @@ import nokGrpServices from '../services/nokGrps';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
-
 // Get All Nok Groups
 const getAllNokGrps = async (_req: Request, res: Response) => {
-  try{
+  try {
     const nokGrps = await nokGrpServices.getAllNokGrps();
     res.json(nokGrps);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllNokGrps = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Nok Group by Id
-const getNokGrp = async (req: ExtendedRequest, res: Response)=> {
+const getNokGrp = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const nokGrp = await nokGrpServices.getNokGrp(Number(id));
@@ -31,7 +29,7 @@ const addNokGrp = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await nokGrpServices.createNokGrp(nokGrpData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -43,14 +41,14 @@ const addNokGrp = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing Nok
 const editNokGrp = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const nokGrpData: unknown = req.body;
   try {
-    const result = await nokGrpServices.updateNokGrp(id,nokGrpData);
+    const result = await nokGrpServices.updateNokGrp(id, nokGrpData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

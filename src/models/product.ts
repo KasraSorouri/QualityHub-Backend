@@ -8,46 +8,49 @@ class Product extends Model<InferAttributes<Product>, InferCreationAttributes<Pr
   productCode!: string;
   active!: boolean;
   productGrpId!: number;
-
-  static associate(models: any) {
-    Product.belongsTo(models.ProductGrp, {
-      foreignKey: 'productGrpId',
-      as: 'productGrp'
-    });
-  }
+  /*
+    static associate(models: any) {
+        Product.belongsTo(models.ProductGrp, {
+            foreignKey: 'productGrpId',
+            as: 'productGrp'
+        });
+    }
+*/
 }
 
 // define Product Model
-Product.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Product.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    productName: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    productCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+    },
+    productGrpId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
   },
-  productName: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  },
-  productCode: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  },
-  active: {
-    type: DataTypes.BOOLEAN
-  },
-  productGrpId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  }
-},
 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'product',
-  sequelize,
-});
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'product',
+    sequelize,
+  },
+);
 
 export default Product;

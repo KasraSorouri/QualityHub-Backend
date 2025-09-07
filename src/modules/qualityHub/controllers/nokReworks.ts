@@ -2,10 +2,9 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 import reworkServices from '../services/nokReworks';
 
-
 // Get All Reworks
 const getAllReworks = async (_req: Request, res: Response) => {
-  try{
+  try {
     const reworks = await reworkServices.getAllReworks();
     res.json(reworks);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllReworks = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Rework by Id
-const getRework = async (req: ExtendedRequest, res: Response)=> {
+const getRework = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const rework = await reworkServices.getRework(Number(id));
@@ -45,7 +43,7 @@ const addRework = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await reworkServices.createRework(reworkData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

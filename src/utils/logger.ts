@@ -11,5 +11,5 @@ const info = (...params: (string | object)[]): void => {
 };
 
 export default {
-  info, 
+  info,
 };

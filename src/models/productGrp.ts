@@ -6,40 +6,43 @@ class ProductGrp extends Model<InferAttributes<ProductGrp>, InferCreationAttribu
   groupName!: string;
   groupCode!: string;
   active!: boolean;
-
-  static associate(models: any) {
-    ProductGrp.hasMany(models.Product, {
-      foreignKey: 'productGrpId',
-      as: 'products'
-    });
-  }
+  /*
+    static associate(models: any) {
+        ProductGrp.hasMany(models.Product, {
+            foreignKey: 'productGrpId',
+            as: 'products'
+        });
+    }
+*/
 }
 
-ProductGrp.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+ProductGrp.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    groupName: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    groupCode: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+    },
   },
-  groupName: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'productGrp',
+    sequelize,
   },
-  groupCode: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
-  },
-  active: {
-    type: DataTypes.BOOLEAN
-  },
-}, 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'productGrp',
-  sequelize,
-});
+);
 
 export default ProductGrp;

@@ -24,51 +24,48 @@ const query: NokDetectQuery = {
     {
       model: ClassCode,
       as: 'classCode',
-    }
-  ]
+    },
+  ],
 };
 
 // Get all Analyses
-const getAllAnalyses = async(): Promise<Analyse[]> => {
-  
+const getAllAnalyses = async (): Promise<Analyse[]> => {
   const analyses = await NokAnalyse.findAll(query);
   return analyses;
-}
+};
 
 // Get a Analyse by ID
-const getAnalyse = async(id: number): Promise<Analyse> => {
-  const analyse = await NokAnalyse.findByPk(id,query);
+const getAnalyse = async (id: number): Promise<Analyse> => {
+  const analyse = await NokAnalyse.findByPk(id, query);
 
   if (!analyse) {
-    throw new Error ('the analyse not found');
+    throw new Error('the analyse not found');
   }
   return analyse;
 };
 
 // Get a Analyse by NOK ID
 const getNokAnalyseByNok = async (nokId: number): Promise<Analyse> => {
-  
   try {
     const nokAnalyses = await NokAnalyse.findAll({
-      where: { nokId }, 
+      where: { nokId },
       attributes: query.attributes,
       include: query.include,
-      });
+    });
 
+    if (nokAnalyses.length === 0) {
+      throw new Error(`No analyses found for nokId: ${nokId}`);
+    }
+    // add Nok Cost to the result
 
-      if (nokAnalyses.length === 0) {
-        throw new Error(`No analyses found for nokId: ${nokId}`);
-      }
-      // add Nok Cost to the result 
+    const costResult = await nokCostsServise.calculateNokCost(nokId);
 
-      const costResult  =await nokCostsServise.calculateNokCost(nokId)
+    console.log('Nok Analyse * costResult ->', costResult);
 
-      console.log('Nok Analyse * costResult ->', costResult);
-
-      const result = { ...nokAnalyses[0].toJSON(), costResult }
-      console.log('Nok Analyse * result ->', result);
+    const result = { ...nokAnalyses[0].toJSON(), costResult };
+    console.log('Nok Analyse * result ->', result);
     return result;
-  } catch (err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
@@ -76,8 +73,7 @@ const getNokAnalyseByNok = async (nokId: number): Promise<Analyse> => {
     console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
-}
-
+};
 
 // Create a new Analyse
 const createNokAnalyse = async (nokAnalyseData: unknown): Promise<Analyse> => {
@@ -88,10 +84,10 @@ const createNokAnalyse = async (nokAnalyseData: unknown): Promise<Analyse> => {
   console.log('** NOK Analysis Srvice * Analyse -> Processed data', newNokAnalyseData);
 
   try {
-    const [result] = await NokAnalyse.upsert(newNokAnalyseData)
+    const [result] = await NokAnalyse.upsert(newNokAnalyseData);
 
-    return result   
-  } catch(err : unknown) {
+    return result;
+  } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
@@ -99,17 +95,16 @@ const createNokAnalyse = async (nokAnalyseData: unknown): Promise<Analyse> => {
     console.log('## ERROR * creqate Analyse ', errorMessage);
     throw new Error(errorMessage);
   }
-}
+};
 
 // Remove a Analyse
-const deleteAnalyse = async (id : number) : Promise<boolean>=> {
-
+const deleteAnalyse = async (id: number): Promise<boolean> => {
   try {
     const result = await NokAnalyse.destroy({
-      where: { id }
+      where: { id },
     });
     console.log('RCA Service * delete RCA * result ->', result);
-    
+
     return result ? true : false;
   } catch (err) {
     let errorMessage = '';
@@ -123,25 +118,24 @@ const deleteAnalyse = async (id : number) : Promise<boolean>=> {
 
 // Update Analyse Status
 const updateAnalyseStatue = async (nokId: number, newAnalyseStatusData: unknown): Promise<boolean> => {
-
-  const newAnalyseStatus = analyaseStatusProcessor(newAnalyseStatusData)
-  console.log('NOK Service * set Analyse Done * nokId ->', nokId , 'analyse Status ->', newAnalyseStatus);
+  const newAnalyseStatus = analyaseStatusProcessor(newAnalyseStatusData);
+  console.log('NOK Service * set Analyse Done * nokId ->', nokId, 'analyse Status ->', newAnalyseStatus);
   try {
     // set Nok Analysed Status
-    const nokAnalyse = await NokAnalyse.findOne({where: { nokId }})
+    const nokAnalyse = await NokAnalyse.findOne({ where: { nokId } });
     if (!nokAnalyse) {
       throw new Error('Analyse not found');
     }
 
-    const nokDetect = await NokDetect.findByPk(nokId); 
+    const nokDetect = await NokDetect.findByPk(nokId);
     if (!nokDetect) {
       throw new Error('Nok Detect not found');
     }
-    
+
     try {
       nokDetect.nokStatus = newAnalyseStatus.analyseStatus;
       nokDetect.removeReport = newAnalyseStatus.removeFromReportStatus;
-      nokDetect.save();
+      await nokDetect.save();
     } catch (err) {
       let errorMessage = 'Cannot update the analyse status';
       if (err instanceof Error) {
@@ -154,10 +148,10 @@ const updateAnalyseStatue = async (nokId: number, newAnalyseStatusData: unknown)
     if (newAnalyseStatus.analyseStatus === NokStatus.ANALYSED) {
       nokAnalyse.closed = true;
       nokAnalyse.closeDate = new Date();
-      nokAnalyse.save();
+      await nokAnalyse.save();
     } else {
       nokAnalyse.closed = false;
-      nokAnalyse.save();
+      await nokAnalyse.save();
     }
 
     return true;
@@ -171,14 +165,11 @@ const updateAnalyseStatue = async (nokId: number, newAnalyseStatusData: unknown)
   }
 };
 
-
 export default {
   getAllAnalyses,
   getAnalyse,
   getNokAnalyseByNok,
   createNokAnalyse,
   deleteAnalyse,
-  updateAnalyseStatue
-}
-
-
+  updateAnalyseStatue,
+};

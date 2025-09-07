@@ -2,10 +2,9 @@ import { Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 import nokRcaServices from '../services/nokRCAs';
 
-
 // Get All Rcas
 const getAllRcas = async (_req: ExtendedRequest, res: Response) => {
-  try{
+  try {
     const rcas = await nokRcaServices.getAllRcas();
     res.json(rcas);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllRcas = async (_req: ExtendedRequest, res: Response) => {
   }
 };
 
-
 // Get a Rca by Id
-const getRca = async (req: ExtendedRequest, res: Response)=> {
+const getRca = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const rca = await nokRcaServices.getRca(Number(id));
@@ -41,11 +39,11 @@ const getNokRcaByNok = async (req: ExtendedRequest, res: Response) => {
 
 // Create a New Rca
 const addRca = async (req: ExtendedRequest, res: Response) => {
-  const costData: unknown[] = req.body;
+  const costData: unknown[] = req.body as unknown[];
   try {
     const result = await nokRcaServices.createNokRca(costData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -70,5 +68,5 @@ export default {
   getRca,
   getNokRcaByNok,
   addRca,
-  deleteRca
+  deleteRca,
 };

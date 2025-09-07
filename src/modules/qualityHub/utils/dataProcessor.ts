@@ -1,15 +1,33 @@
-import { ClaimStatus, ClassCodeData, ConsumingMaterial, MachineData, MaterialData, NewClaimData, NokCodeData, NokGrpData, Product, ProductData, ProductGrpData, RcaCodeData, RecipeData, RecipeType, Reusable, StationData, WorkShiftData } from '../types';
+import {
+  ClaimStatus,
+  ClassCodeData,
+  ConsumingMaterial,
+  MachineData,
+  MaterialData,
+  NewClaimData,
+  NokCodeData,
+  NokGrpData,
+  Product,
+  ProductData,
+  ProductGrpData,
+  RcaCodeData,
+  RecipeData,
+  RecipeType,
+  Reusable,
+  StationData,
+  WorkShiftData,
+} from '../types';
 import { isString, isBoolean, stringLengthCheck, isNumber } from '../../../utils/dataValidator';
 
 const parseProductName = (productName: unknown): string => {
-  if (!isString(productName) || !stringLengthCheck(productName,3, 'productName')) {
+  if (!isString(productName) || !stringLengthCheck(productName, 3, 'productName')) {
     throw new Error('Incorrect product name!');
   }
   return productName;
 };
 
 const parseProductCode = (productCode: unknown): string => {
-  if (!isString(productCode) || !stringLengthCheck(productCode,3, 'productCode')) {
+  if (!isString(productCode) || !stringLengthCheck(productCode, 3, 'productCode')) {
     throw new Error('Incorrect product code!');
   }
   return productCode;
@@ -20,72 +38,72 @@ const parseName = (name: unknown): string => {
     throw new Error('Incorrect shift name!');
   }
   return name;
-}
+};
 
 const parseCode = (code: unknown): string => {
   if (!isString(code)) {
     throw new Error('Incorrect shift code!');
   }
   return code;
-}
+};
 
 const parseShiftName = (shiftName: unknown): string => {
   if (!isString(shiftName)) {
     throw new Error('Incorrect shift name!');
   }
   return shiftName;
-}
+};
 
 const parseShiftCode = (shiftCode: unknown): string => {
   if (!isString(shiftCode)) {
     throw new Error('Incorrect shift code!');
   }
   return shiftCode;
-}
+};
 
 const parseStationName = (stationName: unknown): string => {
   if (!isString(stationName)) {
     throw new Error('Incorrect station name!');
   }
   return stationName;
-}
+};
 
 const parseStationCode = (stationCode: unknown): string => {
   if (!isString(stationCode)) {
     throw new Error('Incorrect station code!');
   }
   return stationCode;
-}
+};
 
 const parseMaterialName = (materialName: unknown): string => {
   if (!isString(materialName)) {
     throw new Error('Incorrect material name!');
   }
   return materialName;
-}
+};
 
 const parseMaterialCode = (materialCode: unknown): string => {
   if (!isString(materialCode)) {
     throw new Error('Incorrect material code!');
   }
   return materialCode;
-}
+};
 
 const parseRecipeCode = (recipeCode: unknown): string => {
   if (!isString(recipeCode)) {
     throw new Error('Incorrect Recipe code!');
   }
   return recipeCode;
-}
+};
 
 const parseDescription = (description: unknown): string => {
   if (!isString(description)) {
     throw new Error('Incorrect material name!');
   }
   console.log('parse description :', description);
-  
+
   return description;
-}
+};
 
 const parseOrder = (order: unknown): number => {
   if (!isNumber(order)) {
@@ -93,27 +111,27 @@ const parseOrder = (order: unknown): number => {
   }
   console.log('parse order :', order);
   return order;
-}
+};
 
 const parseRecipeProduct = (productId: unknown): number => {
   if (!isNumber(productId)) {
     throw new Error('Incorrect material name!');
   }
   return productId;
-}
+};
 const parseRecipeStation = (stationId: unknown): number => {
   if (!isNumber(stationId)) {
     throw new Error('Incorrect material name!');
   }
   return stationId;
-}
+};
 
 const parseId = (id: unknown): number => {
   if (!isNumber(id)) {
     throw new Error('Incorrect or ID data!');
   }
   return id;
-}
+};
 
 const parseQty = (qty: unknown): number => {
   if (!isNumber(qty)) {
@@ -121,7 +139,7 @@ const parseQty = (qty: unknown): number => {
   }
   console.log('parse qty :', qty);
   return qty;
-}
+};
 
 const parseActive = (active: unknown): boolean => {
   if (!isBoolean(active)) {
@@ -131,55 +149,55 @@ const parseActive = (active: unknown): boolean => {
   return active;
 };
 
-const parseReusable = (reusable: unknown): Reusable  => {
+const parseReusable = (reusable: unknown): Reusable => {
   if (!isString(reusable)) {
     throw new Error('Incorrect or Reusable data!');
   }
   switch (reusable) {
-    case 'YES':
-      return Reusable.YES;
-    case 'NO':
-      return Reusable.NO;
-    case 'IQC':
-      return Reusable.IQC;
-    default:
-      throw new Error('Incorrect or Reusable data!');
+  case 'YES':
+    return Reusable.YES;
+  case 'NO':
+    return Reusable.NO;
+  case 'IQC':
+    return Reusable.IQC;
+  default:
+    throw new Error('Incorrect or Reusable data!');
   }
-}
+};
 
 const parseRecipeType = (recipeType: unknown): RecipeType => {
   if (!isString(recipeType)) {
     throw new Error('Incorrect or Recipe type!');
   }
   switch (recipeType) {
-    case 'PRODUCTION':
-      return RecipeType.PRODUCTION;
-    case 'REWORK':
-      return RecipeType.REWORK;
-    default:
-      throw new Error('Incorrect or Recipe type!');
+  case 'PRODUCTION':
+    return RecipeType.PRODUCTION;
+  case 'REWORK':
+    return RecipeType.REWORK;
+  default:
+    throw new Error('Incorrect or Recipe type!');
   }
-}
+};
 
-const productProcessor = async(productData: unknown): Promise<ProductData> => {
+const productProcessor = (productData: unknown): ProductData => {
   if (!productData || typeof productData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
-  
+
   if ('productName' in productData && 'productCode' in productData && 'productGrpId' in productData) {
     const newProduct: ProductData = {
       productName: parseProductName(productData.productName),
       productCode: parseProductCode(productData.productCode),
       active: 'active' in productData ? parseActive(productData.active) : true,
       productGrpId: parseId(productData.productGrpId),
-  };
+    };
     return newProduct;
   } else {
     throw new Error('Data is missing');
   }
 };
 
-const productGrpProcessor = async(productGrpData: unknown): Promise<ProductGrpData> => {
+const productGrpProcessor = (productGrpData: unknown):ProductGrpData => {
   if (!productGrpData || typeof productGrpData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -188,25 +206,25 @@ const productGrpProcessor = async(productGrpData: unknown): Promise<ProductGrpDa
       groupName: parseProductName(productGrpData.groupName),
       groupCode: parseProductCode(productGrpData.groupCode),
       active: 'active' in productGrpData ? parseActive(productGrpData.active) : true,
-  };
+    };
     return newProductGrp;
   } else {
     throw new Error('Data is missing');
   }
 };
- 
+
 const parseProductResponse = (productData: Product): Product => {
-  return ({
+  return {
     id: productData.id,
     productName: productData.productName,
     productCode: productData.productCode,
     group: productData.group,
     active: productData.active,
-  });
+  };
 };
 
 // work shift Processor
-const workShiftProcessor = async(workShiftData: unknown): Promise<WorkShiftData> => {
+const workShiftProcessor = (workShiftData: unknown): WorkShiftData => {
   if (!workShiftData || typeof workShiftData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -215,16 +233,15 @@ const workShiftProcessor = async(workShiftData: unknown): Promise<WorkShiftData>
       shiftName: parseShiftName(workShiftData.shiftName),
       shiftCode: parseShiftCode(workShiftData.shiftCode),
       active: 'active' in workShiftData ? parseActive(workShiftData.active) : true,
-  };
+    };
     return newWorkShift;
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
 // Station Processor
-const stationProcessor = async(stationData: unknown): Promise<StationData> => {
-  
+const stationProcessor = (stationData: unknown): StationData => {
   if (!stationData || typeof stationData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -233,20 +250,24 @@ const stationProcessor = async(stationData: unknown): Promise<StationData> => {
       stationName: parseStationName(stationData.stationName),
       stationCode: parseStationCode(stationData.stationCode),
       active: 'active' in stationData ? parseActive(stationData.active) : true,
-  };
+    };
     return newStation;
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
 // Station Processor
-const materialProcessor = async(materialData: unknown): Promise<MaterialData> => {
-
+const materialProcessor = (materialData: unknown): MaterialData => {
   if (!materialData || typeof materialData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
-  if ('itemShortName' in materialData && 'itemLongName' in materialData && 'itemCode' in materialData && 'traceable' in materialData) {
+  if (
+    'itemShortName' in materialData &&
+    'itemLongName' in materialData &&
+    'itemCode' in materialData &&
+    'traceable' in materialData
+  ) {
     console.log('here');
 
     const newMaterial: MaterialData = {
@@ -257,27 +278,27 @@ const materialProcessor = async(materialData: unknown): Promise<MaterialData> =>
       price: 'price' in materialData ? parseQty(Number(materialData.price)) : 0,
       unit: 'unit' in materialData ? parseMaterialName(materialData.unit) : '',
       traceable: 'traceable' in materialData ? parseActive(materialData.traceable) : false,
-  };
-  
+    };
+
     return newMaterial;
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
-const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
+const recipeProcessor = (recipeData: unknown): RecipeData => {
   if (!recipeData || typeof recipeData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
 
-  console.log('** data processor * recipe data ->', recipeData);
-  
-  if ('recipeCode' in recipeData &&
+  if (
+    'recipeCode' in recipeData &&
     'description' in recipeData &&
     'order' in recipeData &&
     'productId' in recipeData &&
     'stationId' in recipeData &&
-    'recipeType' in recipeData) {
+    'recipeType' in recipeData
+  ) {
     const newRecipe: RecipeData = {
       recipeCode: parseRecipeCode(recipeData.recipeCode),
       description: parseDescription(recipeData.description),
@@ -287,7 +308,7 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
       recipeType: parseRecipeType(recipeData.recipeType),
       timeDuration: 'timeDuration' in recipeData ? parseQty(recipeData.timeDuration) : 0,
       active: 'active' in recipeData ? parseActive(recipeData.active) : true,
-      materialsData: 'materialsData' in recipeData ? await parseMaterialsData(recipeData.materialsData) : [],
+      materialsData: 'materialsData' in recipeData ? parseMaterialsData(recipeData.materialsData) : [],
       manpower: 'manpower' in recipeData ? parseQty(recipeData.manpower) : 0,
     };
 
@@ -295,13 +316,12 @@ const recipeProcessor = async(recipeData: unknown): Promise<RecipeData> => {
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
-
-const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]> => {
+const parseMaterialsData = (bomData: unknown): ConsumingMaterial[] => {
   if (!bomData || !Array.isArray(bomData)) {
     console.log('we are here');
-    
+
     throw new Error('Incorrect or missing Data!');
   }
 
@@ -318,9 +338,9 @@ const parseMaterialsData =async (bomData:unknown) : Promise<ConsumingMaterial[]>
   }
 
   return newBoms;
-}
+};
 
-const nokGrpProcessor = async(nokGrpData: unknown): Promise<NokGrpData> => {
+const nokGrpProcessor = (nokGrpData: unknown): NokGrpData => {
   if (!nokGrpData || typeof nokGrpData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -330,14 +350,14 @@ const nokGrpProcessor = async(nokGrpData: unknown): Promise<NokGrpData> => {
       nokGrpCode: parseCode(nokGrpData.nokGrpCode),
       nokGrpDesc: 'nokGrpDesc' in nokGrpData ? parseDescription(nokGrpData.nokGrpDesc) : '',
       active: 'active' in nokGrpData ? parseActive(nokGrpData.active) : true,
-  };
+    };
     return newProductGrp;
   } else {
     throw new Error('Data is missing');
   }
 };
 
-const nokCodeProcessor = async(nokCodeData: unknown): Promise<NokCodeData> => {
+const nokCodeProcessor = (nokCodeData: unknown): NokCodeData => {
   if (!nokCodeData || typeof nokCodeData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -347,12 +367,12 @@ const nokCodeProcessor = async(nokCodeData: unknown): Promise<NokCodeData> => {
       nokDesc: parseDescription(nokCodeData.nokDesc),
       nokGrpId: parseId(nokCodeData.nokGrpId),
       active: 'active' in nokCodeData ? parseActive(nokCodeData.active) : true,
-  };
+    };
     return newNokCode;
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
 const rcaCodeProcessor = (rcaCodeData: unknown): RcaCodeData => {
   if (!rcaCodeData || typeof rcaCodeData !== 'object') {
@@ -363,30 +383,30 @@ const rcaCodeProcessor = (rcaCodeData: unknown): RcaCodeData => {
       rcaCode: parseCode(rcaCodeData.rcaCode),
       rcaDesc: parseDescription(rcaCodeData.rcaDesc),
       active: 'active' in rcaCodeData ? parseActive(rcaCodeData.active) : true,
-  };
+    };
     return newRcaCode;
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
 const parseClaimStatus = (claimStatusData: unknown): ClaimStatus => {
   if (!isString(claimStatusData)) {
     throw new Error('Incorrect or missing Data!');
   }
   switch (claimStatusData) {
-    case 'PENDING':
-      return ClaimStatus.PENDING;
-    case 'ACCEPTED':
-      return ClaimStatus.ACCEPTED;
-    case 'DENIED':
-      return ClaimStatus.DENIED;
-    default:
-      throw new Error('Incorrect or missing Data!');
+  case 'PENDING':
+    return ClaimStatus.PENDING;
+  case 'ACCEPTED':
+    return ClaimStatus.ACCEPTED;
+  case 'DENIED':
+    return ClaimStatus.DENIED;
+  default:
+    throw new Error('Incorrect or missing Data!');
   }
-}
+};
 
-const machineProcessor = async(machineData: unknown): Promise<MachineData> => {
+const machineProcessor = (machineData: unknown): MachineData => {
   if (!machineData || typeof machineData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -397,12 +417,12 @@ const machineProcessor = async(machineData: unknown): Promise<MachineData> => {
       description: 'description' in machineData ? parseDescription(machineData.description) : '',
       stationId: 'stationId' in machineData ? parseId(machineData.stationId) : 0,
       active: 'active' in machineData ? parseActive(machineData.active) : true,
-  };
+    };
     return newMachine;
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
 const classCodeProcessor = (classCodeData: unknown): ClassCodeData => {
   if (!classCodeData || typeof classCodeData !== 'object') {
@@ -414,15 +434,15 @@ const classCodeProcessor = (classCodeData: unknown): ClassCodeData => {
       classCode: parseCode(classCodeData.classCode),
       classDesc: parseDescription(classCodeData.classDesc),
       active: 'active' in classCodeData ? parseActive(classCodeData.active) : true,
-  };
+    };
     return newClassCode;
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
 // Claim Status Processor
-const claimStatusProcessor = (claimData: unknown): NewClaimData  => {
+const claimStatusProcessor = (claimData: unknown): NewClaimData => {
   if (!claimData || typeof claimData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -434,12 +454,12 @@ const claimStatusProcessor = (claimData: unknown): NewClaimData  => {
       referenceType: 'referenceType' in claimData ? parseName(claimData.referenceType) : '',
       reference: 'reference' in claimData ? parseName(claimData.reference) : '',
       description: 'description' in claimData ? parseDescription(claimData.description) : '',
-  };
+    };
     return newClaim;
   } else {
     throw new Error('Data is missing');
   }
-}
+};
 
 export {
   parseDescription,
@@ -458,5 +478,5 @@ export {
   rcaCodeProcessor,
   machineProcessor,
   classCodeProcessor,
-  claimStatusProcessor
+  claimStatusProcessor,
 };

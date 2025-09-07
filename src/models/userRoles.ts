@@ -7,27 +7,30 @@ class UserRoles extends Model {
   public roleId!: number;
 }
 
-UserRoles.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+UserRoles.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    userId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: 'users', key: 'id' },
+    },
+    roleId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+      references: { model: 'roles', key: 'id' },
+    },
   },
-  userId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'users', key: 'id' }
+  {
+    sequelize,
+    underscored: true,
+    timestamps: false,
+    modelName: 'userRoles',
   },
-  roleId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-    references: { model: 'roles', key: 'id' }
-  }
-}, {
-  sequelize,
-  underscored: true,
-  timestamps: false,
-  modelName: 'userRoles'
-});
+);
 
 export default UserRoles;

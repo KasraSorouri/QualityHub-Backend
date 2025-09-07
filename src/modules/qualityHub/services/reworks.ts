@@ -1,4 +1,14 @@
-import { Rework, Product, Station, ReworkQuery, RwDismantledMaterials, NokCode, RecipeBoms, Material, Recipe } from '../../../models';
+import {
+  Rework,
+  Product,
+  Station,
+  ReworkQuery,
+  RwDismantledMaterials,
+  NokCode,
+  RecipeBoms,
+  Material,
+  Recipe,
+} from '../../../models';
 import { NewRwDismantledMaterialData, RwDismantledMaterialData } from '../types';
 import { reworkDataProcessor } from '../utils/reworkDataProcessor';
 
@@ -6,7 +16,7 @@ import { reworkDataProcessor } from '../utils/reworkDataProcessor';
 //import { ConsumingMaterial, Reusable } from '../types';
 //import { reworkProcessor } from '../utils/dataProcessor';
 
-// Define Rework query 
+// Define Rework query
 const query: ReworkQuery = {
   attributes: { exclude: [] },
   include: [
@@ -28,58 +38,52 @@ const query: ReworkQuery = {
     {
       model: RwDismantledMaterials,
       as: 'rwDismantledMaterials',
-      attributes: [ 'id', 'dismantledQty', 'note', 'mandatoryRemove'],
+      attributes: ['id', 'dismantledQty', 'note', 'mandatoryRemove'],
 
       include: [
         {
-        model: RecipeBoms,
-        as: 'recipeBom',
-        attributes: ['id', 'qty', 'reusable'],
-        include: [
-          {
-            model: Material,
-            as: 'material',
-            attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
-          },
-          {
-            model: Recipe,
-            as: 'recipe',
-            attributes: ['recipeCode'],
-          }
-        ],
-      }]
-    }
-
-  ]
+          model: RecipeBoms,
+          as: 'recipeBom',
+          attributes: ['id', 'qty', 'reusable'],
+          include: [
+            {
+              model: Material,
+              as: 'material',
+              attributes: ['id', 'itemShortName', 'itemLongName', 'itemCode', 'price', 'unit', 'traceable', 'active'],
+            },
+            {
+              model: Recipe,
+              as: 'recipe',
+              attributes: ['recipeCode'],
+            },
+          ],
+        },
+      ],
+    },
+  ],
 };
 
 // Get all Reworks
-const getAllReworks = async(): Promise<Rework[]> => {
+const getAllReworks = async (): Promise<Rework[]> => {
   try {
     const reworks = await Rework.findAll(query);
 
-    console.log('reworks -> ', reworks);
-
-
     return reworks;
-  } catch (err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 // Get a Rework based on ID
-const getRework = async(id: number): Promise<Rework> => {
-  const rework = await Rework.findByPk(id,query);
-  
-  console.log('rework by id -> ', rework);
-  
-   if (!rework) {
-    throw new Error ('the rework not found');
+const getRework = async (id: number): Promise<Rework> => {
+  const rework = await Rework.findByPk(id, query);
+
+  if (!rework) {
+    throw new Error('the rework not found');
   }
   return rework;
 };
@@ -93,65 +97,7 @@ const getReworksByProduct = async (productId: number): Promise<Rework[]> => {
     });
 
     return reworks;
-  } catch (err : unknown) {
-    let errorMessage = '';
-    if (err instanceof Error) {
-      errorMessage += ' Error: ' + err.message;
-    }
-    console.log('**** error :', errorMessage);
-    throw new Error(errorMessage);
-  }
-}
-
-
-// Create a new Rework
-const createRework = async (reworkData: unknown): Promise<null> => {
-
-  // test data
-  const newReworkData = await reworkDataProcessor(reworkData);
-
-  try {
-    const rework = await Rework.create(newReworkData);
-
-    if (rework.id && 'dismantledMaterials' in newReworkData && newReworkData.dismantledMaterials) {
-    await handleDismantledMaterials(rework.id, newReworkData.dismantledMaterials);
-
-    }
-  } catch(err : unknown) {
-    let errorMessage = '';
-    if (err instanceof Error) {
-      errorMessage += ' Error: ' + err.message;
-    }
-    console.log('## ERROR * creqate rework ', errorMessage);
-    
-    throw new Error(errorMessage);
-  }
-  
-  return null
-}
-
-
-// Update an Rework
-const updateRework = async (id: number, reworkData: unknown) => { 
-  
-  // test data
-  const newReworkData = await reworkDataProcessor(reworkData);
- 
-  try { 
-    const rework = await Rework.findByPk(id);
-    if(!rework) {
-      throw new Error('Rework not found!');
-    }
-    // check that the rework is deprecated before
-    const isDeprecated = rework.deprecatedDate;
-    
-    if (!isDeprecated && newReworkData.deprecated) {
-      newReworkData.deprecatedDate = new Date();
-    };
-      
-    const updatedRework = await rework.update(newReworkData);
-    return updatedRework;
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
@@ -160,54 +106,101 @@ const updateRework = async (id: number, reworkData: unknown) => {
   }
 };
 
+// Create a new Rework
+const createRework = async (reworkData: unknown): Promise<null> => {
+  // test data
+  const newReworkData = reworkDataProcessor(reworkData);
 
-const handleDismantledMaterials = async (reworkId: number, dismantledMaterialData: NewRwDismantledMaterialData[]) : Promise<Rework> => {
-   
-  const rework = await Rework.findByPk(reworkId);
-  if(rework) {
-    // delete previous rework Boms 
-  //await RwDismantledMaterials.destroy({ where: { 'reworkId' : rework.id}})
-
-  // create new rework Boms
-  let dismantledMaterials : RwDismantledMaterialData[] = []
-
-  for (const item of dismantledMaterialData) {
-    const dismantled = {
-      reworkId: rework.id,
-      recipeBomId: item.recipeBomId,
-      //recipeId: item.recipeId,
-      //materialId: item.materialId,
-      dismantledQty: item.dismantledQty,
-      note: item.note,
-      mandatoryRemove: item.mandatoryRemove
-    }
-    RwDismantledMaterials.create(dismantled)
-    dismantledMaterials.push(dismantled)
-  }
   try {
-    //await RwDismantledMaterials.bulkCreate(dismantledMaterials);
-    const result = await Rework.findByPk(reworkId, query);
+    const rework = await Rework.create(newReworkData);
 
-    if (!result) {
-      throw new Error('Rework not found!');
+    if (rework.id && 'dismantledMaterials' in newReworkData && newReworkData.dismantledMaterials) {
+      await handleDismantledMaterials(rework.id, newReworkData.dismantledMaterials);
     }
-
-    return result;
-    
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
-    
     throw new Error(errorMessage);
   }
-} else {
-  throw new Error('Rework not found!');
-}
 
-}
+  return null;
+};
+
+// Update an Rework
+const updateRework = async (id: number, reworkData: unknown) => {
+  // test data
+  const newReworkData = reworkDataProcessor(reworkData);
+
+  try {
+    const rework = await Rework.findByPk(id);
+    if (!rework) {
+      throw new Error('Rework not found!');
+    }
+    // check that the rework is deprecated before
+    const isDeprecated = rework.deprecatedDate;
+
+    if (!isDeprecated && newReworkData.deprecated) {
+      newReworkData.deprecatedDate = new Date();
+    }
+
+    const updatedRework = await rework.update(newReworkData);
+    return updatedRework;
+  } catch (err: unknown) {
+    let errorMessage = '';
+    if (err instanceof Error) {
+      errorMessage += ' Error: ' + err.message;
+    }
+    throw new Error(errorMessage);
+  }
+};
+
+const handleDismantledMaterials = async (
+  reworkId: number,
+  dismantledMaterialData: NewRwDismantledMaterialData[],
+): Promise<Rework> => {
+  const rework = await Rework.findByPk(reworkId);
+  if (rework) {
+    // delete previous rework Boms
+    //await RwDismantledMaterials.destroy({ where: { 'reworkId' : rework.id}})
+
+    // create new rework Boms
+    const dismantledMaterials: RwDismantledMaterialData[] = [];
+
+    for (const item of dismantledMaterialData) {
+      const dismantled = {
+        reworkId: rework.id,
+        recipeBomId: item.recipeBomId,
+        //recipeId: item.recipeId,
+        //materialId: item.materialId,
+        dismantledQty: item.dismantledQty,
+        note: item.note,
+        mandatoryRemove: item.mandatoryRemove,
+      };
+      await RwDismantledMaterials.create(dismantled);
+      dismantledMaterials.push(dismantled);
+    }
+    try {
+      //await RwDismantledMaterials.bulkCreate(dismantledMaterials);
+      const result = await Rework.findByPk(reworkId, query);
+
+      if (!result) {
+        throw new Error('Rework not found!');
+      }
+
+      return result;
+    } catch (err: unknown) {
+      let errorMessage = '';
+      if (err instanceof Error) {
+        errorMessage += ' Error: ' + err.message;
+      }
+      throw new Error(errorMessage);
+    }
+  } else {
+    throw new Error('Rework not found!');
+  }
+};
 
 export default {
   getAllReworks,
@@ -215,4 +208,4 @@ export default {
   getReworksByProduct,
   createRework,
   updateRework,
-}
+};

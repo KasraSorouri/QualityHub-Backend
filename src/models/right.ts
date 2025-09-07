@@ -8,26 +8,29 @@ class Right extends Model<InferAttributes<Right>, InferCreationAttributes<Right>
   declare relatedModule: string;
 }
 
-Right.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Right.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    right: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    relatedModule: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
   },
-  right: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
+  {
+    sequelize,
+    underscored: true,
+    timestamps: false,
+    modelName: 'right',
   },
-  relatedModule: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  }
-}, {
-  sequelize,
-  underscored: true,
-  timestamps: false,
-  modelName: 'right'
-});
+);
 
 export default Right;

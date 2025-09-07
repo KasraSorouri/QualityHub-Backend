@@ -24,7 +24,7 @@ export const parseDate = (date: unknown): Date => {
     throw new Error('Incorrect or missing date 5!');
   }
   return new Date(date);
-}
+};
 
 export const parseBoolean = (value: unknown): boolean => {
   if (!isBoolean(value)) {
@@ -34,14 +34,12 @@ export const parseBoolean = (value: unknown): boolean => {
   return value;
 };
 
-export const parseId = (id: unknown): number => {  
-  
-
+export const parseId = (id: unknown): number => {
   if (!isNumber(id)) {
     console.log('parse Id Error * raw data:', id);
     throw new Error('Incorrect or missing data - parseId !');
   }
   console.log('parse Id :', id);
-  
+
   return id;
-}
+};

@@ -9,34 +9,36 @@ class Station extends Model<InferAttributes<Station>, InferCreationAttributes<St
   active!: boolean;
 }
 
-Station.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Station.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    stationName: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    stationCode: {
+      type: DataTypes.TEXT,
+      allowNull: false,
+      unique: true,
+    },
+    description: {
+      type: DataTypes.TEXT,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+    },
   },
-  stationName: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'station',
+    sequelize,
   },
-  stationCode: {
-    type: DataTypes.TEXT,
-    allowNull: false,
-    unique: true
-  },
-  description: {
-    type: DataTypes.TEXT,
-  },
-  active: {
-    type: DataTypes.BOOLEAN
-  },
-}, 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'station',
-  sequelize,
-});
+);
 
 export default Station;

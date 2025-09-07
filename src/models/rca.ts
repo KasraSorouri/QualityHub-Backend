@@ -13,63 +13,65 @@ class Rca extends Model<InferAttributes<Rca>, InferCreationAttributes<Rca>> {
   createBy!: number;
   createdAt?: Date;
 
-  
-  static associate(models: any) {
-    Rca.belongsTo(models.RcaCode, {
-      foreignKey: 'rcaCodeId',
-      as: 'racCode'
-    });
+  /*
+    static associate(models: any) {
+        Rca.belongsTo(models.RcaCode, {
+            foreignKey: 'rcaCodeId',
+            as: 'racCode'
+        });
 
-    Rca.belongsTo(models.NokDetect, {
-      foreignKey: 'nokId', 
-      as: 'nokDetects'
-    });
-  }
-
+        Rca.belongsTo(models.NokDetect, {
+            foreignKey: 'nokId', 
+            as: 'nokDetects'
+        });
+    }
+*/
 }
 
 // define RCA Model
-Rca.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Rca.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    rcaCodeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    nokId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    whCauseId: {
+      type: DataTypes.INTEGER,
+    },
+    whCauseName: {
+      type: DataTypes.STRING,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    improveSuggestion: {
+      type: DataTypes.STRING,
+    },
+    createBy: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    createdAt: {
+      type: DataTypes.DATE,
+      defaultValue: DataTypes.NOW,
+    },
   },
-  rcaCodeId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  nokId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  whCauseId: {
-    type: DataTypes.INTEGER,
-  },
-  whCauseName: {
-    type: DataTypes.STRING,
-  },
-  description: {
-    type: DataTypes.STRING,
-  },
-  improveSuggestion: {
-    type: DataTypes.STRING,
-  },
-  createBy: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  createdAt: {
-    type: DataTypes.DATE,
-    defaultValue: DataTypes.NOW
-  }
-},
 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'rca',
-  sequelize,
-});
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'rca',
+    sequelize,
+  },
+);
 
 export default Rca;

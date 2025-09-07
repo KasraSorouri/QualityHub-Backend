@@ -16,8 +16,8 @@ router.get('/:id', nokCost.getCost);
 */
 
 // get Dismantled Material by Nok Id
-router.get('/nok_material/nok/:id', nokCost.getDismantledMaterialByNok)
-
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.get('/nok_material/nok/:id', nokCost.getDismantledMaterialByNok);
 
 // Create Rework
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -26,6 +26,5 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokCost.addCos
 // Edit Rework
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 //router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokCost.editCost);
-
 
 export default router;

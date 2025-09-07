@@ -16,6 +16,7 @@ router.get('/:id', roleControllers.getRole);
 router.post('/', tokenExtractor, roleAuthority(['ADMIN']), roleControllers.addRole);
 
 // Edit Role
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, roleAuthority(['ADMIN']), roleControllers.editRole);
 
 export default router;

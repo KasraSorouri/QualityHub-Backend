@@ -40,11 +40,11 @@ const getDismantledMaterialByNok = async (req: ExtendedRequest, res: Response) =
 
 // Create a New Cost
 const addCost = async (req: ExtendedRequest, res: Response) => {
-  const costData: unknown[] = req.body;
+  const costData: unknown[] = req.body as unknown[];
   try {
     const result = await nokCostServices.createNokCost(costData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

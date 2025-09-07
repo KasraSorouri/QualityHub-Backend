@@ -3,10 +3,10 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../types';
 
 const getAllRoles = async (_req: Request, res: Response) => {
-  try{
+  try {
     const roles = await roleServices.getAllRoles();
     res.json(roles);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -15,12 +15,12 @@ const getAllRoles = async (_req: Request, res: Response) => {
   }
 };
 
-const getRole = async (req: ExtendedRequest, res: Response)=> {
+const getRole = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const role = await roleServices.getRole(Number(id));
     res.json(role);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -34,7 +34,7 @@ const addRole = async (req: ExtendedRequest, res: Response) => {
   try {
     const newRole = await roleServices.createRole(roleData);
     res.status(201).json(newRole);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -45,14 +45,14 @@ const addRole = async (req: ExtendedRequest, res: Response) => {
 
 const editRole = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
-  const roleData = req.body; 
+  const roleData = req.body as unknown;
   try {
     const newRole = await roleServices.updateRole(id, roleData);
     res.status(200).json(newRole.dataValues);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

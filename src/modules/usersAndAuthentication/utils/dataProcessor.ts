@@ -4,7 +4,7 @@ import { NewUser, UserData, Credential, NewRole, NewRight, UserWithRights, User,
 import { isString, isNumber, isBoolean, stringLengthCheck } from '../../../utils/dataValidator';
 
 const parseUsername = (username: unknown): string => {
-  if (!isString(username) || !stringLengthCheck(username,3, 'username')) {
+  if (!isString(username) || !stringLengthCheck(username, 3, 'username')) {
     throw new Error('Incorrect username!');
   }
   return username;
@@ -29,14 +29,14 @@ const parseEmail = (email: unknown): string => {
     throw new Error('Incorrect email!');
   }
   return email;
-}
+};
 
 const parsePhone = (phone: unknown): string => {
   if (!isString(phone) || !stringLengthCheck(phone, 3, 'phone')) {
     throw new Error('Incorrect phone!');
   }
   return phone;
-}
+};
 
 const parseActive = (active: unknown): boolean => {
   if (!isBoolean(active)) {
@@ -46,7 +46,7 @@ const parseActive = (active: unknown): boolean => {
 };
 
 const parsePassword = (password: unknown): string => {
-  if(!password || !isString(password) || !stringLengthCheck(password, 6, 'password')) {
+  if (!password || !isString(password) || !stringLengthCheck(password, 6, 'password')) {
     throw new Error('Incorrect password!');
   }
   return password;
@@ -79,21 +79,21 @@ const parseRelatedModule = (module: unknown): string => {
   return module;
 };
 
-const parseRoles = (array:unknown): number[] => {
+const parseRoles = (array: unknown): number[] => {
   if (!Array.isArray(array)) {
     throw new Error('Roles should be Array!');
   }
-  if(!array || typeof array !== 'object') {
-   throw new Error('Incorrect or Missing data!');  
-  } 
+  if (!array || typeof array !== 'object') {
+    throw new Error('Incorrect or Missing data!');
+  }
   const roles: number[] = [];
-  array.forEach(element => {
-   isNumber(element) ? roles.push(element) : null ;  
+  array.forEach((element) => {
+    isNumber(element) ? roles.push(element) : null;
   });
   return roles;
 };
 
-const userProcessor = async(userData: unknown): Promise<NewUser | UserData> => {
+const userProcessor = async (userData: unknown): Promise<NewUser | UserData> => {
   if (!userData || typeof userData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -105,7 +105,7 @@ const userProcessor = async(userData: unknown): Promise<NewUser | UserData> => {
       email: 'email' in userData ? parseEmail(userData.email) : '',
       phone: 'phone' in userData ? parsePhone(userData.phone) : '',
       active: 'active' in userData ? parseActive(userData.active) : false,
-  };
+    };
     if ('password' in userData && userData.password) {
       newUser.password = await passwordHashMaker(parsePassword(userData.password));
     }
@@ -125,24 +125,23 @@ const credentialsProcessor = (object: unknown): Credential => {
   if ('username' in object && 'password' in object && isString(object.username) && isString(object.password)) {
     const credential = {
       username: object.username,
-      password: object.password
-    };    
+      password: object.password,
+    };
     return credential;
   }
   throw new Error('Incorrect username or password!');
 };
 
 const roleProcessor = (roleData: unknown): NewRole => {
- 
   if (!roleData || typeof roleData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
   if ('roleName' in roleData && 'active' in roleData) {
-
     const newRole: NewRole = {
       roleName: parseRoleName(roleData.roleName),
       active: roleData.active ? parseActive(roleData.active) : false,
-      rights: 'rights' in roleData && roleData.rights && Array.isArray(roleData.rights) ? parseRoles(roleData.rights) : [] ,
+      rights:
+        'rights' in roleData && roleData.rights && Array.isArray(roleData.rights) ? parseRoles(roleData.rights) : [],
     };
 
     if ('rights' in roleData) {
@@ -152,23 +151,20 @@ const roleProcessor = (roleData: unknown): NewRole => {
     }
     return newRole;
   } else {
-
     throw new Error('Data is missing');
   }
 };
 
 const rightProcessor = (rightData: unknown): NewRight => {
-
   if (!rightData || typeof rightData !== 'object') {
-    
     throw new Error('Incorrect or missing Data!');
   }
 
   if ('right' in rightData && 'relatedModule' in rightData) {
     const newRight: NewRight = {
       right: parseRightName(rightData.right),
-      relatedModule: parseRelatedModule(rightData.relatedModule)
-  };
+      relatedModule: parseRelatedModule(rightData.relatedModule),
+    };
     return newRight;
   } else {
     throw new Error('Data is missing');
@@ -176,7 +172,7 @@ const rightProcessor = (rightData: unknown): NewRight => {
 };
 
 const parseUserResponse = (userData: User): UserWithRights => {
-  return ({
+  return {
     id: userData.id,
     username: userData.username,
     firstName: userData.firstName,
@@ -184,18 +180,20 @@ const parseUserResponse = (userData: User): UserWithRights => {
     email: userData.email,
     phone: userData.phone,
     active: userData.active,
-    roles: userData.roles ? userData.roles.map(role => role.roleName) : [],
-    rights: (userData.roles?.flatMap(role => role.rights?.map(right => right.right))?? []).filter((right): right is string => typeof right === 'string')
-  });
+    roles: userData.roles ? userData.roles.map((role) => role.roleName) : [],
+    rights: (userData.roles?.flatMap((role) => role.rights?.map((right) => right.right)) ?? []).filter(
+      (right): right is string => typeof right === 'string',
+    ),
+  };
 };
 
 const parseRoleResponse = (roleData: Role): RoleWithRights => {
-  return ({
+  return {
     id: roleData.id,
     roleName: roleData.roleName,
     active: roleData.active,
-    rights: roleData.rights ? roleData.rights.map(role => role.right) : [],
-  });
+    rights: roleData.rights ? roleData.rights.map((role) => role.right) : [],
+  };
 };
 
 export {
@@ -205,5 +203,5 @@ export {
   parseUserResponse,
   parseRoleResponse,
   credentialsProcessor,
-  passwordHashMaker
+  passwordHashMaker,
 };

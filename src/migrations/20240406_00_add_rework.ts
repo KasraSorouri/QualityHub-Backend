@@ -1,12 +1,12 @@
 import { DataTypes } from 'sequelize';
 
 module.exports = {
-  up: async ({ context: queryInterface } : any) => {
+  up: async ({ context: queryInterface }: any) => {
     await queryInterface.createTable('reworks', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       product_id: {
         type: DataTypes.INTEGER,
@@ -19,7 +19,7 @@ module.exports = {
         allowNull: false,
         References: { model: 'nok_codes', key: 'id' },
         onUpdate: 'CASCADE',
-        onDelete: 'CASCADE',       
+        onDelete: 'CASCADE',
       },
       station_id: {
         type: DataTypes.INTEGER,
@@ -30,13 +30,13 @@ module.exports = {
       },
       rework_short_desc: {
         type: DataTypes.STRING,
-        allowNull: false
+        allowNull: false,
       },
       description: {
-        type: DataTypes.STRING
+        type: DataTypes.STRING,
       },
       order: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       rework_recipes: {
         type: DataTypes.ARRAY(DataTypes.INTEGER),
@@ -54,7 +54,7 @@ module.exports = {
         defaultValue: false,
       },
       time_duration: {
-        type: DataTypes.INTEGER
+        type: DataTypes.INTEGER,
       },
       creation_date: {
         type: DataTypes.DATE,
@@ -64,10 +64,10 @@ module.exports = {
       deprecated_date: {
         type: DataTypes.DATE,
         allowNull: true,
-      }
-    })
+      },
+    });
   },
-  down: async ({ context: queryInterface } : any) => {
-    await queryInterface.dropTable('reworks')
-  }
-}
+  down: async ({ context: queryInterface }: any) => {
+    await queryInterface.dropTable('reworks');
+  },
+};

@@ -2,10 +2,9 @@ import { Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 import nokAnalyseServices from '../services/nokAnalyses';
 
-
 // Get All Analyses
 const getAllAnalyses = async (res: Response) => {
-  try{
+  try {
     const rcas = await nokAnalyseServices.getAllAnalyses();
     res.json(rcas);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllAnalyses = async (res: Response) => {
   }
 };
 
-
 // Get a Analyse by Id
-const getAnalyse = async (req: ExtendedRequest, res: Response)=> {
+const getAnalyse = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const rca = await nokAnalyseServices.getAnalyse(Number(id));
@@ -36,18 +34,18 @@ const getNokAnalyseByNok = async (req: ExtendedRequest, res: Response) => {
     res.json(rcas);
   } catch (err) {
     console.log('Nok Analayze * controller * Error ->', err);
-    
+
     res.status(404).json({ error: 'No NOK found' });
   }
 };
 
 // Create a New Analyse
 const addAnalyse = async (req: ExtendedRequest, res: Response) => {
-  const costData: unknown[] = req.body;
+  const costData: unknown[] = req.body as unknown[];
   try {
     const result = await nokAnalyseServices.createNokAnalyse(costData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -70,9 +68,8 @@ const deleteAnalyse = async (req: ExtendedRequest, res: Response) => {
 // Update Analyse Status
 const updateAnalyseStatue = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
-  const analyseStatus : unknown []= req.body;
-  console.log(' Nok Analyse * controller * set Nok analyse status * analyse status ->', analyseStatus);
-  
+  const analyseStatus: unknown[] = req.body as unknown[];
+
   try {
     const result = await nokAnalyseServices.updateAnalyseStatue(Number(id), analyseStatus);
     res.status(200).json(result);
@@ -87,5 +84,5 @@ export default {
   getNokAnalyseByNok,
   addAnalyse,
   deleteAnalyse,
-  updateAnalyseStatue
+  updateAnalyseStatue,
 };

@@ -20,5 +20,4 @@ router.post('/', tokenExtractor, roleAuthority(['ADMIN']), workShiftControllers.
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, roleAuthority(['ADMIN']), workShiftControllers.editWorkShift);
 
-
 export default router;

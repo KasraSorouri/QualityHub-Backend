@@ -1,25 +1,25 @@
 import { DataTypes } from 'sequelize';
 
 module.exports = {
-  up: async ({ context: queryInterface } : any) => {
+  up: async ({ context: queryInterface }: any) => {
     await queryInterface.createTable('rw_dismantled_materials', {
       id: {
         type: DataTypes.INTEGER,
         primaryKey: true,
-        autoIncrement: true
+        autoIncrement: true,
       },
       rework_id: {
         type: DataTypes.INTEGER,
-        references: { model: 'reworks', key: 'id' }
+        references: { model: 'reworks', key: 'id' },
       },
       recipe_bom_id: {
         type: DataTypes.INTEGER,
         allowNull: false,
-        references: { model: 'recipe_boms', key: 'id' }
+        references: { model: 'recipe_boms', key: 'id' },
       },
       dismantled_qty: {
         type: DataTypes.INTEGER,
-        allowNull:true
+        allowNull: true,
       },
       note: {
         type: DataTypes.STRING,
@@ -28,9 +28,9 @@ module.exports = {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
       },
-    })
+    });
   },
-  down: async ({ context: queryInterface } : any) => {
-    await queryInterface.dropTable('rw_dismantled_materials')
-  }
-}
+  down: async ({ context: queryInterface }: any) => {
+    await queryInterface.dropTable('rw_dismantled_materials');
+  },
+};

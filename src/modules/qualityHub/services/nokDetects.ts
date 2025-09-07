@@ -2,7 +2,7 @@ import { NokDetect, Product, NokDetectQuery, Station, NokCode, WorkShift } from 
 import { NewNokData } from '../types';
 import { nokDataProcessor } from '../utils/nokDataProcessor';
 
-// Define NokDetect query 
+// Define NokDetect query
 const query: NokDetectQuery = {
   attributes: { exclude: [] },
   include: [
@@ -25,32 +25,30 @@ const query: NokDetectQuery = {
       model: WorkShift,
       as: 'detectedShift',
       attributes: ['id', 'shiftName', 'shiftCode'],
-    }
-  ]
+    },
+  ],
 };
 
 // Get all NokDetects
-const getAllNokDetects = async(): Promise<NokDetect[]> => {
-
+const getAllNokDetects = async (): Promise<NokDetect[]> => {
   try {
     const nokDetects = await NokDetect.findAll(query);
     return nokDetects;
-  } catch (err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 // Get a NokDetect based on ID
-const getNokDetect = async(id: number): Promise<NokDetect> => {
-  const nokDetect = await NokDetect.findByPk(id,query);
- 
+const getNokDetect = async (id: number): Promise<NokDetect> => {
+  const nokDetect = await NokDetect.findByPk(id, query);
+
   if (!nokDetect) {
-    throw new Error ('the nokDetect not found');
+    throw new Error('the nokDetect not found');
   }
   return nokDetect;
 };
@@ -64,51 +62,43 @@ const getNokDetectsByProduct = async (productId: number): Promise<NokDetect[]> =
     });
 
     return nokDetects;
-  } catch (err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
-}
-
+};
 
 // Create a new NokDetect
 const createNokDetect = async (nokDetectData: unknown): Promise<NokDetect> => {
-  
-  console.log(' nok detect service * create * raw data ->', nokDetectData);
-  
-  const newNokDetectData : NewNokData = await nokDataProcessor(nokDetectData);
-  
-  console.log(' nok detect service * create * processed data ->', newNokDetectData);
+  const newNokDetectData: NewNokData = nokDataProcessor(nokDetectData);
 
   try {
     const nokDetect = await NokDetect.create(newNokDetectData);
     return nokDetect;
-  } catch(err : unknown) {
-      let errorMessage = '';
-      if (err instanceof Error) {
-        errorMessage += ' Error: ' + err.message;
-      }
-      throw new Error(errorMessage);
+  } catch (err: unknown) {
+    let errorMessage = '';
+    if (err instanceof Error) {
+      errorMessage += ' Error: ' + err.message;
     }
+    throw new Error(errorMessage);
+  }
 };
 
 // Update an NokDetect
-const updateNokDetect = async (id: number, nokDetectData: unknown): Promise<NokDetect>=> {  
-  
-  const newNokDetectData = await nokDataProcessor(nokDetectData);
-  
- try {
+const updateNokDetect = async (id: number, nokDetectData: unknown): Promise<NokDetect> => {
+  const newNokDetectData = nokDataProcessor(nokDetectData);
+
+  try {
     const nokDetect = await NokDetect.findByPk(id);
-    if(!nokDetect) {
+    if (!nokDetect) {
       throw new Error('NOK not found!');
     }
     const updatedNokDetect = await nokDetect.update(newNokDetectData);
     return updatedNokDetect;
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
@@ -123,4 +113,4 @@ export default {
   getNokDetectsByProduct,
   createNokDetect,
   updateNokDetect,
-}
+};

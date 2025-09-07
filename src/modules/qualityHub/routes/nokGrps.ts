@@ -20,5 +20,4 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokControllers
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), nokControllers.editNokGrp);
 
-
 export default router;

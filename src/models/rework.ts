@@ -71,68 +71,70 @@ class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implement
 }
 
 // define Product Model
-Rework.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Rework.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    nokCodeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    stationId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    reworkShortDesc: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    order: {
+      type: DataTypes.INTEGER,
+    },
+    timeDuration: {
+      type: DataTypes.INTEGER,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+    },
+    deprecated: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
+    reworkRecipes: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: false,
+    },
+    affectedRecipes: {
+      type: DataTypes.ARRAY(DataTypes.INTEGER),
+      allowNull: false,
+    },
+    creationDate: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    deprecatedDate: {
+      type: DataTypes.DATE,
+      allowNull: true,
+    },
   },
-  productId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  nokCodeId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  stationId: {
-    type: DataTypes.INTEGER,
-    allowNull: false
-  },
-  reworkShortDesc: {
-    type: DataTypes.STRING,
-    allowNull: false
-  },
-  description: {
-    type: DataTypes.STRING
-  },
-  order: {
-    type: DataTypes.INTEGER
-  },
-  timeDuration: {
-    type: DataTypes.INTEGER
-  },
-  active: {
-    type: DataTypes.BOOLEAN,
-  },
-  deprecated: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false,
-  },
-  reworkRecipes: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER),
-    allowNull: false
-  },
-  affectedRecipes: {
-    type: DataTypes.ARRAY(DataTypes.INTEGER),
-    allowNull: false
-  },
-  creationDate: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW
-  },
-  deprecatedDate: {
-    type: DataTypes.DATE,
-    allowNull: true
-  }
-},
 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'rework',
-  sequelize,
-});
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'rework',
+    sequelize,
+  },
+);
 
 export default Rework;

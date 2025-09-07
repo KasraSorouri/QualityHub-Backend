@@ -2,10 +2,9 @@ import productGrpServices from '../services/productGrps';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
-
 // Get All Product Groups
 const getAllProductGrps = async (_req: Request, res: Response) => {
-  try{
+  try {
     const productGrps = await productGrpServices.getAllProductGrps();
     res.json(productGrps);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllProductGrps = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Product Group by Id
-const getProductGrp = async (req: ExtendedRequest, res: Response)=> {
+const getProductGrp = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const productGrp = await productGrpServices.getProductGrp(Number(id));
@@ -31,7 +29,7 @@ const addProductGrp = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await productGrpServices.createProductGrp(productGrpData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -43,14 +41,14 @@ const addProductGrp = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing Product
 const editProductGrp = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const productGrpData: unknown = req.body;
   try {
-    const result = await productGrpServices.updateProductGrp(id,productGrpData);
+    const result = await productGrpServices.updateProductGrp(id, productGrpData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

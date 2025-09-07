@@ -20,5 +20,4 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), rcaCodeControl
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), rcaCodeControllers.editRcaCode);
 
-
 export default router;

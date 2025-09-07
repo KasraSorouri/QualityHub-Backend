@@ -40,70 +40,72 @@ class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> implement
   static associate() {
     Recipe.belongsTo(Product, {
       foreignKey: 'productId',
-      as: 'product'
+      as: 'product',
     });
-  
+
     Recipe.belongsTo(Station, {
       foreignKey: 'stationId',
-      as: 'station'
+      as: 'station',
     });
 
     Recipe.belongsToMany(Material, {
       through: RecipeBoms,
       foreignKey: 'recipeId',
-      as: 'material'
+      as: 'material',
     });
-  }  
+  }
 }
 
 // define Product Model
-Recipe.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+Recipe.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    recipeCode: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      unique: true,
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    order: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    active: {
+      type: DataTypes.BOOLEAN,
+    },
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    stationId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    timeDuration: {
+      type: DataTypes.INTEGER,
+    },
+    manpower: {
+      type: DataTypes.INTEGER,
+    },
+    recipeType: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'PRODUCTION',
+    },
   },
-  recipeCode: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    unique: true
-  },
-  description: {
-    type: DataTypes.STRING,
-  },
-  order: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  active: {
-    type: DataTypes.BOOLEAN
-  },
-  productId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  stationId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  timeDuration: {
-    type: DataTypes.INTEGER
-  },
-  manpower: {
-    type: DataTypes.INTEGER,
-  },
-  recipeType: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'PRODUCTION'
-  }
-},
 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'recipe',
-  sequelize,
-});
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'recipe',
+    sequelize,
+  },
+);
 
 export default Recipe;

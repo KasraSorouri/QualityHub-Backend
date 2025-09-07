@@ -2,10 +2,9 @@ import productServices from '../services/products';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
-
 // Get All Products
 const getAllProducts = async (_req: Request, res: Response) => {
-  try{
+  try {
     const products = await productServices.getAllProducts();
     res.json(products);
   } catch (err) {
@@ -13,9 +12,8 @@ const getAllProducts = async (_req: Request, res: Response) => {
   }
 };
 
-
 // Get a Product by Id
-const getProduct = async (req: ExtendedRequest, res: Response)=> {
+const getProduct = async (req: ExtendedRequest, res: Response) => {
   const id = req.params.id;
   try {
     const product = await productServices.getProduct(Number(id));
@@ -31,7 +29,7 @@ const addProduct = async (req: ExtendedRequest, res: Response) => {
   try {
     const result = await productServices.createProduct(productData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;
@@ -43,14 +41,14 @@ const addProduct = async (req: ExtendedRequest, res: Response) => {
 // Edit an Existing Product
 const editProduct = async (req: ExtendedRequest, res: Response) => {
   const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
+  if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
   }
   const productData: unknown = req.body;
   try {
-    const result = await productServices.updateProduct(id,productData);
+    const result = await productServices.updateProduct(id, productData);
     res.status(201).json(result);
-  } catch(err : unknown) {
+  } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
     if (err instanceof Error) {
       errorMessage += err.message;

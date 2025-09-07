@@ -9,9 +9,12 @@ const router = express.Router();
 // Get Recipes
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/', recipeControllers.getAllRecipes);
+
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.get('/:id', recipeControllers.getRecipe);
-router.get('/product/:id', recipeControllers.getRecipesByProduct)
+
+// eslint-disable-next-line @typescript-eslint/no-misused-promises
+router.get('/product/:id', recipeControllers.getRecipesByProduct);
 
 // Create Recipe
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
@@ -20,6 +23,5 @@ router.post('/', tokenExtractor, rightAuthority(['PRODUCT-ADD']), recipeControll
 // Edit Recipe
 // eslint-disable-next-line @typescript-eslint/no-misused-promises
 router.put('/:id', tokenExtractor, rightAuthority(['PRODUCT-ADD']), recipeControllers.editRecipe);
-
 
 export default router;

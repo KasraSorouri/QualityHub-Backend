@@ -39,78 +39,78 @@ class NokDetect extends Model<NokDetectAttributes, NokDetectCreationAttributes> 
   static associate() {
     NokDetect.belongsTo(Product, {
       foreignKey: 'productId',
-      as: 'product'
+      as: 'product',
     });
-  
+
     NokDetect.hasOne(NokAnalyse, {
       foreignKey: 'nokId',
-    })
-    
-  
+    });
+
     NokDetect.belongsToMany(Rework, {
       through: NokReworks,
       foreignKey: 'nokDetectId',
-      as: 'rework'
+      as: 'rework',
     });
-
-  }  
+  }
 }
 
 // define Product Model
-NokDetect.init({
-  id: {
-    type: DataTypes.INTEGER,
-    primaryKey: true,
-    autoIncrement: true
+NokDetect.init(
+  {
+    id: {
+      type: DataTypes.INTEGER,
+      primaryKey: true,
+      autoIncrement: true,
+    },
+    productId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    productSN: {
+      type: DataTypes.STRING,
+      allowNull: false,
+    },
+    initNokCodeId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    detectStationId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    detectShiftId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
+    detectTime: {
+      type: DataTypes.DATE,
+      allowNull: false,
+      defaultValue: DataTypes.NOW,
+    },
+    nokStatus: {
+      type: DataTypes.STRING,
+      allowNull: false,
+      defaultValue: 'PENDING',
+    },
+    description: {
+      type: DataTypes.STRING,
+    },
+    productStatus: {
+      type: DataTypes.STRING,
+      defaultValue: 'NOK',
+    },
+    removeReport: {
+      type: DataTypes.BOOLEAN,
+      defaultValue: false,
+    },
   },
-  productId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  productSN: {
-    type: DataTypes.STRING,
-    allowNull: false,
-  },
-  initNokCodeId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  detectStationId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  detectShiftId: {
-    type: DataTypes.INTEGER,
-    allowNull: false,
-  },
-  detectTime: {
-    type: DataTypes.DATE,
-    allowNull: false,
-    defaultValue: DataTypes.NOW
-  },
-  nokStatus: {
-    type: DataTypes.STRING,
-    allowNull: false,
-    defaultValue: 'PENDING'
-  },
-  description: {
-    type: DataTypes.STRING,
-  },
-  productStatus: {
-    type: DataTypes.STRING,
-    defaultValue: 'NOK'
-  },
-  removeReport: {
-    type: DataTypes.BOOLEAN,
-    defaultValue: false
-  },
-},
 
-{
-  underscored: true,
-  timestamps: false,
-  modelName: 'nokDetect',
-  sequelize,
-});
+  {
+    underscored: true,
+    timestamps: false,
+    modelName: 'nokDetect',
+    sequelize,
+  },
+);
 
 export default NokDetect;
