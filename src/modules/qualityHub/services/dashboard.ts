@@ -5,7 +5,7 @@ import { DashboardNokAnalysedData, DashboardNokData, DashboardTopNokData } from 
 import { QueryParams } from '../dashboardTypes';import { NokStatus } from '../types';
 
 interface DashboardNokDetectDataRaw {
-  product: Product;
+  product: string;
   count: number;
   nokStatus: NokStatus;
 }

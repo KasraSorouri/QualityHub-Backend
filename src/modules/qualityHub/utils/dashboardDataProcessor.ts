@@ -28,13 +28,11 @@ const analysedNokQuery = (params: QueryParams): DashboardParams_AnalysedQuery =>
 
   // Process Date Range
   if ('startDate' in params || 'endDate' in params) {
-    console.log('Processing parameters for analysed NOK query:', params);
 
     const { startDate, endDate } = params as {
       startDate?: string;
       endDate?: string;
     };
-    console.log('Start Date:', startDate, 'End Date:', endDate);
 
     if (startDate && endDate) {
       (queryParams.detectTimeCondition as Record<symbol, unknown>)[sequelize.Op.between] = [startDate, endDate];
@@ -83,17 +81,17 @@ const nokDataFormatter = (dashboardNokData: DashboardNokDetect[]): DashboardNokD
   const Data: DashboardNokData[] = Object.values(
     dashboardNokData.reduce(
       (acc, item) => {
-        if (!acc[item.product.productName]) {
-          acc[item.product.productName] = {
-            productName: item.product.productName,
+        if (!acc[item.product]) {
+          acc[item.product] = {
+            productName: item.product,
             pending: 0,
             analysed: 0,
           };
         }
         if (item.nokStatus === NokStatus.PENDING) {
-          acc[item.product.productName].pending += Number(item.count);
+          acc[item.product].pending += Number(item.count);
         } else if (item.nokStatus === NokStatus.ANALYSED) {
-          acc[item.product.productName].analysed += Number(item.count);
+          acc[item.product].analysed += Number(item.count);
         }
         return acc;
       },
@@ -104,7 +102,6 @@ const nokDataFormatter = (dashboardNokData: DashboardNokDetect[]): DashboardNokD
   for (const item of Data) {
     formattedData.push(item);
   }
-
   return formattedData;
 };
 

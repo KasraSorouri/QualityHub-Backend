@@ -64,24 +64,28 @@ const analysedNokQuery = (params) => {
 const nokDataFormatter = (dashboardNokData) => {
     const formattedData = [];
     const Data = Object.values(dashboardNokData.reduce((acc, item) => {
-        if (!acc[item.product.productName]) {
-            acc[item.product.productName] = {
-                productName: item.product.productName,
+        if (!acc[item.product]) {
+            acc[item.product] = {
+                productName: item.product,
                 pending: 0,
                 analysed: 0,
             };
         }
         if (item.nokStatus === types_1.NokStatus.PENDING) {
-            acc[item.product.productName].pending += Number(item.count);
+            acc[item.product].pending += Number(item.count);
         }
         else if (item.nokStatus === types_1.NokStatus.ANALYSED) {
-            acc[item.product.productName].analysed += Number(item.count);
+            acc[item.product].analysed += Number(item.count);
         }
         return acc;
     }, {}));
     for (const item of Data) {
         formattedData.push(item);
     }
+    console.log('**********************************');
+    console.log('dashboardNokData:', dashboardNokData);
+    console.log('Formatted NOK Data:', formattedData);
+    console.log('**********************************');
     return formattedData;
 };
 const analysedDataFormatter = (analysedNokData) => {

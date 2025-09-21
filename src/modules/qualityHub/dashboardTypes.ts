@@ -45,7 +45,7 @@ export interface QueryParams {
 }
 
 export interface DashboardNokDetect {
-  product: { productName: string };
+  product: string;
   count: number;
   nokStatus: NokStatus;
 }
