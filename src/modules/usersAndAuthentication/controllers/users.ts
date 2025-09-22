@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../types';
 import { parseUserResponse } from '../utils/dataProcessor';
 
-const getAllUsers = async (_req: Request, res: Response) => {
+const getAllUsers = async (_req: Request, res: Response): Promise<void> => {
   try {
     const users = await userServices.getAllUsers();
     res.json(users);
@@ -12,7 +12,7 @@ const getAllUsers = async (_req: Request, res: Response) => {
   }
 };
 
-const getUser = async (req: ExtendedRequest, res: Response) => {
+const getUser = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const user = await userServices.getUser(Number(id));
@@ -22,7 +22,7 @@ const getUser = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
-const addUser = async (req: ExtendedRequest, res: Response) => {
+const addUser = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const userData: unknown = req.body;
   try {
     const newUser = await userServices.createUser(userData);
@@ -37,7 +37,7 @@ const addUser = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
-const editUser = async (req: ExtendedRequest, res: Response) => {
+const editUser = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

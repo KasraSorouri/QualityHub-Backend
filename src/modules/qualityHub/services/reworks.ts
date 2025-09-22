@@ -129,7 +129,7 @@ const createRework = async (reworkData: unknown): Promise<null> => {
 };
 
 // Update an Rework
-const updateRework = async (id: number, reworkData: unknown) => {
+const updateRework = async (id: number, reworkData: unknown): Promise<Rework> => {
   // test data
   const newReworkData = reworkDataProcessor(reworkData);
 
@@ -163,7 +163,6 @@ const handleDismantledMaterials = async (
   const rework = await Rework.findByPk(reworkId);
   if (rework) {
     // delete previous rework Boms
-    //await RwDismantledMaterials.destroy({ where: { 'reworkId' : rework.id}})
 
     // create new rework Boms
     const dismantledMaterials: RwDismantledMaterialData[] = [];
@@ -172,8 +171,6 @@ const handleDismantledMaterials = async (
       const dismantled = {
         reworkId: rework.id,
         recipeBomId: item.recipeBomId,
-        //recipeId: item.recipeId,
-        //materialId: item.materialId,
         dismantledQty: item.dismantledQty,
         note: item.note,
         mandatoryRemove: item.mandatoryRemove,
@@ -182,7 +179,6 @@ const handleDismantledMaterials = async (
       dismantledMaterials.push(dismantled);
     }
     try {
-      //await RwDismantledMaterials.bulkCreate(dismantledMaterials);
       const result = await Rework.findByPk(reworkId, query);
 
       if (!result) {

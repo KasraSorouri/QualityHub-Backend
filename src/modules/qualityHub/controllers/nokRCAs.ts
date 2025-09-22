@@ -3,7 +3,7 @@ import { ExtendedRequest } from '../../usersAndAuthentication/types';
 import nokRcaServices from '../services/nokRCAs';
 
 // Get All Rcas
-const getAllRcas = async (_req: ExtendedRequest, res: Response) => {
+const getAllRcas = async (_req: ExtendedRequest, res: Response): Promise<void> => {
   try {
     const rcas = await nokRcaServices.getAllRcas();
     res.json(rcas);
@@ -13,7 +13,7 @@ const getAllRcas = async (_req: ExtendedRequest, res: Response) => {
 };
 
 // Get a Rca by Id
-const getRca = async (req: ExtendedRequest, res: Response) => {
+const getRca = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const rca = await nokRcaServices.getRca(Number(id));
@@ -24,7 +24,7 @@ const getRca = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Get RCAs by Nok Id
-const getNokRcaByNok = async (req: ExtendedRequest, res: Response) => {
+const getNokRcaByNok = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const nokId = Number(req.params.id);
   if (!nokId) {
     res.status(400).json({ error: 'Invalid product id' });
@@ -38,7 +38,7 @@ const getNokRcaByNok = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New Rca
-const addRca = async (req: ExtendedRequest, res: Response) => {
+const addRca = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const costData: unknown[] = req.body as unknown[];
   try {
     const result = await nokRcaServices.createNokRca(costData);
@@ -53,7 +53,7 @@ const addRca = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Remove a Rca
-const deleteRca = async (req: ExtendedRequest, res: Response) => {
+const deleteRca = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const result = await nokRcaServices.deleteRca(Number(id));

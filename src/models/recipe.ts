@@ -37,7 +37,7 @@ class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> implement
   product?: Product;
   recipeBoms?: RecipeBoms[];
 
-  static associate() {
+  static associate(): void {
     Recipe.belongsTo(Product, {
       foreignKey: 'productId',
       as: 'product',

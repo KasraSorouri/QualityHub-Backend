@@ -12,7 +12,7 @@ class RecipeBoms extends Model {
   public qty!: number;
   public reusable!: Reusable;
 
-  static associate() {
+  static associate(): void {
     RecipeBoms.belongsTo(Recipe, { foreignKey: 'recipeId' });
     RecipeBoms.belongsTo(Material, { foreignKey: 'materialId' });
   }

@@ -3,7 +3,7 @@ import { PORT } from './configs/config';
 import { connectToDatabase } from './configs/db';
 import logger from './utils/logger';
 
-const start = async () => {
+const start = async (): Promise<void> => {
   try {
     await connectToDatabase();
     app.listen(PORT, () => {

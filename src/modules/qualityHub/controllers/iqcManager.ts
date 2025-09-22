@@ -2,7 +2,7 @@ import { Request, Response } from 'express';
 import iqcManagerServices from '../services/iqcManager';
 
 // Get All IQCs
-const getAllIQCs = async (_req: Request, res: Response) => {
+const getAllIQCs = async (_req: Request, res: Response): Promise<void> => {
   try {
     const iqcs = await iqcManagerServices.getAllIQCs();
     res.json(iqcs);
@@ -12,7 +12,7 @@ const getAllIQCs = async (_req: Request, res: Response) => {
 };
 
 // Get Pending IQCs
-const getPendingIQCs = async (_req: Request, res: Response) => {
+const getPendingIQCs = async (_req: Request, res: Response): Promise<void> => {
   try {
     const iqcs = await iqcManagerServices.getPendingIQCs();
     res.json(iqcs);
@@ -22,7 +22,7 @@ const getPendingIQCs = async (_req: Request, res: Response) => {
 };
 
 // Update Material Status
-const updateMaterialStatus = async (req: Request, res: Response) => {
+const updateMaterialStatus = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const { materialStatus } = req.body as { materialStatus: string };
   try {

@@ -20,7 +20,7 @@ const migrationConf = {
   logger: console,
 };
 
-const runMigration = async () => {
+const runMigration = async (): Promise<void> => {
   const migrator = new Umzug(migrationConf);
   const migrations = await migrator.up();
   logger.info('migration up to date', {
@@ -28,7 +28,7 @@ const runMigration = async () => {
   });
 };
 
-const connectToDatabase = async () => {
+const connectToDatabase = async (): Promise<void | null> => {
   try {
     await sequelize.authenticate();
     await runMigration();
@@ -40,7 +40,7 @@ const connectToDatabase = async () => {
   return null;
 };
 
-const rollbackMigration = async () => {
+const rollbackMigration = async (): Promise<void> => {
   await sequelize.authenticate();
   const migrator = new Umzug(migrationConf);
   await migrator.down();

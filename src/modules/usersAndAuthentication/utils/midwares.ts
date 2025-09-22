@@ -26,7 +26,7 @@ const tokenExtractor = (req: ExtendedRequest, res: Response, next: NextFunction)
 
 //Authenticated based on Roles
 const roleAuthority = (permitedRoles: string[]) => {
-  return (req: ExtendedRequest, res: Response, next: NextFunction) => {
+  return (req: ExtendedRequest, res: Response, next: NextFunction): Response | void => {
     if (!req.decodedToken) {
       return res.status(401).json({ error: 'Token not found!' });
     }
@@ -63,7 +63,7 @@ const roleAuthority = (permitedRoles: string[]) => {
 
 //Authenticated based on Right
 const rightAuthority = (permitedRights: string[]) => {
-  return (req: ExtendedRequest, res: Response, next: NextFunction) => {
+  return (req: ExtendedRequest, res: Response, next: NextFunction): Response | void => {
     if (!req.decodedToken) {
       return res.status(401).json({ error: 'Token not found!' });
     }

@@ -80,7 +80,7 @@ const calculateNokCost = async (nokId: number): Promise<AnalyseCost> => {
 };
 
 // Update Price Data
-const updateUnitPrice = async (dismantledMaterial: NokDismantleMaterials) => {
+const updateUnitPrice = async (dismantledMaterial: NokDismantleMaterials): Promise<void> => {
   // Find missed Price
   const material = await Material.findByPk(dismantledMaterial.materialId);
   dismantledMaterial.unitPrice = material?.price || 0;

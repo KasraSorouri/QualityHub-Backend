@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
 // Get All Products
-const getAllProducts = async (_req: Request, res: Response) => {
+const getAllProducts = async (_req: Request, res: Response): Promise<void> => {
   try {
     const products = await productServices.getAllProducts();
     res.json(products);
@@ -13,7 +13,7 @@ const getAllProducts = async (_req: Request, res: Response) => {
 };
 
 // Get a Product by Id
-const getProduct = async (req: ExtendedRequest, res: Response) => {
+const getProduct = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const product = await productServices.getProduct(Number(id));
@@ -24,7 +24,7 @@ const getProduct = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New Product
-const addProduct = async (req: ExtendedRequest, res: Response) => {
+const addProduct = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const productData: unknown = req.body;
   try {
     const result = await productServices.createProduct(productData);
@@ -39,7 +39,7 @@ const addProduct = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Edit an Existing Product
-const editProduct = async (req: ExtendedRequest, res: Response) => {
+const editProduct = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

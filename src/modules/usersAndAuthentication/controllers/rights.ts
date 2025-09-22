@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../types';
 
 // Get all rights
-const getAllRights = async (_req: Request, res: Response) => {
+const getAllRights = async (_req: Request, res: Response): Promise<void> => {
   try {
     const rights = await rightServices.getAllRights();
     res.json(rights);
@@ -13,7 +13,7 @@ const getAllRights = async (_req: Request, res: Response) => {
 };
 
 // get a right with ID
-const getRight = async (req: ExtendedRequest, res: Response) => {
+const getRight = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const right = await rightServices.getRight(Number(id));
@@ -24,7 +24,7 @@ const getRight = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a new Right
-const addRight = async (req: ExtendedRequest, res: Response) => {
+const addRight = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const rightData: unknown = req.body;
   try {
     const newRight = await rightServices.createRight(rightData);
@@ -35,7 +35,7 @@ const addRight = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Update a Right
-const editRight = async (req: ExtendedRequest, res: Response) => {
+const editRight = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   const rightData: unknown = req.body;
   try {

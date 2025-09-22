@@ -10,7 +10,7 @@ export const isNumber = (value: unknown): value is number => {
   return typeof value === 'number';
 };
 
-export const stringLengthCheck = (text: string, length: number, subject: string) => {
+export const stringLengthCheck = (text: string, length: number, subject: string): boolean => {
   if (text.length < length) {
     throw new Error(`${subject} is too short, minimum length is ${length}.`);
   }

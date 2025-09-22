@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
 // Get All NOK Detects
-const getAllNokDetects = async (_req: Request, res: Response) => {
+const getAllNokDetects = async (_req: Request, res: Response): Promise<void> => {
   try {
     const nokDetects = await nokDetectServices.getAllNokDetects();
     res.json(nokDetects);
@@ -13,7 +13,7 @@ const getAllNokDetects = async (_req: Request, res: Response) => {
 };
 
 // Get a NOK Detect by Id
-const getNokDetect = async (req: ExtendedRequest, res: Response) => {
+const getNokDetect = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const nokDetect = await nokDetectServices.getNokDetect(Number(id));
@@ -24,7 +24,7 @@ const getNokDetect = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Get NOK Detects by Product Id
-const getNokDetectsByProduct = async (req: ExtendedRequest, res: Response) => {
+const getNokDetectsByProduct = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const productId = Number(req.params.id);
   if (!productId) {
     res.status(400).json({ error: 'Invalid product id' });
@@ -38,7 +38,7 @@ const getNokDetectsByProduct = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New NOK Detect
-const addNokDetect = async (req: ExtendedRequest, res: Response) => {
+const addNokDetect = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const nokDetectData: unknown = req.body;
   try {
     const result = await nokDetectServices.createNokDetect(nokDetectData);
@@ -53,7 +53,7 @@ const addNokDetect = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Edit an Existing NOK Detect
-const editNokDetect = async (req: ExtendedRequest, res: Response) => {
+const editNokDetect = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

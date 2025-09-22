@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
 // Get All Nok Groups
-const getAllNokCodes = async (_req: Request, res: Response) => {
+const getAllNokCodes = async (_req: Request, res: Response): Promise<void> => {
   try {
     const nokCodes = await nokCodeServices.getAllNokCodes();
     res.json(nokCodes);
@@ -13,7 +13,7 @@ const getAllNokCodes = async (_req: Request, res: Response) => {
 };
 
 // Get a Nok Group by Id
-const getNokCode = async (req: ExtendedRequest, res: Response) => {
+const getNokCode = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const nokCode = await nokCodeServices.getNokCode(Number(id));
@@ -24,7 +24,7 @@ const getNokCode = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New Nok Group
-const addNokCode = async (req: ExtendedRequest, res: Response) => {
+const addNokCode = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const nokCodeData: unknown = req.body;
   try {
     const result = await nokCodeServices.createNokCode(nokCodeData);
@@ -39,7 +39,7 @@ const addNokCode = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Edit an Existing Nok
-const editNokCode = async (req: ExtendedRequest, res: Response) => {
+const editNokCode = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

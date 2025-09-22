@@ -2,7 +2,7 @@ import roleServices from '../services/roles';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../types';
 
-const getAllRoles = async (_req: Request, res: Response) => {
+const getAllRoles = async (_req: Request, res: Response): Promise<void> => {
   try {
     const roles = await roleServices.getAllRoles();
     res.json(roles);
@@ -15,7 +15,7 @@ const getAllRoles = async (_req: Request, res: Response) => {
   }
 };
 
-const getRole = async (req: ExtendedRequest, res: Response) => {
+const getRole = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const role = await roleServices.getRole(Number(id));
@@ -29,7 +29,7 @@ const getRole = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
-const addRole = async (req: ExtendedRequest, res: Response) => {
+const addRole = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const roleData: unknown = req.body;
   try {
     const newRole = await roleServices.createRole(roleData);
@@ -43,7 +43,7 @@ const addRole = async (req: ExtendedRequest, res: Response) => {
   }
 };
 
-const editRole = async (req: ExtendedRequest, res: Response) => {
+const editRole = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

@@ -36,7 +36,7 @@ class NokDetect extends Model<NokDetectAttributes, NokDetectCreationAttributes> 
   productStatus!: ProductStatus;
   removeReport!: boolean;
 
-  static associate() {
+  static associate(): void {
     NokDetect.belongsTo(Product, {
       foreignKey: 'productId',
       as: 'product',

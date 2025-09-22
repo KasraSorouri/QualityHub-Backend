@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
 // Get All Recipes
-const getAllRecipes = async (_req: Request, res: Response) => {
+const getAllRecipes = async (_req: Request, res: Response): Promise<void> => {
   try {
     const recipes = await recipeServices.getAllRecipes();
     res.json(recipes);
@@ -13,7 +13,7 @@ const getAllRecipes = async (_req: Request, res: Response) => {
 };
 
 // Get a Recipe by Id
-const getRecipe = async (req: ExtendedRequest, res: Response) => {
+const getRecipe = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const recipe = await recipeServices.getRecipe(Number(id));
@@ -24,7 +24,7 @@ const getRecipe = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Get Recipes by Product Id
-const getRecipesByProduct = async (req: ExtendedRequest, res: Response) => {
+const getRecipesByProduct = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const productId = Number(req.params.id);
   if (!productId) {
     res.status(400).json({ error: 'Invalid product id' });
@@ -38,7 +38,7 @@ const getRecipesByProduct = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New Recipe
-const addRecipe = async (req: ExtendedRequest, res: Response) => {
+const addRecipe = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const recipeData: unknown = req.body;
   try {
     const result = await recipeServices.createRecipe(recipeData);
@@ -53,7 +53,7 @@ const addRecipe = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Edit an Existing Recipe
-const editRecipe = async (req: ExtendedRequest, res: Response) => {
+const editRecipe = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

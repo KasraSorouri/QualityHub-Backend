@@ -3,7 +3,7 @@ import { ExtendedRequest } from '../../usersAndAuthentication/types';
 import nokAnalyseServices from '../services/nokAnalyses';
 
 // Get All Analyses
-const getAllAnalyses = async (res: Response) => {
+const getAllAnalyses = async (res: Response): Promise<void> => {
   try {
     const rcas = await nokAnalyseServices.getAllAnalyses();
     res.json(rcas);
@@ -13,7 +13,7 @@ const getAllAnalyses = async (res: Response) => {
 };
 
 // Get a Analyse by Id
-const getAnalyse = async (req: ExtendedRequest, res: Response) => {
+const getAnalyse = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const rca = await nokAnalyseServices.getAnalyse(Number(id));
@@ -24,7 +24,7 @@ const getAnalyse = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Get RCAs by Nok Id
-const getNokAnalyseByNok = async (req: ExtendedRequest, res: Response) => {
+const getNokAnalyseByNok = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const nokId = Number(req.params.id);
   if (!nokId) {
     res.status(400).json({ error: 'Invalid product id' });
@@ -38,7 +38,7 @@ const getNokAnalyseByNok = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New Analyse
-const addAnalyse = async (req: ExtendedRequest, res: Response) => {
+const addAnalyse = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const costData: unknown[] = req.body as unknown[];
   try {
     const result = await nokAnalyseServices.createNokAnalyse(costData);
@@ -53,7 +53,7 @@ const addAnalyse = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Remove a Analyse
-const deleteAnalyse = async (req: ExtendedRequest, res: Response) => {
+const deleteAnalyse = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const result = await nokAnalyseServices.deleteAnalyse(Number(id));
@@ -64,7 +64,7 @@ const deleteAnalyse = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Update Analyse Status
-const updateAnalyseStatue = async (req: ExtendedRequest, res: Response) => {
+const updateAnalyseStatue = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   const analyseStatus: unknown[] = req.body as unknown[];
 

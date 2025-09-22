@@ -3,7 +3,7 @@ import claimManagerServices from '../services/claimManager';
 import Claim from '../../../models/claim';
 
 // Get All Claims
-const getAllClaims = async (_req: Request, res: Response) => {
+const getAllClaims = async (_req: Request, res: Response): Promise<void> => {
   try {
     const claims = await claimManagerServices.getAllClaims();
     res.json(claims);
@@ -13,7 +13,7 @@ const getAllClaims = async (_req: Request, res: Response) => {
 };
 
 // Get Pending Claims
-const getPendingClaims = async (_req: Request, res: Response) => {
+const getPendingClaims = async (_req: Request, res: Response): Promise<void> => {
   try {
     const claims = await claimManagerServices.getPendingClaims();
     res.json(claims);
@@ -23,7 +23,7 @@ const getPendingClaims = async (_req: Request, res: Response) => {
 };
 
 // Update Claim Status
-const updateClaimStatus = async (req: Request, res: Response) => {
+const updateClaimStatus = async (req: Request, res: Response): Promise<void> => {
   const { id } = req.params;
   const claimData = req.body as Claim;
 

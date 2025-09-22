@@ -18,7 +18,7 @@ class NokDismantleMaterials extends Model {
   public unitPrice!: number;
   public rwDismantledMaterialId!: number;
 
-  static associate() {
+  static associate(): void {
     NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId' });
     Material.hasMany(NokDismantleMaterials, { foreignKey: 'materialId' });
   }

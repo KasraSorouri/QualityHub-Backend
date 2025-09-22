@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
 // Get All Materials
-const getAllMaterials = async (_req: Request, res: Response) => {
+const getAllMaterials = async (_req: Request, res: Response): Promise<void> => {
   try {
     const materials = await materialServices.getAllMaterials();
     res.json(materials);
@@ -13,7 +13,7 @@ const getAllMaterials = async (_req: Request, res: Response) => {
 };
 
 // Get a Material by Id
-const getMaterial = async (req: ExtendedRequest, res: Response) => {
+const getMaterial = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const material = await materialServices.getMaterial(Number(id));
@@ -24,7 +24,7 @@ const getMaterial = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New Material
-const addMaterial = async (req: ExtendedRequest, res: Response) => {
+const addMaterial = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const materialData: unknown = req.body;
   try {
     const result = await materialServices.createMaterial(materialData);
@@ -39,7 +39,7 @@ const addMaterial = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Edit an Existing Material
-const editMaterial = async (req: ExtendedRequest, res: Response) => {
+const editMaterial = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

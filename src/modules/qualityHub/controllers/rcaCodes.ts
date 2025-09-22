@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
 // Get All RcaCode
-const getAllRcaCodes = async (_req: Request, res: Response) => {
+const getAllRcaCodes = async (_req: Request, res: Response): Promise<void> => {
   try {
     const rcaCode = await rcaCodeServices.getAllRcaCodes();
     res.json(rcaCode);
@@ -13,7 +13,7 @@ const getAllRcaCodes = async (_req: Request, res: Response) => {
 };
 
 // Get a RcaCode by Id
-const getRcaCode = async (req: ExtendedRequest, res: Response) => {
+const getRcaCode = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const rcaCode = await rcaCodeServices.getRcaCode(Number(id));
@@ -24,7 +24,7 @@ const getRcaCode = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New RcaCode
-const addRcaCode = async (req: ExtendedRequest, res: Response) => {
+const addRcaCode = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const rcaCodeData: unknown = req.body;
   try {
     const result = await rcaCodeServices.createRcaCode(rcaCodeData);
@@ -39,7 +39,7 @@ const addRcaCode = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Edit an Existing RcaCode
-const editRcaCode = async (req: ExtendedRequest, res: Response) => {
+const editRcaCode = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

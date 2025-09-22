@@ -3,7 +3,7 @@ import { ExtendedRequest } from '../../usersAndAuthentication/types';
 import reworkServices from '../services/nokReworks';
 
 // Get All Reworks
-const getAllReworks = async (_req: Request, res: Response) => {
+const getAllReworks = async (_req: Request, res: Response): Promise<void> => {
   try {
     const reworks = await reworkServices.getAllReworks();
     res.json(reworks);
@@ -13,7 +13,7 @@ const getAllReworks = async (_req: Request, res: Response) => {
 };
 
 // Get a Rework by Id
-const getRework = async (req: ExtendedRequest, res: Response) => {
+const getRework = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const rework = await reworkServices.getRework(Number(id));
@@ -24,7 +24,7 @@ const getRework = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Get Reworks by Product Id
-const getReworksByNok = async (req: ExtendedRequest, res: Response) => {
+const getReworksByNok = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const nokId = Number(req.params.id);
   if (!nokId) {
     res.status(400).json({ error: 'Invalid product id' });
@@ -38,7 +38,7 @@ const getReworksByNok = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New Rework
-const addRework = async (req: ExtendedRequest, res: Response) => {
+const addRework = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const reworkData: unknown = req.body;
   try {
     const result = await reworkServices.createRework(reworkData);
@@ -51,27 +51,6 @@ const addRework = async (req: ExtendedRequest, res: Response) => {
     res.status(409).json({ error: `${errorMessage}` });
   }
 };
-
-/*
-// Edit an Existing Rework
-const editRework = async (req: ExtendedRequest, res: Response) => {
-  const id = Number(req.params.id);
-  if (!(req.decodedToken && id === req.decodedToken.id || req.permited)) {
-    res.status(401).json({ error: 'Operation not allowed' });
-  }
-  const reworkData: unknown = req.body;
-  try {
-    const result = await reworkServices.updateRework(id,reworkData);
-    res.status(201).json(result);
-  } catch(err : unknown) {
-    let errorMessage = 'Something went wrong.';
-    if (err instanceof Error) {
-      errorMessage += err.message;
-    }
-    res.status(409).json({ error: `${errorMessage}` });
-  }
-};\
-*/
 
 export default {
   getAllReworks,

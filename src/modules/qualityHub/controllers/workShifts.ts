@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
 // Get All WorkShifts
-const getAllWorkShifts = async (_req: Request, res: Response) => {
+const getAllWorkShifts = async (_req: Request, res: Response): Promise<void> => {
   try {
     const workShifts = await workShiftServices.getAllWorkShifts();
     res.json(workShifts);
@@ -17,7 +17,7 @@ const getAllWorkShifts = async (_req: Request, res: Response) => {
 };
 
 // Get a WorkShift by Id
-const getWorkShift = async (req: ExtendedRequest, res: Response) => {
+const getWorkShift = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const workShift = await workShiftServices.getWorkShift(Number(id));
@@ -32,7 +32,7 @@ const getWorkShift = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New WorkShift
-const addWorkShift = async (req: ExtendedRequest, res: Response) => {
+const addWorkShift = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const workShiftData: unknown = req.body;
   try {
     const result = await workShiftServices.createWorkShift(workShiftData);
@@ -47,7 +47,7 @@ const addWorkShift = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Edit an Existing WorkShift
-const editWorkShift = async (req: ExtendedRequest, res: Response) => {
+const editWorkShift = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });

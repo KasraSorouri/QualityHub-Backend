@@ -3,7 +3,7 @@ import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
 
 // Get All Product Groups
-const getAllProductGrps = async (_req: Request, res: Response) => {
+const getAllProductGrps = async (_req: Request, res: Response): Promise<void> => {
   try {
     const productGrps = await productGrpServices.getAllProductGrps();
     res.json(productGrps);
@@ -13,7 +13,7 @@ const getAllProductGrps = async (_req: Request, res: Response) => {
 };
 
 // Get a Product Group by Id
-const getProductGrp = async (req: ExtendedRequest, res: Response) => {
+const getProductGrp = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = req.params.id;
   try {
     const productGrp = await productGrpServices.getProductGrp(Number(id));
@@ -24,7 +24,7 @@ const getProductGrp = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Create a New Product Group
-const addProductGrp = async (req: ExtendedRequest, res: Response) => {
+const addProductGrp = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const productGrpData: unknown = req.body;
   try {
     const result = await productGrpServices.createProductGrp(productGrpData);
@@ -39,7 +39,7 @@ const addProductGrp = async (req: ExtendedRequest, res: Response) => {
 };
 
 // Edit an Existing Product
-const editProductGrp = async (req: ExtendedRequest, res: Response) => {
+const editProductGrp = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const id = Number(req.params.id);
   if (!((req.decodedToken && id === req.decodedToken.id) || req.permited)) {
     res.status(401).json({ error: 'Operation not allowed' });
