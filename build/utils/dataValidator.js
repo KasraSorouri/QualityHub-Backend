@@ -15,7 +15,6 @@ const isNumber = (value) => {
 exports.isNumber = isNumber;
 const stringLengthCheck = (text, length, subject) => {
     if (text.length < length) {
-        console.log(`${subject} is too short, minimum length is ${length}.`);
         throw new Error(`${subject} is too short, minimum length is ${length}.`);
     }
     return true;
@@ -23,7 +22,6 @@ const stringLengthCheck = (text, length, subject) => {
 exports.stringLengthCheck = stringLengthCheck;
 const parseDate = (date) => {
     if (!(0, exports.isString)(date) || !date) {
-        console.log('parse Date Error * raw data:', date);
         throw new Error('Incorrect or missing date 5!');
     }
     return new Date(date);
@@ -31,7 +29,6 @@ const parseDate = (date) => {
 exports.parseDate = parseDate;
 const parseBoolean = (value) => {
     if (!(0, exports.isBoolean)(value)) {
-        console.log('parse Boolean Error * raw data:', value);
         throw new Error('Incorrect or missing data - parseBoolean !');
     }
     return value;
@@ -39,10 +36,8 @@ const parseBoolean = (value) => {
 exports.parseBoolean = parseBoolean;
 const parseId = (id) => {
     if (!(0, exports.isNumber)(id)) {
-        console.log('parse Id Error * raw data:', id);
         throw new Error('Incorrect or missing data - parseId !');
     }
-    console.log('parse Id :', id);
     return id;
 };
 exports.parseId = parseId;

@@ -43,7 +43,6 @@ const parseProductStatus = (productStatus) => {
     }
 };
 const parseReworkStatus = (reworkStatus) => {
-    console.log('* Processing Rework Status ->', reworkStatus);
     if (!(0, dataValidator_1.isString)(reworkStatus)) {
         throw new Error('Incorrect or missing data 12!');
     }
@@ -59,13 +58,12 @@ const parseReworkStatus = (reworkStatus) => {
         case 'CANCELLED':
             return types_1.ReworkStatus.CANCELLED;
         default:
-            console.log('Incorrect or missing data -12--');
-            throw new Error('Incorrect or missing data -12--');
+            throw new Error('Incorrect or missing data');
     }
 };
 const parseMaterialStatus = (materialStatus) => {
     if (!(0, dataValidator_1.isString)(materialStatus)) {
-        throw new Error('Incorrect or missing data 13!');
+        throw new Error('Incorrect or missing data!');
     }
     switch (materialStatus) {
         case 'SCRAPPED':
@@ -98,17 +96,14 @@ const parseReusable = (reusable) => {
 };
 const parseNokDismantledMaterial = (dismantledMaterialData) => {
     if (!dismantledMaterialData || !Array.isArray(dismantledMaterialData)) {
-        console.log('++ Data processing Error 2');
-        throw new Error('Incorrect or missing Data **!');
+        throw new Error('Incorrect or missing Data!');
     }
     const dismantledMaterials = [];
     for (const dismantledItem of dismantledMaterialData) {
         if (!dismantledItem || typeof dismantledItem !== 'object') {
-            console.log('++ Data processing Error 3');
-            throw new Error('Incorrect or missing Data **!');
+            throw new Error('Incorrect or missing Data!');
         }
         if ('material' in dismantledItem && 'actualDismantledQty' in dismantledItem) {
-            console.log('+++ corect Dismantled Material Data');
             const dismantledmaterial = {
                 material: (0, dataValidator_1.parseId)(dismantledItem.material.id),
                 actualDismantledQty: (0, dataProcessor_1.parseQty)(dismantledItem.actualDismantledQty),
@@ -127,16 +122,14 @@ const parseNokDismantledMaterial = (dismantledMaterialData) => {
             dismantledMaterials.push(dismantledmaterial);
         }
         else {
-            console.log('+++ Incorrect Dismantled Material Data');
+            throw new Error('Incorrect or missing Data!');
         }
     }
-    console.log('*+*+*+* parse Nok dismantle Material return ->', dismantledMaterials);
     return dismantledMaterials;
 };
 const parseReworkActions = (reworkActions) => {
     if (!reworkActions || !Array.isArray(reworkActions)) {
-        console.log('++ Data processing Error 4');
-        throw new Error('Incorrect or missing Data *4*!');
+        throw new Error('Incorrect or missing Data!');
     }
     const reworkActionsArray = [];
     for (const reworkAction of reworkActions) {
@@ -146,8 +139,7 @@ const parseReworkActions = (reworkActions) => {
 };
 const parseAffectedRecipe = (affectedRecipe) => {
     if (!affectedRecipe || !Array.isArray(affectedRecipe)) {
-        console.log('++ Data processing Error 5');
-        throw new Error('Incorrect or missing Data *5*!');
+        throw new Error('Incorrect or missing Data!');
     }
     const affectedRecipeArray = [];
     for (const recipe of affectedRecipe) {
@@ -183,7 +175,6 @@ const nokDataProcessor = (nokData) => {
         return nokDataToReturn;
     }
     else {
-        console.log('Incorrect or missing data --+-+!');
         throw new Error('Incorrect or missing data --+-+!');
     }
 };

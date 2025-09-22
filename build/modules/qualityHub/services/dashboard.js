@@ -69,7 +69,7 @@ const nokDashboard = (params) => __awaiter(void 0, void 0, void 0, function* () 
     };
     // Fetching dashboard data for NOK analysis
     try {
-        const dashboardNokData = yield models_1.NokDetect.findAll({
+        const dashboardNokData = (yield models_1.NokDetect.findAll({
             include: [
                 {
                     model: models_1.Product,
@@ -91,26 +91,22 @@ const nokDashboard = (params) => __awaiter(void 0, void 0, void 0, function* () 
             ],
             group: ['product', 'nokStatus'],
             raw: true,
-        });
+        }));
         // Preparing the dashboard data for response
         const rawNokData = dashboardNokData.map((item) => ({
             product: item.product,
             nokStatus: item.nokStatus,
-            count: Number(item.count)
+            count: Number(item.count),
         }));
         const dashboardNokDataFormatted = dashboardDataProcessor_1.default.nokDataFormatter(rawNokData);
         return dashboardNokDataFormatted;
     }
     catch (error) {
         if (error instanceof Error) {
-            console.error('Error fetching NOK data:', error.message);
-        }
-        else {
-            console.error('Error fetching NOK data:', error);
+            throw new Error('Failed to fetch NOK dashboard data: ' + error.message);
         }
         throw new Error('Failed to fetch NOK dashboard data');
     }
-    throw new Error('Failed to fetch NOK dashboard data');
 });
 const nokAnalysedDashboard = (params) => __awaiter(void 0, void 0, void 0, function* () {
     // converting Parameters
@@ -135,7 +131,7 @@ const nokAnalysedDashboard = (params) => __awaiter(void 0, void 0, void 0, funct
     };
     // Fetching analysed dashboard data for NOK analysis
     try {
-        const analysedNokData = yield models_1.NokAnalyse.findAll({
+        const analysedNokData = (yield models_1.NokAnalyse.findAll({
             include: [
                 {
                     model: models_1.NokDetect,
@@ -164,7 +160,7 @@ const nokAnalysedDashboard = (params) => __awaiter(void 0, void 0, void 0, funct
             ],
             group: ['nokDetect.product.product_name', 'causeShift.shift_name'],
             raw: true,
-        });
+        }));
         // Preparing the analysed NOK data for response
         const rawAnalysedNokData = analysedNokData.map((item) => ({
             productName: item.productName,
@@ -175,7 +171,6 @@ const nokAnalysedDashboard = (params) => __awaiter(void 0, void 0, void 0, funct
         return analysedNokDataFormatted;
     }
     catch (error) {
-        console.error('Error fetching analysed NOK data:', error);
         throw new Error('Failed to fetch NOK analysed dashboard data');
     }
 });
@@ -202,7 +197,7 @@ const topNokCodes = (params) => __awaiter(void 0, void 0, void 0, function* () {
     };
     // Fetching top N NOK codes
     try {
-        const topNokCodes = yield models_1.NokAnalyse.findAll({
+        const topNokCodes = (yield models_1.NokAnalyse.findAll({
             include: [
                 {
                     model: models_1.NokDetect,
@@ -239,7 +234,7 @@ const topNokCodes = (params) => __awaiter(void 0, void 0, void 0, function* () {
             order: [[sequelize_1.default.fn('COUNT', sequelize_1.default.col('nokAnalyse.id')), 'DESC']],
             limit: topN,
             raw: true,
-        });
+        }));
         // Preparing the top N NOK codes data for response
         const topNokCodesMapped = topNokCodes.map((item) => ({
             productName: item.productName,

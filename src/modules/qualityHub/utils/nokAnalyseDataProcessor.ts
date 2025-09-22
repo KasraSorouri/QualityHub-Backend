@@ -9,7 +9,7 @@ type analyseStatusData = {
 
 const nokAnalyseDataProcessor = (nokData: unknown): NewAnalyseData => {
   if (!nokData || typeof nokData !== 'object') {
-    throw new Error('Incorrect or missing Data **!');
+    throw new Error('Incorrect or missing Data!');
   }
   if (
     'nokId' in nokData &&
@@ -38,31 +38,30 @@ const nokAnalyseDataProcessor = (nokData: unknown): NewAnalyseData => {
 
     return nokDataToReturn;
   } else {
-    console.log('Incorrect or missing data --+-+!');
-    throw new Error('Incorrect or missing data --+-+!');
+    throw new Error('Incorrect or missing data!');
   }
 };
 
 const statusProcessor = (analyseStatusData: unknown): NokStatus => {
   switch (analyseStatusData) {
-  case 'ANALYSED':
-    return NokStatus.ANALYSED;
+    case 'ANALYSED':
+      return NokStatus.ANALYSED;
 
-  case 'NEED INVESTIGATION':
-    return NokStatus.NEED_INVESTIGATION;
+    case 'NEED INVESTIGATION':
+      return NokStatus.NEED_INVESTIGATION;
 
-  case 'NOT FOUND':
-    return NokStatus.NOT_FOUND;
+    case 'NOT FOUND':
+      return NokStatus.NOT_FOUND;
 
-  default:
-    return NokStatus.PENDING;
+    default:
+      return NokStatus.PENDING;
   }
 };
 
 // Analyse Status processor
 const analyaseStatusProcessor = (analyseStatusData: unknown): analyseStatusData => {
   if (!analyseStatusData || typeof analyseStatusData !== 'object') {
-    throw new Error('Incorrect or missing Data **!');
+    throw new Error('Incorrect or missing Data!');
   }
 
   if ('analyseStatus' in analyseStatusData && 'removeFromReportStatus' in analyseStatusData) {
@@ -71,7 +70,7 @@ const analyaseStatusProcessor = (analyseStatusData: unknown): analyseStatusData 
       removeFromReportStatus: parseBoolean(analyseStatusData.removeFromReportStatus),
     };
   } else {
-    throw new Error('Incorrect or missing Data in analyse Status**!');
+    throw new Error('Incorrect or missing Data in analyse Status!');
   }
 };
 

@@ -28,7 +28,6 @@ const analysedNokQuery = (params: QueryParams): DashboardParams_AnalysedQuery =>
 
   // Process Date Range
   if ('startDate' in params || 'endDate' in params) {
-
     const { startDate, endDate } = params as {
       startDate?: string;
       endDate?: string;
@@ -106,8 +105,6 @@ const nokDataFormatter = (dashboardNokData: DashboardNokDetect[]): DashboardNokD
 };
 
 const analysedDataFormatter = (analysedNokData: DashboardNokAnalysed[]): DashboardNokAnalysedData => {
-  console.log('Analysed Data:', analysedNokData);
-
   // Collect all unique shifts
   const allShifts = Array.from(new Set(analysedNokData.map((item) => item.shiftName)));
 

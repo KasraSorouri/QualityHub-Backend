@@ -24,7 +24,6 @@ const getAllWorkShifts = (_req, res) => __awaiter(void 0, void 0, void 0, functi
         if (err instanceof Error) {
             errorMessage += ' Error: ' + err.message;
         }
-        console.log('**** error :', errorMessage);
         throw new Error(errorMessage);
     }
 });
@@ -40,7 +39,6 @@ const getWorkShift = (req, res) => __awaiter(void 0, void 0, void 0, function* (
         if (err instanceof Error) {
             errorMessage += ' Error: ' + err.message;
         }
-        console.log('**** error :', errorMessage);
         throw new Error(errorMessage);
     }
 });

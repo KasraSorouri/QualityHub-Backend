@@ -37,7 +37,6 @@ const getNokRcaByNok = async (nokId: number): Promise<Rca[]> => {
 
 // Create a new Cost
 const createNokRca = async (nokRcaData: unknown): Promise<Rca> => {
-
   // Validate data
   const newNokRcaData = nokRcaProcessor(nokRcaData);
 

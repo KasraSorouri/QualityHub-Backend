@@ -4,38 +4,29 @@ import { parseActive, parseDescription, parseOrder, parseQty } from './dataProce
 
 const parseRecipeData = (recipeData: unknown): number[] => {
   if (!recipeData || !Array.isArray(recipeData)) {
-    console.log('++ Data processing Error 1');
-    throw new Error('Incorrect or missing Data **!');
+    throw new Error('Incorrect or missing Data!');
   }
   const recipeIds: number[] = [];
   for (const recipe of recipeData) {
     recipeIds.push(parseId(recipe));
   }
-  console.log(' Parse Recipes : ', recipeIds);
-
   return recipeIds;
 };
 
 const parseDismantlesMaterial = (dismantlesMaterialData: unknown): NewRwDismantledMaterialData[] => {
   if (!dismantlesMaterialData || !Array.isArray(dismantlesMaterialData)) {
-    console.log('++ Data processing Error 2');
-
-    throw new Error('Incorrect or missing Data **!');
+    throw new Error('Incorrect or missing Data!');
   }
   const dismantledMaterials: NewRwDismantledMaterialData[] = [];
   for (const dismantledItem of dismantlesMaterialData) {
     if (!dismantledItem || typeof dismantledItem !== 'object') {
-      console.log('++ Data processing Error 3');
-
-      throw new Error('Incorrect or missing Data **!');
+      throw new Error('Incorrect or missing Data!');
     }
     if (
       'recipeBom' in dismantledItem &&
       typeof dismantledItem.recipeBom === 'object' &&
       'dismantledQty' in dismantledItem
     ) {
-      console.log('+++ corect Dismantled Material Data');
-
       const dismantledmaterial = {
         recipeBomId: parseId(dismantledItem.recipeBom.id),
         dismantledQty: parseQty(dismantledItem.dismantledQty),
@@ -44,7 +35,7 @@ const parseDismantlesMaterial = (dismantlesMaterialData: unknown): NewRwDismantl
       };
       dismantledMaterials.push(dismantledmaterial);
     } else {
-      console.log('+++ Incorrect Dismantled Material Data');
+      throw new Error('Incorrect or missing Data!');
     }
   }
   return dismantledMaterials;
@@ -52,9 +43,7 @@ const parseDismantlesMaterial = (dismantlesMaterialData: unknown): NewRwDismantl
 
 const reworkDataProcessor = (reworkData: unknown): NewReworkData => {
   if (!reworkData || typeof reworkData !== 'object') {
-    console.log('Incorrect or missing Data **! 1');
-
-    throw new Error('Incorrect or missing Data **!');
+    throw new Error('Incorrect or missing Data!');
   }
   if (
     'productId' in reworkData &&
@@ -63,9 +52,6 @@ const reworkDataProcessor = (reworkData: unknown): NewReworkData => {
     'reworkShortDesc' in reworkData &&
     'order' in reworkData
   ) {
-    console.log('Rework Data:', reworkData);
-
-    console.log('Correct Data');
     const reworkDataToReturn: NewReworkData = {
       productId: parseId(reworkData.productId),
       stationId: parseId(reworkData.stationId),
@@ -83,13 +69,9 @@ const reworkDataProcessor = (reworkData: unknown): NewReworkData => {
       dismantledMaterials:
         'rwDismantledMaterials' in reworkData ? parseDismantlesMaterial(reworkData.rwDismantledMaterials) : [],
     };
-    console.log('*Rework Data Processing - reworkDataToReturn', reworkDataToReturn);
-
     return reworkDataToReturn;
   } else {
-    console.log('Incorrect or missing Data **! 2');
-
-    throw new Error('Incorrect or missing data --+-+!');
+    throw new Error('Incorrect or missing data!');
   }
 };
 

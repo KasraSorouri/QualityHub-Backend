@@ -73,7 +73,6 @@ const parseDescription = (description) => {
     if (!(0, dataValidator_1.isString)(description)) {
         throw new Error('Incorrect material name!');
     }
-    console.log('parse description :', description);
     return description;
 };
 exports.parseDescription = parseDescription;
@@ -81,7 +80,6 @@ const parseOrder = (order) => {
     if (!(0, dataValidator_1.isNumber)(order)) {
         throw new Error('Incorrect material name!');
     }
-    console.log('parse order :', order);
     return order;
 };
 exports.parseOrder = parseOrder;
@@ -107,7 +105,6 @@ const parseQty = (qty) => {
     if (!(0, dataValidator_1.isNumber)(qty)) {
         throw new Error('Incorrect or Number type!');
     }
-    console.log('parse qty :', qty);
     return qty;
 };
 exports.parseQty = parseQty;
@@ -115,7 +112,6 @@ const parseActive = (active) => {
     if (!(0, dataValidator_1.isBoolean)(active)) {
         throw new Error('Incorrect or Active data!');
     }
-    console.log('parse active :', active);
     return active;
 };
 exports.parseActive = parseActive;
@@ -237,7 +233,6 @@ const materialProcessor = (materialData) => {
         'itemLongName' in materialData &&
         'itemCode' in materialData &&
         'traceable' in materialData) {
-        console.log('here');
         const newMaterial = {
             itemShortName: parseMaterialName(materialData.itemShortName),
             itemLongName: parseMaterialName(materialData.itemLongName),
@@ -285,7 +280,6 @@ const recipeProcessor = (recipeData) => {
 exports.recipeProcessor = recipeProcessor;
 const parseMaterialsData = (bomData) => {
     if (!bomData || !Array.isArray(bomData)) {
-        console.log('we are here');
         throw new Error('Incorrect or missing Data!');
     }
     const newBoms = [];

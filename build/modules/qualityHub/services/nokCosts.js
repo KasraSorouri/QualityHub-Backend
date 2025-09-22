@@ -72,7 +72,6 @@ const calculateNokCost = (nokId) => __awaiter(void 0, void 0, void 0, function* 
                 claimStatus.rejected += 1;
             }
         }
-        ;
         totalMaterialWaste.issue = issue ? 1 : 0;
         return Object.assign(Object.assign({}, totalMaterialWaste), claimStatus);
     }

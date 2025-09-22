@@ -2,7 +2,8 @@ import { NokAnalyse, NokCode, NokDetect, Product, WorkShift } from '../../../mod
 import sequelize, { Op, WhereOptions } from 'sequelize';
 import dashboardDataProcessor from '../utils/dashboardDataProcessor';
 import { DashboardNokAnalysedData, DashboardNokData, DashboardTopNokData } from '../dashboardTypes';
-import { QueryParams } from '../dashboardTypes';import { NokStatus } from '../types';
+import { QueryParams } from '../dashboardTypes';
+import { NokStatus } from '../types';
 
 interface DashboardNokDetectDataRaw {
   product: string;
@@ -14,7 +15,7 @@ interface DashboardNokAnalysedDataRaw {
   productName: string;
   shiftName: string;
   count: number;
-} 
+}
 
 interface DashboardTopNokDataRaw {
   productName: string;
@@ -51,7 +52,7 @@ const nokDashboard = async (params: QueryParams): Promise<DashboardNokData[]> =>
 
   // Fetching dashboard data for NOK analysis
   try {
-    const dashboardNokData = await NokDetect.findAll({
+    const dashboardNokData = (await NokDetect.findAll({
       include: [
         {
           model: Product,
@@ -73,13 +74,13 @@ const nokDashboard = async (params: QueryParams): Promise<DashboardNokData[]> =>
       ],
       group: ['product', 'nokStatus'],
       raw: true,
-    }) as unknown as DashboardNokDetectDataRaw[];
+    })) as unknown as DashboardNokDetectDataRaw[];
 
     // Preparing the dashboard data for response
     const rawNokData = dashboardNokData.map((item) => ({
       product: item.product,
       nokStatus: item.nokStatus,
-      count: Number(item.count)
+      count: Number(item.count),
     }));
 
     const dashboardNokDataFormatted = dashboardDataProcessor.nokDataFormatter(rawNokData);
@@ -87,13 +88,10 @@ const nokDashboard = async (params: QueryParams): Promise<DashboardNokData[]> =>
     return dashboardNokDataFormatted;
   } catch (error: unknown) {
     if (error instanceof Error) {
-      console.error('Error fetching NOK data:', error.message);
-    } else {
-      console.error('Error fetching NOK data:', error);
+      throw new Error('Failed to fetch NOK dashboard data: ' + error.message);
     }
     throw new Error('Failed to fetch NOK dashboard data');
   }
-  throw new Error('Failed to fetch NOK dashboard data');
 };
 
 const nokAnalysedDashboard = async (params: QueryParams): Promise<DashboardNokAnalysedData> => {
@@ -126,7 +124,7 @@ const nokAnalysedDashboard = async (params: QueryParams): Promise<DashboardNokAn
 
   // Fetching analysed dashboard data for NOK analysis
   try {
-    const analysedNokData = await NokAnalyse.findAll({
+    const analysedNokData = (await NokAnalyse.findAll({
       include: [
         {
           model: NokDetect,
@@ -156,7 +154,7 @@ const nokAnalysedDashboard = async (params: QueryParams): Promise<DashboardNokAn
       ],
       group: ['nokDetect.product.product_name', 'causeShift.shift_name'],
       raw: true,
-    }) as unknown as DashboardNokAnalysedDataRaw[];
+    })) as unknown as DashboardNokAnalysedDataRaw[];
 
     // Preparing the analysed NOK data for response
     const rawAnalysedNokData = analysedNokData.map((item) => ({
@@ -168,7 +166,6 @@ const nokAnalysedDashboard = async (params: QueryParams): Promise<DashboardNokAn
 
     return analysedNokDataFormatted;
   } catch (error) {
-    console.error('Error fetching analysed NOK data:', error);
     throw new Error('Failed to fetch NOK analysed dashboard data');
   }
 };
@@ -202,7 +199,7 @@ const topNokCodes = async (params: QueryParams): Promise<DashboardTopNokData> =>
 
   // Fetching top N NOK codes
   try {
-    const topNokCodes = await NokAnalyse.findAll({
+    const topNokCodes = (await NokAnalyse.findAll({
       include: [
         {
           model: NokDetect,
@@ -239,7 +236,7 @@ const topNokCodes = async (params: QueryParams): Promise<DashboardTopNokData> =>
       order: [[sequelize.fn('COUNT', sequelize.col('nokAnalyse.id')), 'DESC']],
       limit: topN,
       raw: true,
-    }) as unknown as DashboardTopNokDataRaw[];
+    })) as unknown as DashboardTopNokDataRaw[];
 
     // Preparing the top N NOK codes data for response
     const topNokCodesMapped = topNokCodes.map((item) => ({

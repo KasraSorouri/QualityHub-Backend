@@ -23,16 +23,16 @@ const parseNokStatus = (nokStatus: unknown): NokStatus => {
     throw new Error('Incorrect or missing data 10!');
   }
   switch (nokStatus) {
-  case 'PENDING':
-    return NokStatus.PENDING;
-  case 'ANALYSED':
-    return NokStatus.ANALYSED;
-  case 'NEED INVESTIGATION':
-    return NokStatus.NEED_INVESTIGATION;
-  case 'NOT FOUND':
-    return NokStatus.NOT_FOUND;
-  default:
-    throw new Error('Incorrect or missing data ++!');
+    case 'PENDING':
+      return NokStatus.PENDING;
+    case 'ANALYSED':
+      return NokStatus.ANALYSED;
+    case 'NEED INVESTIGATION':
+      return NokStatus.NEED_INVESTIGATION;
+    case 'NOT FOUND':
+      return NokStatus.NOT_FOUND;
+    default:
+      throw new Error('Incorrect or missing data ++!');
   }
 };
 
@@ -41,56 +41,53 @@ const parseProductStatus = (productStatus: unknown): ProductStatus => {
     throw new Error('Incorrect or missing data 11!');
   }
   switch (productStatus) {
-  case 'NOK':
-    return ProductStatus.NOK;
-  case 'REWORKED':
-    return ProductStatus.REWORKED;
-  case 'SCRAPPED':
-    return ProductStatus.SCRAPPED;
-  default:
-    throw new Error('Incorrect or missing data! -11--');
+    case 'NOK':
+      return ProductStatus.NOK;
+    case 'REWORKED':
+      return ProductStatus.REWORKED;
+    case 'SCRAPPED':
+      return ProductStatus.SCRAPPED;
+    default:
+      throw new Error('Incorrect or missing data! -11--');
   }
 };
 
 const parseReworkStatus = (reworkStatus: unknown): ReworkStatus => {
-  console.log('* Processing Rework Status ->', reworkStatus);
-
   if (!isString(reworkStatus)) {
     throw new Error('Incorrect or missing data 12!');
   }
   switch (reworkStatus) {
-  case 'PENDING':
-    return ReworkStatus.PENDING;
-  case 'IN_PROGRESS':
-    return ReworkStatus.IN_PROGRESS;
-  case 'POSTPONED':
-    return ReworkStatus.POSTPONED;
-  case 'COMPLETED':
-    return ReworkStatus.COMPLETED;
-  case 'CANCELLED':
-    return ReworkStatus.CANCELLED;
+    case 'PENDING':
+      return ReworkStatus.PENDING;
+    case 'IN_PROGRESS':
+      return ReworkStatus.IN_PROGRESS;
+    case 'POSTPONED':
+      return ReworkStatus.POSTPONED;
+    case 'COMPLETED':
+      return ReworkStatus.COMPLETED;
+    case 'CANCELLED':
+      return ReworkStatus.CANCELLED;
 
-  default:
-    console.log('Incorrect or missing data -12--');
-    throw new Error('Incorrect or missing data -12--');
+    default:
+      throw new Error('Incorrect or missing data');
   }
 };
 
 const parseMaterialStatus = (materialStatus: unknown): MaterialStatus => {
   if (!isString(materialStatus)) {
-    throw new Error('Incorrect or missing data 13!');
+    throw new Error('Incorrect or missing data!');
   }
   switch (materialStatus) {
-  case 'SCRAPPED':
-    return MaterialStatus.SCRAPPED;
-  case 'OK':
-    return MaterialStatus.OK;
-  case 'IQC':
-    return MaterialStatus.IQC;
-  case 'CLAIMABLE':
-    return MaterialStatus.CLAIMABLE;
-  default:
-    throw new Error('Incorrect or missing data -13--');
+    case 'SCRAPPED':
+      return MaterialStatus.SCRAPPED;
+    case 'OK':
+      return MaterialStatus.OK;
+    case 'IQC':
+      return MaterialStatus.IQC;
+    case 'CLAIMABLE':
+      return MaterialStatus.CLAIMABLE;
+    default:
+      throw new Error('Incorrect or missing data -13--');
   }
 };
 
@@ -99,32 +96,27 @@ const parseReusable = (reusable: unknown): Reusable => {
     throw new Error('Incorrect or missing data 14!');
   }
   switch (reusable) {
-  case 'YES':
-    return Reusable.YES;
-  case 'NO':
-    return Reusable.NO;
-  case 'IQC':
-    return Reusable.IQC;
-  default:
-    throw new Error('Incorrect or missing data -14--');
+    case 'YES':
+      return Reusable.YES;
+    case 'NO':
+      return Reusable.NO;
+    case 'IQC':
+      return Reusable.IQC;
+    default:
+      throw new Error('Incorrect or missing data -14--');
   }
 };
 
 const parseNokDismantledMaterial = (dismantledMaterialData: unknown): DismantledMaterialData[] => {
   if (!dismantledMaterialData || !Array.isArray(dismantledMaterialData)) {
-    console.log('++ Data processing Error 2');
-    throw new Error('Incorrect or missing Data **!');
+    throw new Error('Incorrect or missing Data!');
   }
   const dismantledMaterials: DismantledMaterialData[] = [];
   for (const dismantledItem of dismantledMaterialData) {
     if (!dismantledItem || typeof dismantledItem !== 'object') {
-      console.log('++ Data processing Error 3');
-
-      throw new Error('Incorrect or missing Data **!');
+      throw new Error('Incorrect or missing Data!');
     }
     if ('material' in dismantledItem && 'actualDismantledQty' in dismantledItem) {
-      console.log('+++ corect Dismantled Material Data');
-
       const dismantledmaterial = {
         material: parseId(dismantledItem.material.id),
         actualDismantledQty: parseQty(dismantledItem.actualDismantledQty),
@@ -146,19 +138,15 @@ const parseNokDismantledMaterial = (dismantledMaterialData: unknown): Dismantled
 
       dismantledMaterials.push(dismantledmaterial);
     } else {
-      console.log('+++ Incorrect Dismantled Material Data');
+      throw new Error('Incorrect or missing Data!');
     }
   }
-
-  console.log('*+*+*+* parse Nok dismantle Material return ->', dismantledMaterials);
-
   return dismantledMaterials;
 };
 
 const parseReworkActions = (reworkActions: unknown): number[] => {
   if (!reworkActions || !Array.isArray(reworkActions)) {
-    console.log('++ Data processing Error 4');
-    throw new Error('Incorrect or missing Data *4*!');
+    throw new Error('Incorrect or missing Data!');
   }
   const reworkActionsArray: number[] = [];
   for (const reworkAction of reworkActions) {
@@ -170,8 +158,7 @@ const parseReworkActions = (reworkActions: unknown): number[] => {
 
 const parseAffectedRecipe = (affectedRecipe: unknown): number[] => {
   if (!affectedRecipe || !Array.isArray(affectedRecipe)) {
-    console.log('++ Data processing Error 5');
-    throw new Error('Incorrect or missing Data *5*!');
+    throw new Error('Incorrect or missing Data!');
   }
   const affectedRecipeArray: number[] = [];
   for (const recipe of affectedRecipe) {
@@ -210,7 +197,6 @@ const nokDataProcessor = (nokData: unknown): NewNokData => {
     };
     return nokDataToReturn;
   } else {
-    console.log('Incorrect or missing data --+-+!');
     throw new Error('Incorrect or missing data --+-+!');
   }
 };

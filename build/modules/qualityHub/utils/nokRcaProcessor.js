@@ -5,10 +5,8 @@ const dataValidator_1 = require("../../../utils/dataValidator");
 const dataProcessor_1 = require("./dataProcessor");
 const nokRcaProcessor = (nokRcaData) => {
     // Validate input data
-    console.log('NOk RCA Processing Start!');
     if (!nokRcaData || typeof nokRcaData !== 'object' || !('nokId' in nokRcaData) || !('rcaCodeId' in nokRcaData)) {
-        console.log('Incorrect or missing Data ** NOK RCA * 0 *');
-        throw new Error('Incorrect or missing Data ** NOK RCA * 0 *');
+        throw new Error('Incorrect or missing Data ** NOK RCA');
     }
     const newRcaData = {
         id: 'id' in nokRcaData ? (0, dataValidator_1.parseId)(nokRcaData.id) : undefined,
@@ -21,7 +19,6 @@ const nokRcaProcessor = (nokRcaData) => {
         createBy: 1,
         createAt: new Date(),
     };
-    console.log('NOk RCA Processing Finish Successfully!');
     return newRcaData;
 };
 exports.nokRcaProcessor = nokRcaProcessor;

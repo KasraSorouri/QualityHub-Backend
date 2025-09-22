@@ -40,23 +40,19 @@ const query = {
 };
 // Get All IQCs
 const getAllIQCs = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('get All IQCs');
     try {
         const iqcs = yield models_1.NokDismantleMaterials.findAll({
             attributes: query.attributes,
             include: query.include,
         });
-        console.log('*** IQC Manager * IQCs -> ', iqcs);
         return iqcs;
     }
     catch (err) {
-        console.log('!!! IQC Manager * Error -> ', err);
         throw new Error('No IQC found');
     }
 });
 // Get all Pending IQCs
 const getPendingIQCs = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('get All IQCs');
     try {
         const iqcs = yield models_1.NokDismantleMaterials.findAll({
             where: {
@@ -64,23 +60,18 @@ const getPendingIQCs = () => __awaiter(void 0, void 0, void 0, function* () {
             },
             attributes: query.attributes,
             include: query.include,
-            logging: console.log,
         });
-        console.log('*** IQC Manager * IQCs -> ', iqcs);
         return iqcs;
     }
     catch (err) {
-        console.log('!!! IQC Manager * Error -> ', err);
         throw new Error('No IQC found');
     }
 });
 // Update Material Status
 const updateMaterialStatus = (id, materialStatusData) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('update Material Status * id ->', id, ' Material status ->', materialStatusData);
     const newMaterialStatus = (0, nokDataProcessor_1.parseMaterialStatus)(materialStatusData);
     try {
         const material = yield models_1.NokDismantleMaterials.findByPk(id);
-        console.log('IQC Manager * service * Update * material by Id ->', material);
         if (!material) {
             throw new Error('Material not found');
         }
@@ -89,7 +80,6 @@ const updateMaterialStatus = (id, materialStatusData) => __awaiter(void 0, void 
         return material;
     }
     catch (err) {
-        console.log('!!! IQC Manager * Error -> ', err);
         throw new Error('IQC not found');
     }
 });

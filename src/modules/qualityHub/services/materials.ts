@@ -18,7 +18,6 @@ const getAllMaterials = async (): Promise<Material[]> => {
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
 };
@@ -35,7 +34,6 @@ const getMaterial = async (id: number): Promise<Material> => {
 
 // Create a new Material
 const createMaterial = async (materialData: unknown): Promise<Material> => {
-
   const newMaterialData: MaterialData = materialProcessor(materialData);
 
   try {

@@ -100,8 +100,6 @@ const parseDescription = (description: unknown): string => {
   if (!isString(description)) {
     throw new Error('Incorrect material name!');
   }
-  console.log('parse description :', description);
-
   return description;
 };
 
@@ -109,7 +107,6 @@ const parseOrder = (order: unknown): number => {
   if (!isNumber(order)) {
     throw new Error('Incorrect material name!');
   }
-  console.log('parse order :', order);
   return order;
 };
 
@@ -137,7 +134,6 @@ const parseQty = (qty: unknown): number => {
   if (!isNumber(qty)) {
     throw new Error('Incorrect or Number type!');
   }
-  console.log('parse qty :', qty);
   return qty;
 };
 
@@ -145,7 +141,6 @@ const parseActive = (active: unknown): boolean => {
   if (!isBoolean(active)) {
     throw new Error('Incorrect or Active data!');
   }
-  console.log('parse active :', active);
   return active;
 };
 
@@ -154,14 +149,14 @@ const parseReusable = (reusable: unknown): Reusable => {
     throw new Error('Incorrect or Reusable data!');
   }
   switch (reusable) {
-  case 'YES':
-    return Reusable.YES;
-  case 'NO':
-    return Reusable.NO;
-  case 'IQC':
-    return Reusable.IQC;
-  default:
-    throw new Error('Incorrect or Reusable data!');
+    case 'YES':
+      return Reusable.YES;
+    case 'NO':
+      return Reusable.NO;
+    case 'IQC':
+      return Reusable.IQC;
+    default:
+      throw new Error('Incorrect or Reusable data!');
   }
 };
 
@@ -170,12 +165,12 @@ const parseRecipeType = (recipeType: unknown): RecipeType => {
     throw new Error('Incorrect or Recipe type!');
   }
   switch (recipeType) {
-  case 'PRODUCTION':
-    return RecipeType.PRODUCTION;
-  case 'REWORK':
-    return RecipeType.REWORK;
-  default:
-    throw new Error('Incorrect or Recipe type!');
+    case 'PRODUCTION':
+      return RecipeType.PRODUCTION;
+    case 'REWORK':
+      return RecipeType.REWORK;
+    default:
+      throw new Error('Incorrect or Recipe type!');
   }
 };
 
@@ -197,7 +192,7 @@ const productProcessor = (productData: unknown): ProductData => {
   }
 };
 
-const productGrpProcessor = (productGrpData: unknown):ProductGrpData => {
+const productGrpProcessor = (productGrpData: unknown): ProductGrpData => {
   if (!productGrpData || typeof productGrpData !== 'object') {
     throw new Error('Incorrect or missing Data!');
   }
@@ -268,8 +263,6 @@ const materialProcessor = (materialData: unknown): MaterialData => {
     'itemCode' in materialData &&
     'traceable' in materialData
   ) {
-    console.log('here');
-
     const newMaterial: MaterialData = {
       itemShortName: parseMaterialName(materialData.itemShortName),
       itemLongName: parseMaterialName(materialData.itemLongName),
@@ -320,8 +313,6 @@ const recipeProcessor = (recipeData: unknown): RecipeData => {
 
 const parseMaterialsData = (bomData: unknown): ConsumingMaterial[] => {
   if (!bomData || !Array.isArray(bomData)) {
-    console.log('we are here');
-
     throw new Error('Incorrect or missing Data!');
   }
 
@@ -395,14 +386,14 @@ const parseClaimStatus = (claimStatusData: unknown): ClaimStatus => {
     throw new Error('Incorrect or missing Data!');
   }
   switch (claimStatusData) {
-  case 'PENDING':
-    return ClaimStatus.PENDING;
-  case 'ACCEPTED':
-    return ClaimStatus.ACCEPTED;
-  case 'DENIED':
-    return ClaimStatus.DENIED;
-  default:
-    throw new Error('Incorrect or missing Data!');
+    case 'PENDING':
+      return ClaimStatus.PENDING;
+    case 'ACCEPTED':
+      return ClaimStatus.ACCEPTED;
+    case 'DENIED':
+      return ClaimStatus.DENIED;
+    default:
+      throw new Error('Incorrect or missing Data!');
   }
 };
 

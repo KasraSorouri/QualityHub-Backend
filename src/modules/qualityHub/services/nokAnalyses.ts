@@ -60,28 +60,21 @@ const getNokAnalyseByNok = async (nokId: number): Promise<Analyse> => {
 
     const costResult = await nokCostsServise.calculateNokCost(nokId);
 
-    console.log('Nok Analyse * costResult ->', costResult);
-
     const result = { ...nokAnalyses[0].toJSON(), costResult };
-    console.log('Nok Analyse * result ->', result);
     return result;
   } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
 };
 
 // Create a new Analyse
 const createNokAnalyse = async (nokAnalyseData: unknown): Promise<Analyse> => {
-  console.log('** NOK Analysis Srvice * Analyse -> Raw data', nokAnalyseData);
-
   // Validate data
   const newNokAnalyseData = nokAnalyseDataProcessor(nokAnalyseData);
-  console.log('** NOK Analysis Srvice * Analyse -> Processed data', newNokAnalyseData);
 
   try {
     const [result] = await NokAnalyse.upsert(newNokAnalyseData);
@@ -92,7 +85,6 @@ const createNokAnalyse = async (nokAnalyseData: unknown): Promise<Analyse> => {
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('## ERROR * creqate Analyse ', errorMessage);
     throw new Error(errorMessage);
   }
 };
@@ -103,7 +95,6 @@ const deleteAnalyse = async (id: number): Promise<boolean> => {
     const result = await NokAnalyse.destroy({
       where: { id },
     });
-    console.log('RCA Service * delete RCA * result ->', result);
 
     return result ? true : false;
   } catch (err) {
@@ -111,7 +102,6 @@ const deleteAnalyse = async (id: number): Promise<boolean> => {
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('## ERROR * delete RCA ', errorMessage);
     throw new Error(errorMessage);
   }
 };
@@ -119,7 +109,6 @@ const deleteAnalyse = async (id: number): Promise<boolean> => {
 // Update Analyse Status
 const updateAnalyseStatue = async (nokId: number, newAnalyseStatusData: unknown): Promise<boolean> => {
   const newAnalyseStatus = analyaseStatusProcessor(newAnalyseStatusData);
-  console.log('NOK Service * set Analyse Done * nokId ->', nokId, 'analyse Status ->', newAnalyseStatus);
   try {
     // set Nok Analysed Status
     const nokAnalyse = await NokAnalyse.findOne({ where: { nokId } });
@@ -141,7 +130,6 @@ const updateAnalyseStatue = async (nokId: number, newAnalyseStatusData: unknown)
       if (err instanceof Error) {
         errorMessage += ' Error: ' + err.message;
       }
-      console.log('## ERROR * set Analyse Done ', errorMessage);
       throw new Error(errorMessage);
     }
 
@@ -160,7 +148,6 @@ const updateAnalyseStatue = async (nokId: number, newAnalyseStatusData: unknown)
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('## ERROR * set Analyse Done ', errorMessage);
     throw new Error(errorMessage);
   }
 };

@@ -10,7 +10,6 @@ class Role extends Model {
   public rights?: Right[];
 
   public setRights!: BelongsToManySetAssociationsMixin<Right, number>;
-
 }
 
 Role.init(

@@ -45,7 +45,6 @@ const getNokAnalyseByNok = (req, res) => __awaiter(void 0, void 0, void 0, funct
         res.json(rcas);
     }
     catch (err) {
-        console.log('Nok Analayze * controller * Error ->', err);
         res.status(404).json({ error: 'No NOK found' });
     }
 });

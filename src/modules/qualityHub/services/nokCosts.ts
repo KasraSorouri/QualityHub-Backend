@@ -44,7 +44,7 @@ const calculateNokCost = async (nokId: number): Promise<AnalyseCost> => {
         await updateUnitPrice(item);
         issue = true;
       }
-    
+
       // Calculate Total Cost
       const { materialStatus, actualDismantledQty, unitPrice } = item;
       const totalCost = actualDismantledQty * unitPrice;
@@ -65,7 +65,7 @@ const calculateNokCost = async (nokId: number): Promise<AnalyseCost> => {
       if (item.materialStatus === MaterialStatus.CLAIMABLE && item.claimStatus === ClaimStatus.DENIED) {
         claimStatus.rejected += 1;
       }
-    };
+    }
 
     totalMaterialWaste.issue = issue ? 1 : 0;
 
@@ -103,7 +103,7 @@ const createNokCost = async (costData: unknown): Promise<NokCost> => {
     for (const dismantledMaterial of data) {
       const { materialStatus, materialId, actualDismantledQty } = dismantledMaterial;
       const material = await Material.findByPk(materialId);
-      
+
       if (material && material.price) {
         const totalCost = actualDismantledQty * (material?.price || 0);
 

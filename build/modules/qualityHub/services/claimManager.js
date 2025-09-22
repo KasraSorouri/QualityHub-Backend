@@ -62,7 +62,6 @@ const getAllClaims = () => __awaiter(void 0, void 0, void 0, function* () {
             },
             attributes: query.attributes,
             include: query.include,
-            logging: console.log,
         });
         return claims;
     }
@@ -80,7 +79,6 @@ const getPendingClaims = () => __awaiter(void 0, void 0, void 0, function* () {
             },
             attributes: query.attributes,
             include: query.include,
-            logging: console.log,
         });
         return claims;
     }

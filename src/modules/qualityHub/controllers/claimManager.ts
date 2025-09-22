@@ -8,7 +8,6 @@ const getAllClaims = async (_req: Request, res: Response) => {
     const claims = await claimManagerServices.getAllClaims();
     res.json(claims);
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: 'No Claim found' });
   }
 };
@@ -19,7 +18,6 @@ const getPendingClaims = async (_req: Request, res: Response) => {
     const claims = await claimManagerServices.getPendingClaims();
     res.json(claims);
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: 'No Claim found' });
   }
 };

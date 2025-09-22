@@ -12,7 +12,6 @@ const getAllWorkShifts = async (_req: Request, res: Response) => {
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
 };
@@ -28,7 +27,6 @@ const getWorkShift = async (req: ExtendedRequest, res: Response) => {
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
 };

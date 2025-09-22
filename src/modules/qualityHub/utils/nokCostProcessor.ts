@@ -23,9 +23,6 @@ const nokCostDataProcessor = (nokCostsData: unknown): NewNokCostsData => {
   const materialCostData: MaterialCost[] = [];
 
   for (const item of nokCostsData.dismantledMaterial) {
-    console.log('** here ** ');
-    console.log('NOk Cost Processing * item -> ', item);
-
     // Type guard to check if the item contains the required properties
     if (item && typeof item === 'object' && 'materialId' in item && 'unitPrice' in item) {
       const newItem: MaterialCost = {
@@ -34,7 +31,7 @@ const nokCostDataProcessor = (nokCostsData: unknown): NewNokCostsData => {
       };
       materialCostData.push(newItem);
     } else {
-      console.log('*Nok Costs Data Processing - Invalid Item', item);
+      throw new Error('Incorrect or missing Data ** NOK Cost');
     }
   }
   const newData: NewNokCostsData = {
@@ -42,8 +39,6 @@ const nokCostDataProcessor = (nokCostsData: unknown): NewNokCostsData => {
     reworkId: reworkId,
     dismantledMaterial: materialCostData,
   };
-  console.log('NOk Cost Processing Finish Successfully!');
-
   return newData;
 };
 export { nokCostDataProcessor };

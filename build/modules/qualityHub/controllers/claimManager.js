@@ -20,7 +20,6 @@ const getAllClaims = (_req, res) => __awaiter(void 0, void 0, void 0, function* 
         res.json(claims);
     }
     catch (err) {
-        console.log(err);
         res.status(400).json({ error: 'No Claim found' });
     }
 });
@@ -31,7 +30,6 @@ const getPendingClaims = (_req, res) => __awaiter(void 0, void 0, void 0, functi
         res.json(claims);
     }
     catch (err) {
-        console.log(err);
         res.status(400).json({ error: 'No Claim found' });
     }
 });

@@ -40,7 +40,6 @@ const getAllClaims = async (): Promise<NokDismantleMaterials[]> => {
       },
       attributes: query.attributes,
       include: query.include,
-      logging: console.log,
     });
     return claims;
   } catch (err) {
@@ -58,7 +57,6 @@ const getPendingClaims = async (): Promise<NokDismantleMaterials[]> => {
       },
       attributes: query.attributes,
       include: query.include,
-      logging: console.log,
     });
     return claims;
   } catch (err) {

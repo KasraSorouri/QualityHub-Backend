@@ -116,7 +116,8 @@ const updateUserRoles = async (id: number, roles: number[]): Promise<User> => {
     }
     return updatedUser;
   } catch (err) {
-    let errorMessage = 'Something went wrong. Check user\'s roles again';
+    // eslint-disable-next-line quotes
+    let errorMessage = "Something went wrong. Check user's roles again";
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }

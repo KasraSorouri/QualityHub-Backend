@@ -25,7 +25,6 @@ const getAllProducts = async (): Promise<Product[]> => {
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
     }
-    console.log('**** error :', errorMessage);
     throw new Error(errorMessage);
   }
 };

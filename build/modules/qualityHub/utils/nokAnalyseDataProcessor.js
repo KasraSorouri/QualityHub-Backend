@@ -6,7 +6,7 @@ const types_1 = require("../types");
 const dataProcessor_1 = require("./dataProcessor");
 const nokAnalyseDataProcessor = (nokData) => {
     if (!nokData || typeof nokData !== 'object') {
-        throw new Error('Incorrect or missing Data **!');
+        throw new Error('Incorrect or missing Data!');
     }
     if ('nokId' in nokData &&
         'nokCodeId' in nokData &&
@@ -33,8 +33,7 @@ const nokAnalyseDataProcessor = (nokData) => {
         return nokDataToReturn;
     }
     else {
-        console.log('Incorrect or missing data --+-+!');
-        throw new Error('Incorrect or missing data --+-+!');
+        throw new Error('Incorrect or missing data!');
     }
 };
 exports.nokAnalyseDataProcessor = nokAnalyseDataProcessor;
@@ -53,7 +52,7 @@ const statusProcessor = (analyseStatusData) => {
 // Analyse Status processor
 const analyaseStatusProcessor = (analyseStatusData) => {
     if (!analyseStatusData || typeof analyseStatusData !== 'object') {
-        throw new Error('Incorrect or missing Data **!');
+        throw new Error('Incorrect or missing Data!');
     }
     if ('analyseStatus' in analyseStatusData && 'removeFromReportStatus' in analyseStatusData) {
         return {
@@ -62,7 +61,7 @@ const analyaseStatusProcessor = (analyseStatusData) => {
         };
     }
     else {
-        throw new Error('Incorrect or missing Data in analyse Status**!');
+        throw new Error('Incorrect or missing Data in analyse Status!');
     }
 };
 exports.analyaseStatusProcessor = analyaseStatusProcessor;

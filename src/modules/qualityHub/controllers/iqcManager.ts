@@ -7,7 +7,6 @@ const getAllIQCs = async (_req: Request, res: Response) => {
     const iqcs = await iqcManagerServices.getAllIQCs();
     res.json(iqcs);
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: 'No IQC found' });
   }
 };
@@ -18,7 +17,6 @@ const getPendingIQCs = async (_req: Request, res: Response) => {
     const iqcs = await iqcManagerServices.getPendingIQCs();
     res.json(iqcs);
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: 'No IQC found' });
   }
 };
@@ -31,7 +29,6 @@ const updateMaterialStatus = async (req: Request, res: Response) => {
     const material = await iqcManagerServices.updateMaterialStatus(Number(id), materialStatus);
     res.json(material);
   } catch (err) {
-    console.log(err);
     res.status(400).json({ error: 'IQC not found' });
   }
 };

@@ -13,9 +13,7 @@ const analysedNokQuery = (params) => {
     };
     // Process Date Range
     if ('startDate' in params || 'endDate' in params) {
-        console.log('Processing parameters for analysed NOK query:', params);
         const { startDate, endDate } = params;
-        console.log('Start Date:', startDate, 'End Date:', endDate);
         if (startDate && endDate) {
             queryParams.detectTimeCondition[sequelize_1.default.Op.between] = [startDate, endDate];
         }
@@ -82,14 +80,9 @@ const nokDataFormatter = (dashboardNokData) => {
     for (const item of Data) {
         formattedData.push(item);
     }
-    console.log('**********************************');
-    console.log('dashboardNokData:', dashboardNokData);
-    console.log('Formatted NOK Data:', formattedData);
-    console.log('**********************************');
     return formattedData;
 };
 const analysedDataFormatter = (analysedNokData) => {
-    console.log('Analysed Data:', analysedNokData);
     // Collect all unique shifts
     const allShifts = Array.from(new Set(analysedNokData.map((item) => item.shiftName)));
     // Build Report Structure

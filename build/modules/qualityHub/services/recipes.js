@@ -42,7 +42,6 @@ const query = {
 };
 // Get all Recipes
 const getAllRecipes = () => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('Taala 3');
     try {
         const recipes = yield models_1.Recipe.findAll(query);
         return recipes;
@@ -52,13 +51,11 @@ const getAllRecipes = () => __awaiter(void 0, void 0, void 0, function* () {
         if (err instanceof Error) {
             errorMessage += ' Error: ' + err.message;
         }
-        console.log('**** error :', errorMessage);
         throw new Error(errorMessage);
     }
 });
 // Get a Recipe based on ID
 const getRecipe = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('Taala 4');
     const recipe = yield models_1.Recipe.findByPk(id, query);
     if (!recipe) {
         throw new Error('the recipe not found');
@@ -76,7 +73,6 @@ const getRecipesByProduct = (productId) => __awaiter(void 0, void 0, void 0, fun
         if (err instanceof Error) {
             errorMessage += ' Error: ' + err.message;
         }
-        console.log('**** error :', errorMessage);
         throw new Error(errorMessage);
     }
 });
@@ -146,7 +142,6 @@ const updateBoms = (id, bomData) => __awaiter(void 0, void 0, void 0, function* 
             if (err instanceof Error) {
                 errorMessage += ' Error: ' + err.message;
             }
-            console.log('**** error :', errorMessage);
             throw new Error(errorMessage);
         }
     }

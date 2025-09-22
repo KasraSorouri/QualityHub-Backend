@@ -66,9 +66,7 @@ const getNokAnalyseByNok = (nokId) => __awaiter(void 0, void 0, void 0, function
         }
         // add Nok Cost to the result
         const costResult = yield nokCosts_1.default.calculateNokCost(nokId);
-        console.log('Nok Analyse * costResult ->', costResult);
         const result = Object.assign(Object.assign({}, nokAnalyses[0].toJSON()), { costResult });
-        console.log('Nok Analyse * result ->', result);
         return result;
     }
     catch (err) {
@@ -76,16 +74,13 @@ const getNokAnalyseByNok = (nokId) => __awaiter(void 0, void 0, void 0, function
         if (err instanceof Error) {
             errorMessage += ' Error: ' + err.message;
         }
-        console.log('**** error :', errorMessage);
         throw new Error(errorMessage);
     }
 });
 // Create a new Analyse
 const createNokAnalyse = (nokAnalyseData) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log('** NOK Analysis Srvice * Analyse -> Raw data', nokAnalyseData);
     // Validate data
     const newNokAnalyseData = (0, nokAnalyseDataProcessor_1.nokAnalyseDataProcessor)(nokAnalyseData);
-    console.log('** NOK Analysis Srvice * Analyse -> Processed data', newNokAnalyseData);
     try {
         const [result] = yield models_1.NokAnalyse.upsert(newNokAnalyseData);
         return result;
@@ -95,7 +90,6 @@ const createNokAnalyse = (nokAnalyseData) => __awaiter(void 0, void 0, void 0, f
         if (err instanceof Error) {
             errorMessage += ' Error: ' + err.message;
         }
-        console.log('## ERROR * creqate Analyse ', errorMessage);
         throw new Error(errorMessage);
     }
 });
@@ -105,7 +99,6 @@ const deleteAnalyse = (id) => __awaiter(void 0, void 0, void 0, function* () {
         const result = yield models_1.NokAnalyse.destroy({
             where: { id },
         });
-        console.log('RCA Service * delete RCA * result ->', result);
         return result ? true : false;
     }
     catch (err) {
@@ -113,14 +106,12 @@ const deleteAnalyse = (id) => __awaiter(void 0, void 0, void 0, function* () {
         if (err instanceof Error) {
             errorMessage += ' Error: ' + err.message;
         }
-        console.log('## ERROR * delete RCA ', errorMessage);
         throw new Error(errorMessage);
     }
 });
 // Update Analyse Status
 const updateAnalyseStatue = (nokId, newAnalyseStatusData) => __awaiter(void 0, void 0, void 0, function* () {
     const newAnalyseStatus = (0, nokAnalyseDataProcessor_1.analyaseStatusProcessor)(newAnalyseStatusData);
-    console.log('NOK Service * set Analyse Done * nokId ->', nokId, 'analyse Status ->', newAnalyseStatus);
     try {
         // set Nok Analysed Status
         const nokAnalyse = yield models_1.NokAnalyse.findOne({ where: { nokId } });
@@ -141,7 +132,6 @@ const updateAnalyseStatue = (nokId, newAnalyseStatusData) => __awaiter(void 0, v
             if (err instanceof Error) {
                 errorMessage += ' Error: ' + err.message;
             }
-            console.log('## ERROR * set Analyse Done ', errorMessage);
             throw new Error(errorMessage);
         }
         if (newAnalyseStatus.analyseStatus === types_1.NokStatus.ANALYSED) {
@@ -160,7 +150,6 @@ const updateAnalyseStatue = (nokId, newAnalyseStatusData) => __awaiter(void 0, v
         if (err instanceof Error) {
             errorMessage += ' Error: ' + err.message;
         }
-        console.log('## ERROR * set Analyse Done ', errorMessage);
         throw new Error(errorMessage);
     }
 });

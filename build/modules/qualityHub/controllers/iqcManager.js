@@ -20,7 +20,6 @@ const getAllIQCs = (_req, res) => __awaiter(void 0, void 0, void 0, function* ()
         res.json(iqcs);
     }
     catch (err) {
-        console.log(err);
         res.status(400).json({ error: 'No IQC found' });
     }
 });
@@ -31,7 +30,6 @@ const getPendingIQCs = (_req, res) => __awaiter(void 0, void 0, void 0, function
         res.json(iqcs);
     }
     catch (err) {
-        console.log(err);
         res.status(400).json({ error: 'No IQC found' });
     }
 });
@@ -44,7 +42,6 @@ const updateMaterialStatus = (req, res) => __awaiter(void 0, void 0, void 0, fun
         res.json(material);
     }
     catch (err) {
-        console.log(err);
         res.status(400).json({ error: 'IQC not found' });
     }
 });
