@@ -7,7 +7,7 @@
     "build": "tsc",
     "dev": "ts-node-dev ./src/server.ts",
     "lint": "eslint --ext .ts .",
-    "start": "node build/server.js",
+    "start": "NODE_OPTIONS=--max_old_space_size=512 node build/server.js",
     "rollback": "ts-node ./src/utils/rollBackDatabase.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
