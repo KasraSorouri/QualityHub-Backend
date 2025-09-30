@@ -28,10 +28,13 @@ const runMigration = async (): Promise<void> => {
   });
 };
 
+
 const connectToDatabase = async (): Promise<void | null> => {
   try {
     await sequelize.authenticate();
-    await runMigration();
+    if (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'test' || process.env.ENVIRONMENT === 'init') {
+      await runMigration();
+    }      
     logger.info('Connection has been established successfully.');
   } catch (error) {
     if (error instanceof Error) logger.info('Unable to connect to the database:', error.message);
