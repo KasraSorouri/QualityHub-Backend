@@ -17,7 +17,12 @@ const migrationConf = {
   },
   storage: new SequelizeStorage({ sequelize, tableName: 'migration' }),
   context: sequelize.getQueryInterface(),
-  logger: console,
+  logger: {
+    info: (message: unknown) => logger.info(typeof message === 'string' ? message : JSON.stringify(message)),
+    warn: (message: unknown) => logger.info(typeof message === 'string' ? message : JSON.stringify(message)),
+    error: (message: unknown) => logger.info(typeof message === 'string' ? message : JSON.stringify(message)),
+    debug: (message: unknown) => logger.info(typeof message === 'string' ? message : JSON.stringify(message)),
+  },
 };
 
 const runMigration = async (): Promise<void> => {
