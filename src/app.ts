@@ -33,6 +33,7 @@ import claimManagerRouter from './modules/qualityHub/routes/claimManager';
 import iqcManagerRouter from './modules/qualityHub/routes/iqcManager';
 
 import dashboard from './modules/qualityHub/routes/dashbord';
+import fileAttachmentRouter from './modules/qualityHub/routes/fileAttachments';
 
 const app = express();
 app.use(express.json(), cors());
@@ -68,6 +69,7 @@ app.use('/api/quality/claims', claimManagerRouter);
 app.use('/api/quality/iqcs', iqcManagerRouter);
 
 app.use('/api/quality/dashboard', dashboard);
+app.use('/api/quality/fileUpload', fileAttachmentRouter);
 
 app.get('/api/ping', (_req, res) => {
   res.send('Pong!');

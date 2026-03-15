@@ -29,6 +29,7 @@ import NokRework_AffectedRecipes from './nokRework_AffectedRecipes';
 import NokCost from './nokCost';
 import Claim from './claim';
 import Iqc from './iqc';
+import NokImage from './nokImages';
 
 export interface UserQuery {
   attributes: {
@@ -389,6 +390,12 @@ NokDismantleMaterials.hasMany(Claim, { foreignKey: 'dismantledMaterialId' });
 Iqc.belongsTo(NokDismantleMaterials, { foreignKey: 'dismantledMaterialId' });
 NokDismantleMaterials.hasMany(Iqc, { foreignKey: 'dismantledMaterialId' });
 
+NokImage.belongsTo(NokDetect, { foreignKey: 'nokId' });
+NokDetect.hasMany(NokImage, { foreignKey: 'nokId' });
+
+NokImage.belongsTo(User, { foreignKey: 'uploadedBy' });
+User.hasMany(NokImage, { foreignKey: 'uploadedBy' });
+
 export {
   User,
   Role,
@@ -418,4 +425,5 @@ export {
   NokRework_ReworkActions,
   NokRework_AffectedRecipes,
   NokCost,
+  NokImage
 };
