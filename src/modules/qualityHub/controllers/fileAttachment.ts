@@ -6,7 +6,7 @@ import { NokImage } from '../../../models';
 
 // Upload Defact Images
 const addDefectImages = async (req: ExtendedRequest, res: Response): Promise<void> => {
-  const nokId: number = req.body.nokId as number;
+  const nokId: number = Number(req.body.nokId);
   if (!req.decodedToken || typeof req.decodedToken.id !== 'number') {
     res.status(401).json({ message: 'Unauthorized: Invalid token' });
     return;

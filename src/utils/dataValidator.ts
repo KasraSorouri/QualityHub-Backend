@@ -19,7 +19,7 @@ export const stringLengthCheck = (text: string, length: number, subject: string)
 
 export const parseDate = (date: unknown): Date => {
   if (!isString(date) || !date) {
-    throw new Error('Incorrect or missing date 5!');
+    throw new Error('Incorrect or missing date!');
   }
   return new Date(date);
 };

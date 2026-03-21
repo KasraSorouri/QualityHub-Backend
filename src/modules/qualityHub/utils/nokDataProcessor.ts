@@ -20,7 +20,7 @@ const parseProductSN = (productSN: unknown): string => {
 
 const parseNokStatus = (nokStatus: unknown): NokStatus => {
   if (!isString(nokStatus)) {
-    throw new Error('Incorrect or missing data 10!');
+    throw new Error('Incorrect or missing data * NOK Status!');
   }
   switch (nokStatus) {
     case 'PENDING':
@@ -38,7 +38,7 @@ const parseNokStatus = (nokStatus: unknown): NokStatus => {
 
 const parseProductStatus = (productStatus: unknown): ProductStatus => {
   if (!isString(productStatus)) {
-    throw new Error('Incorrect or missing data 11!');
+    throw new Error('Incorrect or missing data * Product Status!');
   }
   switch (productStatus) {
     case 'NOK':
@@ -48,7 +48,7 @@ const parseProductStatus = (productStatus: unknown): ProductStatus => {
     case 'SCRAPPED':
       return ProductStatus.SCRAPPED;
     default:
-      throw new Error('Incorrect or missing data! -11--');
+      throw new Error('Incorrect or missing data! * producy Status -');
   }
 };
 
@@ -172,13 +172,14 @@ const nokDataProcessor = (nokData: unknown): NewNokData => {
   if (!nokData || typeof nokData !== 'object') {
     throw new Error('Incorrect or missing Data **!');
   }
+  console.log('NOK register -> ', nokData)
   if (
     'productId' in nokData &&
     'productSN' in nokData &&
     'detectStationId' in nokData &&
     'detectShiftId' in nokData &&
     'initNokCodeId' in nokData &&
-    'detectedTime' in nokData &&
+    'detectTime' in nokData &&
     'nokStatus' in nokData &&
     'productStatus' in nokData &&
     'removeReport' in nokData
@@ -189,7 +190,7 @@ const nokDataProcessor = (nokData: unknown): NewNokData => {
       detectStationId: parseId(nokData.detectStationId),
       detectShiftId: parseId(nokData.detectShiftId),
       initNokCodeId: parseId(nokData.initNokCodeId),
-      detectTime: parseDate(nokData.detectedTime),
+      detectTime: parseDate(nokData.detectTime),
       nokStatus: parseNokStatus(nokData.nokStatus),
       productStatus: parseProductStatus(nokData.productStatus),
       removeReport: parseBoolean(nokData.removeReport),
@@ -197,7 +198,7 @@ const nokDataProcessor = (nokData: unknown): NewNokData => {
     };
     return nokDataToReturn;
   } else {
-    throw new Error('Incorrect or missing data --+-+!');
+    throw new Error('Incorrect or missing data!');
   }
 };
 

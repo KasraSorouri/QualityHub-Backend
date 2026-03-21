@@ -1,4 +1,5 @@
-import { PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3';
+import { GetObjectCommand, PutObjectCommand, PutObjectCommandInput } from '@aws-sdk/client-s3';
+import { getSignedUrl } from '@aws-sdk/s3-request-presigner';
 import { s3Client } from '../../../configs/fileServer';
 import { v4 as uuidv4 } from 'uuid';
 import { NokImage } from '../../../models';
@@ -17,11 +18,19 @@ const uploadNokImages = async (
         Key: fileName,
         Body: file.buffer,
         ContentType: file.mimetype,
-        ACL: 'public-read',
       };
 
       // Upload to S3
       await s3Client.send(new PutObjectCommand(uploadParams));
+
+      const getCommand = new GetObjectCommand({
+        Bucket: process.env.S3_BUCKET_NAME,
+        Key: fileName,
+      });
+
+      const presignedUrl = await getSignedUrl(s3Client, getCommand, {
+        expiresIn: 24 * 3600,
+      });
 
       // Save to database
       const savedFile = await NokImage.create({
@@ -34,6 +43,7 @@ const uploadNokImages = async (
         createdAt: new Date(),
         updatedAt: new Date(),
       });
+      savedFile.setDataValue('filePath', presignedUrl);
 
       return savedFile;
     });

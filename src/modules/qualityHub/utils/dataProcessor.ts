@@ -98,7 +98,7 @@ const parseRecipeCode = (recipeCode: unknown): string => {
 
 const parseDescription = (description: unknown): string => {
   if (!isString(description)) {
-    throw new Error('Incorrect material name!');
+    throw new Error('Incorrect Description!');
   }
   return description;
 };
