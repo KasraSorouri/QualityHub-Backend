@@ -396,6 +396,12 @@ NokDetect.hasMany(NokImage, { foreignKey: 'nokId' });
 NokImage.belongsTo(User, { foreignKey: 'uploadedBy' });
 User.hasMany(NokImage, { foreignKey: 'uploadedBy' });
 
+NokImage.belongsTo(NokCode, { foreignKey: 'nokCodeId' });
+NokCode.hasMany(NokImage, { foreignKey: 'nokCodeId' });
+
+NokImage.belongsTo(Station, { foreignKey: 'stationId' });
+Station.hasMany(NokImage, { foreignKey: 'stationId' });
+
 export {
   User,
   Role,
@@ -425,5 +431,5 @@ export {
   NokRework_ReworkActions,
   NokRework_AffectedRecipes,
   NokCost,
-  NokImage
+  NokImage,
 };

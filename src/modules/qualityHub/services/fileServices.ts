@@ -8,6 +8,9 @@ import { NokImage } from '../../../models';
 const uploadNokImages = async (
   files: Express.Multer.File[],
   nokId: number,
+  qualityStatus: string,
+  nokCode: number,
+  station: number,
   userId: number,
 ): Promise<NokImage[] | void> => {
   try {
@@ -38,6 +41,9 @@ const uploadNokImages = async (
         filePath: `https://${process.env.S3_BUCKET_NAME}.s3.${process.env.AWS_REGION}.amazonaws.com/${fileName}`,
         fileSize: file.size,
         nokId: nokId,
+        qualityStatus: qualityStatus === 'OK' ? 'OK' : 'NOK',
+        nokCodeId: nokCode,
+        stationId: station,
         contentType: file.mimetype,
         uploadedBy: userId,
         createdAt: new Date(),

@@ -7,6 +7,9 @@ import { NokImage } from '../../../models';
 // Upload Defact Images
 const addDefectImages = async (req: ExtendedRequest, res: Response): Promise<void> => {
   const nokId: number = Number(req.body.nokId);
+  const qualityStatus: string = req.body.qualityStatus as string;
+  const nokCode: number = Number(req.body.nokCode);
+  const station: number = Number(req.body.station);
   if (!req.decodedToken || typeof req.decodedToken.id !== 'number') {
     res.status(401).json({ message: 'Unauthorized: Invalid token' });
     return;
@@ -19,7 +22,7 @@ const addDefectImages = async (req: ExtendedRequest, res: Response): Promise<voi
       return;
     }
     const filesArray = Array.isArray(req.files) ? req.files : Object.values(req.files).flat();
-    const savedFiles = await fileServices.uploadNokImages(filesArray, nokId, userId);
+    const savedFiles = await fileServices.uploadNokImages(filesArray, nokId, qualityStatus, nokCode, station, userId);
     res.status(201).json({ message: 'Success', data: savedFiles });
   } catch (error) {
     if (error instanceof Error) {

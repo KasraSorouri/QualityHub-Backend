@@ -8,6 +8,9 @@ interface NokImageAttributes {
   filePath: string;
   fileSize: number;
   contentType: string;
+  qualityStatus?: 'NOK' | 'OK';
+  nokCodeId?: number;
+  stationId?: number;
   uploadedBy: number;
   createdAt: Date;
   updatedAt: Date;
@@ -22,6 +25,9 @@ class NokImage extends Model<NokImageAttributes, NokImageCreationAttributes> imp
   filePath!: string;
   fileSize!: number;
   contentType!: string;
+  qualityStatus?: 'NOK' | 'OK';
+  nokCodeId?: number;
+  stationId?: number;
   uploadedBy!: number;
   createdAt!: Date;
   updatedAt!: Date;
@@ -53,6 +59,15 @@ NokImage.init(
     contentType: {
       type: DataTypes.STRING,
       allowNull: false,
+    },
+    qualityStatus: {
+      type: DataTypes.ENUM('OK', 'NOK'),
+    },
+    nokCodeId: {
+      type: DataTypes.INTEGER,
+    },
+    stationId: {
+      type: DataTypes.INTEGER,
     },
     uploadedBy: {
       type: DataTypes.INTEGER,
