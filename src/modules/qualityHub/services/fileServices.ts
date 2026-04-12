@@ -72,7 +72,18 @@ const getNokImages = async (nokId: number): Promise<NokImage[]> => {
       where: {
         nokId: nokId,
       },
+      raw: true,
     });
+    await Promise.all(
+      images.map(async (image) => {
+        const getCommand = new GetObjectCommand({
+          Bucket: process.env.S3_BUCKET_NAME,
+          Key: image.fileName,
+        });
+        const preSignedUrl = await getSignedUrl(s3Client, getCommand, { expiresIn: 24 * 3600 });
+        image.filePath = preSignedUrl;
+      }),
+    );
     return images;
   } catch (error) {
     if (error instanceof Error) {

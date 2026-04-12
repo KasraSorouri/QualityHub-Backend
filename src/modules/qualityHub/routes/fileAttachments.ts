@@ -16,6 +16,11 @@ router.post(
 );
 
 // Get NOK Images
-router.get('/nok_images/:nokId', tokenExtractor, rightAuthority([]), fileAttachment.getNokImages);
+router.get(
+  '/nok_images/:nokId',
+  tokenExtractor,
+  rightAuthority(['REGISTER-DEFECT', 'PRODUCT-ADD']),
+  fileAttachment.getNokImages,
+);
 
 export default router;
