@@ -5,8 +5,8 @@ import Role from './role';
 import Right from './right';
 
 class RoleRights extends Model {
-  public roleId!: number;
-  public rightId!: number;
+  declare roleId: number;
+  declare rightId: number;
 }
 
 RoleRights.init(
