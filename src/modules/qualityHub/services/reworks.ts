@@ -12,10 +12,6 @@ import {
 import { NewRwDismantledMaterialData, RwDismantledMaterialData } from '../types';
 import { reworkDataProcessor } from '../utils/reworkDataProcessor';
 
-//import { Rework, Product, ReworkQuery, Station, ReworkBoms, Material } from '../../../models';
-//import { ConsumingMaterial, Reusable } from '../types';
-//import { reworkProcessor } from '../utils/dataProcessor';
-
 // Define Rework query
 const query: ReworkQuery = {
   attributes: { exclude: [] },
@@ -146,6 +142,8 @@ const updateRework = async (id: number, reworkData: unknown): Promise<Rework> =>
     }
 
     const updatedRework = await rework.update(newReworkData);
+    await handleDismantledMaterials(id, newReworkData.dismantledMaterials || []);
+
     return updatedRework;
   } catch (err: unknown) {
     let errorMessage = '';
