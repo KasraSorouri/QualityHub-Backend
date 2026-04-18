@@ -2,10 +2,10 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class WorkShift extends Model<InferAttributes<WorkShift>, InferCreationAttributes<WorkShift>> {
-  id?: number;
-  shiftName!: string;
-  shiftCode!: string;
-  active!: boolean;
+  declare id?: number;
+  declare shiftName: string;
+  declare shiftCode: string;
+  declare active: boolean;
 }
 
 WorkShift.init(

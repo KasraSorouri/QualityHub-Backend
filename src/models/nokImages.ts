@@ -19,18 +19,18 @@ interface NokImageAttributes {
 interface NokImageCreationAttributes extends Omit<NokImageAttributes, 'id'> {}
 
 class NokImage extends Model<NokImageAttributes, NokImageCreationAttributes> implements NokImageAttributes {
-  id!: number;
-  nokId!: number;
-  fileName!: string;
-  filePath!: string;
-  fileSize!: number;
-  contentType!: string;
-  qualityStatus?: 'NOK' | 'OK';
-  nokCodeId?: number;
-  stationId?: number;
-  uploadedBy!: number;
-  createdAt!: Date;
-  updatedAt!: Date;
+  declare id: number;
+  declare nokId: number;
+  declare fileName: string;
+  declare filePath: string;
+  declare fileSize: number;
+  declare contentType: string;
+  declare qualityStatus?: 'NOK' | 'OK';
+  declare nokCodeId?: number;
+  declare stationId?: number;
+  declare uploadedBy: number;
+  declare createdAt: Date;
+  declare updatedAt: Date;
 }
 
 NokImage.init(

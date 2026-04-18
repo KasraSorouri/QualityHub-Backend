@@ -24,17 +24,17 @@ interface NokDetectAttributes {
 interface NokDetectCreationAttributes extends Omit<NokDetectAttributes, 'id'> {}
 
 class NokDetect extends Model<NokDetectAttributes, NokDetectCreationAttributes> implements NokDetectAttributes {
-  id!: number;
-  productId!: number;
-  productSN!: string;
-  initNokCodeId!: number;
-  detectStationId!: number;
-  detectShiftId!: number;
-  description!: string;
-  detectTime!: Date;
-  nokStatus!: NokStatus;
-  productStatus!: ProductStatus;
-  removeReport!: boolean;
+  declare id: number;
+  declare productId: number;
+  declare productSN: string;
+  declare initNokCodeId: number;
+  declare detectStationId: number;
+  declare detectShiftId: number;
+  declare description?: string;
+  declare detectTime: Date;
+  declare nokStatus: NokStatus;
+  declare productStatus: ProductStatus;
+  declare removeReport: boolean;
 
   static associate(): void {
     NokDetect.belongsTo(Product, {

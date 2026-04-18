@@ -3,19 +3,12 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class NokCode extends Model<InferAttributes<NokCode>, InferCreationAttributes<NokCode>> {
-  id?: number;
-  nokCode!: string;
-  nokDesc?: string;
-  active!: boolean;
-  nokGrpId!: number;
-  /*
-    static associate(models: any) {
-        NokCode.belongsTo(models.NokGrp, {
-            foreignKey: 'nokGrpId',
-            as: 'nokGrp'
-        });
-    }
-*/
+  declare id?: number;
+  declare nokCode: string;
+  declare nokDesc?: string;
+  declare active: boolean;
+  declare nokGrpId: number;
+
 }
 
 // define Product Model

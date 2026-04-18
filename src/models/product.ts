@@ -3,19 +3,11 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class Product extends Model<InferAttributes<Product>, InferCreationAttributes<Product>> {
-  id?: number;
-  productName!: string;
-  productCode!: string;
-  active!: boolean;
-  productGrpId!: number;
-  /*
-    static associate(models: any) {
-        Product.belongsTo(models.ProductGrp, {
-            foreignKey: 'productGrpId',
-            as: 'productGrp'
-        });
-    }
-*/
+  declare id?: number;
+  declare productName: string;
+  declare productCode: string;
+  declare active: boolean;
+  declare productGrpId: number;
 }
 
 // define Product Model

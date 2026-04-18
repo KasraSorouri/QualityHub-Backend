@@ -3,14 +3,14 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class Material extends Model<InferAttributes<Material>, InferCreationAttributes<Material>> {
-  id?: number;
-  itemShortName!: string;
-  itemLongName?: string;
-  itemCode!: string;
-  price?: number;
-  unit?: string;
-  traceable?: boolean;
-  active!: boolean;
+  declare id?: number;
+  declare itemShortName: string;
+  declare itemLongName?: string;
+  declare itemCode: string;
+  declare price?: number;
+  declare unit?: string;
+  declare traceable?: boolean;
+  declare active: boolean;
   /*
     static associate(models: any) {
         Material.belongsToMany(models.Recipe, {

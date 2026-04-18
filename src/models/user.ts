@@ -17,16 +17,16 @@ interface UserAttributes {
 interface UserCreationAttributes extends Optional<UserAttributes, 'id'> {}
 
 class User extends Model<UserAttributes, UserCreationAttributes> implements UserAttributes {
-  public id!: number;
-  public username!: string;
-  public password!: string;
-  public firstName!: string;
-  public lastName!: string;
-  public email!: string;
-  public phone!: string;
-  public active!: boolean;
-  public dateCreated?: Date;
-  public readonly roles?: Role[];
+  declare id: number;
+  declare username: string;
+  declare password: string;
+  declare firstName: string;
+  declare lastName: string;
+  declare email: string;
+  declare phone: string;
+  declare active: boolean;
+  declare dateCreated?: Date;
+  declare readonly roles?: Role[];
 }
 
 User.init(

@@ -3,8 +3,8 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../configs/db';
 
 class NokRework_ReworkActions extends Model {
-  public nokReworkId!: number;
-  public reworkId!: number;
+  declare nokReworkId: number;
+  declare reworkActionId: number;
 }
 
 NokRework_ReworkActions.init(

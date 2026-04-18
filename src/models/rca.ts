@@ -3,29 +3,15 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class Rca extends Model<InferAttributes<Rca>, InferCreationAttributes<Rca>> {
-  id?: number;
-  rcaCodeId!: number;
-  nokId!: number;
-  whCauseId?: number;
-  whCauseName?: string;
-  description?: string;
-  improveSuggestion?: string;
-  createBy!: number;
-  createdAt?: Date;
-
-  /*
-    static associate(models: any) {
-        Rca.belongsTo(models.RcaCode, {
-            foreignKey: 'rcaCodeId',
-            as: 'racCode'
-        });
-
-        Rca.belongsTo(models.NokDetect, {
-            foreignKey: 'nokId', 
-            as: 'nokDetects'
-        });
-    }
-*/
+  declare id?: number;
+  declare rcaCodeId: number;
+  declare nokId: number;
+  declare whCauseId?: number;
+  declare whCauseName?: string;
+  declare description?: string;
+  declare improveSuggestion?: string;
+  declare createBy: number;
+  declare createdAt?: Date;
 }
 
 // define RCA Model

@@ -2,18 +2,10 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class RcaCode extends Model<InferAttributes<RcaCode>, InferCreationAttributes<RcaCode>> {
-  id?: number;
-  rcaCode!: string;
-  rcaDesc?: string;
-  active!: boolean;
-  /*
-    static associate(models: any) {
-        RcaCode.hasMany(models.nokCode, {
-            foreignKey: 'nokGrpId',
-            as: 'nokCodes'
-        });
-    }
-*/
+  declare id?: number;
+  declare rcaCode: string;
+  declare rcaDesc?: string;
+  declare active: boolean;
 }
 
 RcaCode.init(

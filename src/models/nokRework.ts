@@ -24,27 +24,24 @@ interface NokReworkAttributes {
 interface NokReworkCreationAttributes extends Omit<NokReworkAttributes, 'id'> {}
 
 class NokRework extends Model<NokReworkAttributes, NokReworkCreationAttributes> implements NokReworkAttributes {
-  id!: number;
-  nokId!: number;
-  reworkActionsId!: number[];
-  affectedRecipes!: number[];
-  reworkShiftId!: number;
-  reworkOperator!: string;
-  reworkTime!: Date;
-  reworkDuration!: number;
-  reworkManPower!: number;
-  reworkStationId!: Station | undefined;
-  reworkNote!: string;
-  reworkStatus!: ReworkStatus;
-  usedMaterialCost!: number;
-  dismantledMaterialCost!: number;
-  recipesWastedTime!: number;
+  declare id: number;
+  declare nokId: number;
+  declare reworkActionsId: number[];
+  declare affectedRecipes: number[];
+  declare reworkShiftId: number;
+  declare reworkOperator: string;
+  declare reworkTime: Date;
+  declare reworkDuration: number;
+  declare reworkManPower: number;
+  declare reworkStationId: Station | undefined;
+  declare reworkNote: string;
+  declare reworkStatus: ReworkStatus;
+  declare usedMaterialCost: number;
+  declare dismantledMaterialCost: number;
+  declare recipesWastedTime: number;
 
   public addRework!: BelongsToManyAddAssociationsMixin<number, number>;
   public addRecipes!: BelongsToManyAddAssociationsMixin<number, number>;
-
-  //public addRework!: (rework: number[], options?: any) => Promise<void>;
-  //public addRecipes!: (recipes: number[], options?: any) => Promise<void>;
 }
 
 NokRework.init(

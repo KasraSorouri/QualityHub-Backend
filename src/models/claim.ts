@@ -13,12 +13,12 @@ interface ClaimAttributes {
 interface ClaimCreationAttributes extends Omit<ClaimAttributes, 'id'> {}
 
 class Claim extends Model<ClaimAttributes, ClaimCreationAttributes> implements ClaimAttributes {
-  id!: number;
-  dismantledMaterialId!: number;
-  date!: Date;
-  referenceType?: string;
-  reference?: string;
-  description?: string;
+  declare id: number;
+  declare dismantledMaterialId: number;
+  declare date: Date;
+  declare referenceType?: string;
+  declare reference?: string;
+  declare description?: string;
 }
 
 Claim.init(

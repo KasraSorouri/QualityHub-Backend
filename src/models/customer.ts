@@ -2,13 +2,13 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class Customer extends Model<InferAttributes<Customer>, InferCreationAttributes<Customer>> {
-  id?: number;
-  name!: string;
-  customerCode!: string;
-  email?: string;
-  phone?: string;
-  address?: string;
-  active!: boolean;
+  declare id?: number;
+  declare name: string;
+  declare customerCode: string;
+  declare email?: string;
+  declare phone?: string;
+  declare address?: string;
+  declare active: boolean;
 }
 
 Customer.init(

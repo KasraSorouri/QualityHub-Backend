@@ -2,13 +2,7 @@ import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
 import RwDismantledMaterials from './reworkDismantledMaterials';
-/*
-import Station from './station';
-import Product from './product';
-import NokCode from './nokCode';
-import Material from './material';
-import RwDismantledMaterials from './reworkDismantledMaterials';
-*/
+
 interface ReworkAttributes {
   id: number;
   productId: number;
@@ -29,45 +23,22 @@ interface ReworkAttributes {
 interface ReworkCreationAttributes extends Omit<ReworkAttributes, 'id'> {}
 
 class Rework extends Model<ReworkAttributes, ReworkCreationAttributes> implements ReworkAttributes {
-  id!: number;
-  productId!: number;
-  nokCodeId!: number;
-  stationId!: number;
-  reworkShortDesc!: string;
-  description!: string;
-  order!: number;
-  timeDuration?: number;
-  active!: boolean;
-  deprecated!: boolean;
-  reworkRecipes!: number[];
-  affectedRecipes!: number[];
-  creationDate!: Date;
-  deprecatedDate!: Date;
-  rwDismantledMaterials?: RwDismantledMaterials;
+  declare id: number;
+  declare productId: number;
+  declare nokCodeId: number;
+  declare stationId: number;
+  declare reworkShortDesc: string;
+  declare description: string;
+  declare order: number;
+  declare timeDuration?: number;
+  declare active: boolean;
+  declare deprecated: boolean;
+  declare reworkRecipes: number[];
+  declare affectedRecipes: number[];
+  declare creationDate: Date;
+  declare deprecatedDate: Date;
+  declare rwDismantledMaterials?: RwDismantledMaterials;
 
-  /*
-  static associate() {
-    Rework.belongsTo(Product, {
-      foreignKey: 'productId',
-      as: 'product'
-    });
-  
-    Rework.belongsTo(Station, {
-      foreignKey: 'stationId',
-      as: 'station'
-    });
-
-    Rework.belongsTo(NokCode, {
-      foreignKey: 'nokCodeId',
-      as: 'nokCode'
-    });
-    Rework.belongsToMany(Material, {
-      through: RwDismantledMaterials,
-      foreignKey: 'reworkId',
-      as: 'dismantledMaterial'
-    });
-  }  
-  */
 }
 
 // define Product Model

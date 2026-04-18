@@ -6,11 +6,11 @@ import Material from './material';
 import { Reusable } from '../modules/qualityHub/types';
 
 class RecipeBoms extends Model {
-  public id!: number;
-  public recipeId!: number;
-  public materialId!: number;
-  public qty!: number;
-  public reusable!: Reusable;
+  declare id: number;
+  declare recipeId: number;
+  declare materialId: number;
+  declare qty: number;
+  declare reusable: Reusable;
 
   static associate(): void {
     RecipeBoms.belongsTo(Recipe, { foreignKey: 'recipeId' });

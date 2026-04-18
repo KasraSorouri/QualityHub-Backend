@@ -15,6 +15,8 @@ type Credentials = {
 interface IUserPlain {
   id: number;
   username: string;
+  firstName: string;
+  lastName: string;
   password?: string;
   roles?: {
     roleName: string;
@@ -41,6 +43,7 @@ const login = async ({ username, password }: Credentials): Promise<UserCredentia
             model: Right,
             attributes: ['right'],
             through: { attributes: [] },
+            as: 'rights',
           },
         ],
       },
@@ -58,17 +61,7 @@ const login = async ({ username, password }: Credentials): Promise<UserCredentia
   if (!user || !passwordCorrect) {
     throw new Error('invalid username or password!');
   }
-  /*
-  const roles = user.roles?.map((role) => role.roleName);
-  const rights = user.roles?.flatMap((role) => role.rights?.map((right) => right.right));
 
-  const userForToken = {
-    username: plainUser.username,
-    roles,
-    rights,
-    id: user.id,
-  };
-*/
   // Extract User Roles
   const roles = (plainUser.roles ?? []).map((r) => r.roleName);
 
@@ -89,9 +82,9 @@ const login = async ({ username, password }: Credentials): Promise<UserCredentia
 
   return {
     token,
-    user: user.username,
-    firstName: user.firstName,
-    lastName: user.lastName,
+    user: plainUser.username,
+    firstName: plainUser.firstName,
+    lastName: plainUser.lastName,
     roles,
   };
 };

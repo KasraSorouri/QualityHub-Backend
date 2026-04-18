@@ -21,19 +21,19 @@ interface NokAnalyseAttributes {
 interface NokAnalyseCreationAttributes extends Omit<NokAnalyseAttributes, 'id'> {}
 
 class NokAnalyse extends Model<NokAnalyseAttributes, NokAnalyseCreationAttributes> implements NokAnalyseAttributes {
-  id!: number;
-  nokId!: number;
-  nokCodeId!: number;
-  causeStationId!: number;
-  causeShiftId!: number;
-  classCodeId!: number;
-  description!: string;
-  timeWaste?: number;
-  materialWaste?: number;
-  closed?: boolean = false;
-  closeDate?: Date;
-  updatedBy!: number;
-  updatedAt!: Date;
+  declare id: number;
+  declare nokId: number;
+  declare nokCodeId: number;
+  declare causeStationId: number;
+  declare causeShiftId: number;
+  declare classCodeId: number;
+  declare description: string;
+  declare timeWaste?: number;
+  declare materialWaste?: number;
+  declare closed?: boolean;
+  declare closeDate?: Date;
+  declare updatedBy: number;
+  declare updatedAt: Date;
 
   /*
   static associate() {

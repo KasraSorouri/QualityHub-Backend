@@ -2,19 +2,11 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class NokGrp extends Model<InferAttributes<NokGrp>, InferCreationAttributes<NokGrp>> {
-  id?: number;
-  nokGrpName!: string;
-  nokGrpCode!: string;
-  nokGrpDesc?: string;
-  active!: boolean;
-  /*
-    static associate(models: any) {
-        NokGrp.hasMany(models.nokCode, {
-            foreignKey: 'nokGrpId',
-            as: 'nokCodes'
-        });
-    }
-*/
+  declare id?: number;
+  declare nokGrpName  : string;
+  declare nokGrpCode: string;
+  declare nokGrpDesc?: string;
+  declare active: boolean;
 }
 
 NokGrp.init(

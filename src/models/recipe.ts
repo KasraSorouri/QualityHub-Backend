@@ -23,19 +23,19 @@ interface RecipeAttributes {
 interface RecipeCreationAttributes extends Omit<RecipeAttributes, 'id'> {}
 
 class Recipe extends Model<RecipeAttributes, RecipeCreationAttributes> implements RecipeAttributes {
-  id!: number;
-  recipeCode!: string;
-  description!: string;
-  order!: number;
-  active!: boolean;
-  productId!: number;
-  stationId!: number;
-  timeDuration?: number;
-  manpower?: number;
-  recipeType!: RecipeType;
-  station?: Station;
-  product?: Product;
-  recipeBoms?: RecipeBoms[];
+  declare id: number;
+  declare recipeCode: string;
+  declare description: string;
+  declare order: number;
+  declare active: boolean;
+  declare productId: number;
+  declare stationId: number;
+  declare timeDuration?: number;
+  declare manpower?: number;
+  declare recipeType: RecipeType;
+  declare station?: Station;
+  declare product?: Product;
+  declare recipeBoms?: RecipeBoms[];
 
   static associate(): void {
     Recipe.belongsTo(Product, {

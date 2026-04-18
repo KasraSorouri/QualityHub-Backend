@@ -2,19 +2,12 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class ClassCode extends Model<InferAttributes<ClassCode>, InferCreationAttributes<ClassCode>> {
-  id?: number;
-  className!: string;
-  classCode!: string;
-  classDesc?: string;
-  active!: boolean;
-  /*
-    static associate(models: any) {
-        ClassCode.hasMany(models.nokCode, {
-            foreignKey: 'nokGrpId',
-            as: 'nokCodes'
-        });
-    }
-*/
+  declare id?: number;
+  declare className: string;
+  declare classCode: string;
+  declare classDesc?: string;
+  declare active: boolean;
+
 }
 
 ClassCode.init(

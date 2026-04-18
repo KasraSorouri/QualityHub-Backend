@@ -3,12 +3,12 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../configs/db';
 
 class RwDismantledMaterials extends Model {
-  public id!: number;
-  public reworkId!: number;
-  public recipeBomId!: number;
-  public dismantledQty!: number;
-  public note?: string;
-  public mandatoryRemove!: boolean;
+  declare id: number;
+  declare reworkId: number;
+  declare recipeBomId: number;
+  declare dismantledQty: number;
+  declare note?: string;
+  declare mandatoryRemove: boolean;
 }
 
 RwDismantledMaterials.init(

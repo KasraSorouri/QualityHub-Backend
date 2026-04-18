@@ -3,8 +3,8 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../configs/db';
 
 class NokRework_AffectedRecipes extends Model {
-  public nokReworkId!: number;
-  public recipeId!: number;
+  declare nokReworkId: number;
+  declare affectedRecipeId: number;
 }
 
 NokRework_AffectedRecipes.init(

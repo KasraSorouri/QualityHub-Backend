@@ -6,17 +6,17 @@ import { ClaimStatus, MaterialStatus, Reusable } from '../modules/qualityHub/typ
 import NokDetect from './nokDetect';
 
 class NokDismantleMaterials extends Model {
-  public id!: number;
-  public nokId!: number;
-  public reworkId!: number;
-  public materialId!: number;
-  public actualDismantledQty!: number;
-  public reusable!: Reusable;
-  public recipeBomId!: number;
-  public materialStatus!: MaterialStatus;
-  public claimStatus!: ClaimStatus;
-  public unitPrice!: number;
-  public rwDismantledMaterialId!: number;
+  declare id: number;
+  declare nokId: number;
+  declare reworkId: number;
+  declare materialId: number;
+  declare actualDismantledQty: number;
+  declare reusable: Reusable;
+  declare recipeBomId: number;
+  declare materialStatus: MaterialStatus;
+  declare claimStatus: ClaimStatus;
+  declare unitPrice: number;
+  declare rwDismantledMaterialId: number;
 
   static associate(): void {
     NokDetect.hasMany(NokDismantleMaterials, { foreignKey: 'nokId' });

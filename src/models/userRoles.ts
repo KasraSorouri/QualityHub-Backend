@@ -3,8 +3,8 @@ import { Model, DataTypes } from 'sequelize';
 import { sequelize } from '../configs/db';
 
 class UserRoles extends Model {
-  public userId!: number;
-  public roleId!: number;
+  declare userId: number;
+  declare roleId: number;
 }
 
 UserRoles.init(

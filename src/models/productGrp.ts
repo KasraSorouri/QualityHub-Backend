@@ -2,18 +2,10 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class ProductGrp extends Model<InferAttributes<ProductGrp>, InferCreationAttributes<ProductGrp>> {
-  id?: number;
-  groupName!: string;
-  groupCode!: string;
-  active!: boolean;
-  /*
-    static associate(models: any) {
-        ProductGrp.hasMany(models.Product, {
-            foreignKey: 'productGrpId',
-            as: 'products'
-        });
-    }
-*/
+  declare id?: number;
+  declare groupName: string;
+  declare groupCode: string;
+  declare active: boolean;
 }
 
 ProductGrp.init(

@@ -4,10 +4,10 @@ import Right from './right';
 
 // define Role Model
 class Role extends Model {
-  public id!: number;
-  public roleName!: string;
-  public active!: boolean;
-  public rights?: Right[];
+  declare id: number;
+  declare roleName: string;
+  declare active: boolean;
+  declare rights?: Right[];
   declare setRights: BelongsToManySetAssociationsMixin<Right, number>;
 
 }

@@ -80,7 +80,7 @@ const createRecipe = async (recipeData: unknown): Promise<Recipe> => {
   try {
     const recipe = await Recipe.create(newRecipeData);
     if (recipe.id && 'materialsData' in newRecipeData) {
-      await updateBoms(recipe.id, newRecipeData.materialsData);
+      await updateBoms(recipe.id, newRecipeData.materialsData); 
     }
     return recipe;
   } catch (err: unknown) {
@@ -114,6 +114,8 @@ const updateRecipe = async (id: number, recipeData: unknown): Promise<Recipe> =>
 };
 
 const updateBoms = async (id: number, bomData: ConsumingMaterial[]): Promise<Recipe> => {
+
+  console.log('bomData', bomData);
   const recipe = await Recipe.findByPk(id);
 
   if (recipe) {

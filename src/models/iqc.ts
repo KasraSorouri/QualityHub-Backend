@@ -12,11 +12,11 @@ interface IqcAttributes {
 interface IqcCreationAttributes extends Omit<IqcAttributes, 'id'> {}
 
 class Iqc extends Model<IqcAttributes, IqcCreationAttributes> implements IqcAttributes {
-  id!: number;
-  dismantledMaterialId!: number;
-  date!: Date;
-  reference?: string;
-  description?: string;
+  declare id: number;
+  declare dismantledMaterialId: number;
+  declare date: Date;
+  declare reference?: string;
+  declare description?: string;
 }
 
 Iqc.init(

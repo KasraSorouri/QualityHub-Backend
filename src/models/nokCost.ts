@@ -14,13 +14,13 @@ interface NokCostAttributes {
 interface NokCostCreationAttributes extends Omit<NokCostAttributes, 'id'> {}
 
 class NokCost extends Model<NokCostAttributes, NokCostCreationAttributes> implements NokCostAttributes {
-  id!: number;
-  nokId!: number;
-  reworkId!: number;
-  materialWaste!: number;
-  timeWaste!: number;
-  editLocked!: boolean;
-  updatedAt: Date = new Date();
+  declare id: number;
+  declare nokId: number;
+  declare reworkId: number;
+  declare materialWaste: number;
+  declare timeWaste: number;
+  declare editLocked: boolean;
+  declare updatedAt: Date;
 }
 
 NokCost.init(

@@ -2,12 +2,12 @@ import { Model, InferAttributes, InferCreationAttributes, DataTypes } from 'sequ
 import { sequelize } from '../configs/db';
 
 class Machine extends Model<InferAttributes<Machine>, InferCreationAttributes<Machine>> {
-  id?: number;
-  machineName!: string;
-  machineCode!: string;
-  description?: string;
-  active!: boolean;
-  stationId?: number;
+  declare id?: number;
+  declare machineName: string;
+  declare machineCode: string;
+  declare description?: string;
+  declare active: boolean;
+  declare stationId?: number;
 }
 
 Machine.init(
