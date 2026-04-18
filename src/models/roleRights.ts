@@ -1,6 +1,8 @@
 import { Model, DataTypes } from 'sequelize';
 
 import { sequelize } from '../configs/db';
+import Role from './role';
+import Right from './right';
 
 class RoleRights extends Model {
   public roleId!: number;
@@ -17,12 +19,12 @@ RoleRights.init(
     roleId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: 'roles', key: 'id' },
+      references: { model: Role , key: 'id' },
     },
     rightId: {
       type: DataTypes.INTEGER,
       allowNull: false,
-      references: { model: 'rights', key: 'id' },
+      references: { model: Right , key: 'id' },
     },
   },
   {

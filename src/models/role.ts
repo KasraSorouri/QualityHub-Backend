@@ -1,6 +1,6 @@
 import { Model, DataTypes, BelongsToManySetAssociationsMixin } from 'sequelize';
 import { sequelize } from '../configs/db';
-import { Right } from '../modules/usersAndAuthentication/types';
+import Right from './right';
 
 // define Role Model
 class Role extends Model {
@@ -8,8 +8,8 @@ class Role extends Model {
   public roleName!: string;
   public active!: boolean;
   public rights?: Right[];
+  declare setRights: BelongsToManySetAssociationsMixin<Right, number>;
 
-  public setRights!: BelongsToManySetAssociationsMixin<Right, number>;
 }
 
 Role.init(

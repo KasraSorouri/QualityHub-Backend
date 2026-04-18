@@ -226,8 +226,8 @@ interface ReworkBomsInclude {
 Role.belongsToMany(User, { through: UserRoles, foreignKey: 'roleId' });
 User.belongsToMany(Role, { through: UserRoles, foreignKey: 'userId' });
 
-Right.belongsToMany(Role, { through: RoleRights, foreignKey: 'rightId' });
-Role.belongsToMany(Right, { through: RoleRights, foreignKey: 'roleId' });
+Right.belongsToMany(Role, { through: RoleRights, foreignKey: 'rightId', as : 'roles' });
+Role.belongsToMany(Right, { through: RoleRights, foreignKey: 'roleId', as : 'rights' });
 
 // Qualiy Hub Moduly
 Product.belongsTo(ProductGrp, { foreignKey: 'productGrpId' });

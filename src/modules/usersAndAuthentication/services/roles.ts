@@ -91,15 +91,13 @@ const updateRoleRights = async (id: number, rights: number[]): Promise<Role> => 
   if (!role) {
     throw new Error('role not found');
   }
-  // remove old rights from role
-  await role.setRights([]);
-
   try {
     await role.setRights(okRights);
     const updatedRole = await Role.findByPk(id, {
       include: [
         {
           model: Right,
+          as: 'rights',
           attributes: ['id', 'right', 'relatedModule'],
           through: {
             attributes: [],
@@ -113,6 +111,7 @@ const updateRoleRights = async (id: number, rights: number[]): Promise<Role> => 
 
     return updatedRole;
   } catch (err: unknown) {
+    console.error('Error updating role rights:', err);
     let errorMessage = '';
     if (err instanceof Error) {
       errorMessage += ' Error: ' + err.message;
