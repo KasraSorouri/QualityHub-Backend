@@ -102,10 +102,14 @@ const createNokCost = async (costData: unknown): Promise<NokCost> => {
     // Calculate Material Waste
     for (const dismantledMaterial of data) {
       const { materialStatus, materialId, actualDismantledQty } = dismantledMaterial;
-      const material = await Material.findByPk(materialId);
+      const materialCost = newCostData.dismantledMaterial.find((item) => item.materialId === materialId);
 
-      if (material && material.price) {
-        const totalCost = actualDismantledQty * (material?.price || 0);
+      console.log('material cost', materialCost);
+      if (materialCost) {
+        dismantledMaterial.unitPrice = materialCost.unitPrice;
+        await dismantledMaterial.save();
+
+        const totalCost = actualDismantledQty * materialCost.unitPrice;
 
         if (totalMaterialWaste[materialStatus]) {
           totalMaterialWaste[materialStatus] += totalCost;
@@ -113,7 +117,7 @@ const createNokCost = async (costData: unknown): Promise<NokCost> => {
           totalMaterialWaste[materialStatus] = totalCost;
         }
       } else {
-        throw new Error('Material not found for id ' + materialId);
+        throw new Error('Cost data not found for material id ' + materialId);
       }
     }
 
@@ -141,9 +145,15 @@ const createNokCost = async (costData: unknown): Promise<NokCost> => {
       updatedAt: new Date(),
     };
 
-    const result = await NokCost.create(nokCost);
+    const existingCost = await NokCost.findOne({ where: { nokId: newCostData.nokId, reworkId: newCostData.reworkId } });
+    if (existingCost) {
+      await existingCost.update(nokCost);
+      return existingCost;
+    } else {
+      const newCost = await NokCost.create(nokCost);
+      return newCost;
+    }
 
-    return result;
   } catch (err: unknown) {
     let errorMessage = '';
     if (err instanceof Error) {
