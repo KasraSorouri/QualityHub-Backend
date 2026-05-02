@@ -3,9 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
-    "dev": "ts-node-dev ./src/server.ts",
+    "dev": "tsx watch ./src/server.ts",
     "start": "node build/server.js",
     "migrate": "NODE_OPTIONS=--max_old_space_size=512 node build/server.js env='init'",
     "rollback": "ts-node ./src/utils/rollBackDatabase.ts",
@@ -18,34 +19,38 @@
   "devDependencies": {
     "@types/bcrypt": "^5.0.2",
     "@types/cors": "^2.8.17",
-    "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.21",
     "@types/jsonwebtoken": "^9.0.5",
     "@types/multer": "^2.1.0",
     "@types/sequelize": "^4.28.19",
+    "@types/socket.io": "^3.0.1",
     "@types/umzug": "^2.3.7",
-    "@typescript-eslint/eslint-plugin": "^6.16.0",
-    "@typescript-eslint/parser": "^6.16.0",
-    "eslint": "^8.56.0",
+    "@typescript-eslint/eslint-plugin": "^8.59.1",
+    "@typescript-eslint/parser": "^8.59.1",
+    "eslint": "^10.3.0",
     "eslint-config-prettier": "^10.1.8",
     "eslint-plugin-prettier": "^5.5.4",
     "prettier": "^3.6.2",
-    "ts-node-dev": "^2.0.0",
+    "tsx": "^4.21.0",
     "typescript": "^5.3.3"
   },
   "dependencies": {
     "@aws-sdk/client-s3": "^3.1003.0",
     "@aws-sdk/s3-request-presigner": "^3.1014.0",
-    "bcrypt": "^5.1.1",
+    "bcrypt": "^6.0.0",
     "cors": "^2.8.5",
     "dotenv": "^16.3.1",
     "express": "^4.18.2",
     "jsonwebtoken": "^9.0.2",
     "multer": "^2.1.1",
     "pg": "^8.11.3",
-    "sequelize": "^6.35.2",
-    "sequelize-typescript": "^2.1.6",
-    "umzug": "^3.5.0",
-    "uuid": "^13.0.0"
+    "sequelize": "^6.37.8",
+    "socket.io": "^4.8.3",
+    "umzug": "^3.8.3",
+    "uuid": "^14.0.0"
+  },
+  "overrides": {
+    "uuid": "^14.0.0",
+    "tar": "^7.11.0"
   }
 }
