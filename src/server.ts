@@ -11,13 +11,13 @@ const server = http.createServer(app);
 initSocketIO(server);
 
 
-
 const start = async (): Promise<void> => {
   try {
     await connectToDatabase();
+
     server.listen(PORT, () => {
       logger.info(`🚀 Server running on port ${PORT}`);
-      logger.info('🔌 WebSocket active and listening for connections on the same port');
+      logger.info('📡 WebSocket active and listening for connections on the same port');
     });
   } catch (_error) {
     logger.info('Failed to start server');

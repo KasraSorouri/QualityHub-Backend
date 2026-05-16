@@ -8,7 +8,7 @@ if (!DATABASE_URI) {
   logger.info('Database URI is not found!');
 }
 const sequelize = new Sequelize(DATABASE_URI as string, {
-  logging: true,
+  logging: false,
 });
 
 const migrationConf = {
@@ -39,7 +39,7 @@ const connectToDatabase = async (): Promise<void | null> => {
     if (process.env.ENVIRONMENT === 'dev' || process.env.ENVIRONMENT === 'test' || process.env.ENVIRONMENT === 'init') {
       await runMigration();
     }
-    logger.info('Connection has been established successfully.');
+    logger.info('🛢️ Connection to Database has been established successfully.');
   } catch (error) {
     if (error instanceof Error) logger.info('Unable to connect to the database:', error.message);
     return process.exit(1);

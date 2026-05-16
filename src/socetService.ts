@@ -12,10 +12,10 @@ export const initSocketIO = (server: httpServer): Server => {
   });
 
   io.on('connection', (socket) => {
-    console.log('A user connected', { socketId: socket.id });
+    console.log('🔌 A user connected', { socketId: socket.id });
 
     socket.on('disconnect', () => {
-      console.log('A user disconnected', { socketId: socket.id });
+      console.log('⛓️‍💥 A user disconnected', { socketId: socket.id });
     });
   });
 

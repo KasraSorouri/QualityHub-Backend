@@ -1,6 +1,7 @@
 import nokDetectServices from '../services/nokDetects';
 import { Request, Response } from 'express';
 import { ExtendedRequest } from '../../usersAndAuthentication/types';
+import { getIO } from '../../../socetService';
 
 // Get All NOK Detects
 const getAllNokDetects = async (_req: Request, res: Response): Promise<void> => {
@@ -42,6 +43,8 @@ const addNokDetect = async (req: ExtendedRequest, res: Response): Promise<void> 
   const nokDetectData: unknown = req.body;
   try {
     const result = await nokDetectServices.createNokDetect(nokDetectData);
+    console.log('Emitting nokDashboardUpdate event');
+    getIO().emit('nokDashboardUpdate');
     res.status(201).json(result);
   } catch (err: unknown) {
     let errorMessage = 'Something went wrong.';
